@@ -1,0 +1,56 @@
+@import "reset";
+@import "vars";
+@import "defaults";
+html {
+    height: 100%;
+}
+body {
+    height: 100%;
+}
+#app {
+    display: grid;
+    grid-template-rows: max-content auto max-content;
+    min-height: 100%;
+}
+.header {
+    background: $clr-primary-low;
+    padding: 1rem;
+    text-align: center;
+    box-shadow: 0 4px 8px 2px $clr-secondary;
+}
+.main {
+    margin: 0 auto;
+    padding-inline: 2rem;
+    img {
+        mix-blend-mode: darken;
+        max-width: 60%;
+    }
+    figure {
+        display: grid;
+        justify-content: center;
+        justify-items: center;
+        align-items: center;
+        margin-block: 2rem;
+    }
+    .loginForm {
+        background: $clr-primary-low;
+        padding: 1rem;
+        border-radius: 1rem;
+        box-shadow: 0 4px 8px 2px $clr-secondary;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+        input {
+            flex-basis: 100%;
+        }
+        input:first-of-type {
+            margin-top: 2rem;
+        }
+        input:last-of-type {
+            margin-bottom: 2rem;
+        }
+        button {
+            margin: 0 auto;
+        }
+    }
+}
