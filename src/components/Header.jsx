@@ -1,9 +1,9 @@
 import React from "react";
 
-function Header() {
+function Header({ text }) {
     return (
         <header className="header">
-            <h1>Please identify yourself</h1>
+            <h1>{text}</h1>
         </header>
     );
 }

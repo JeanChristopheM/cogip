@@ -1,0 +1,30 @@
+.login {
+    margin: 0 auto;
+    img {
+        mix-blend-mode: darken;
+        max-width: 60%;
+    }
+    figure {
+        display: grid;
+        justify-content: center;
+        justify-items: center;
+        align-items: center;
+    }
+    .loginForm {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+        input {
+            flex-basis: 100%;
+        }
+        input:first-of-type {
+            margin-top: 2rem;
+        }
+        input:last-of-type {
+            margin-bottom: 2rem;
+        }
+        button {
+            margin: 0 auto;
+        }
+    }
+}

@@ -1,0 +1,10 @@
+.card {
+    background: $clr-primary-low;
+    box-shadow: 0 4px 8px 2px $clr-secondary;
+    padding: 1rem;
+    border-radius: 1rem;
+    margin: 1rem 2rem;
+}
+.card:not(first-child) {
+    margin-top: 2rem;
+}
