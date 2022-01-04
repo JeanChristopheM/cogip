@@ -1,6 +1,6 @@
 import InvoiceLi from "./InvoiceLi.jsx";
 
-function Invoices({ data, companies }) {
+function Invoices({ data, companies, setInvoiceId }) {
     return (
         <main>
             <section className="invoices card">
@@ -12,6 +12,8 @@ function Invoices({ data, companies }) {
                                 invoice={entry}
                                 key={entry.id}
                                 companies={companies}
+                                setPage={setPage}
+                                setInvoiceId={setInvoiceId}
                             />
                         );
                     })}

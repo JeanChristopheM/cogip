@@ -24,13 +24,13 @@
 }
 .invoices {
     .invoiceLi {
-        cursor: pointer;
         grid-template-areas:
             "svg invoiceName invoiceNumber"
             "svg invoiceType invoiceDate";
         .invoiceName {
             grid-area: invoiceName;
             font-weight: 600;
+            cursor: pointer;
         }
         .invoiceType {
             grid-area: invoiceType;
@@ -46,6 +46,7 @@
         }
         .invoiceNumber {
             grid-area: invoiceNumber;
+            cursor: pointer;
         }
         .invoiceDate {
             grid-area: invoiceDate;

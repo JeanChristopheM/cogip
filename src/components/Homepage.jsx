@@ -3,7 +3,14 @@ import CompanyLi from "./CompanyLi.jsx";
 import ContactLi from "./ContactLi.jsx";
 import InvoiceLi from "./InvoiceLi.jsx";
 
-function Homepage({ userdata, companies, invoices, contacts }) {
+function Homepage({
+    userdata,
+    companies,
+    invoices,
+    contacts,
+    setPage,
+    setInvoiceId,
+}) {
     return (
         <main className="homepage">
             <section className="invoices card">
@@ -15,6 +22,8 @@ function Homepage({ userdata, companies, invoices, contacts }) {
                                 invoice={entry}
                                 key={entry.id}
                                 companies={companies}
+                                setPage={setPage}
+                                setInvoiceId={setInvoiceId}
                             />
                         );
                     })}

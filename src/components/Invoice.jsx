@@ -1,7 +1,10 @@
-function Invoice({ invoice }) {
+function Invoice({ invoices, invoiceId }) {
+    const invoice = invoices.find((el) => el.id === invoiceId);
     return (
         <main>
-            <div className="invoiceContainer">This is a unique invoice</div>
+            <div className="card">
+                <h2>Details about invoice {invoice.reference}</h2>
+            </div>
         </main>
     );
 }

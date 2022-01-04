@@ -11,6 +11,7 @@ import MobileMenu from "./components/MobileMenu.jsx";
 import Companies from "./components/Companies.jsx";
 import Contacts from "./components/Contacts.jsx";
 import Invoices from "./components/Invoices.jsx";
+import Invoice from "./components/Invoice.jsx";
 import FourOfour from "./components/FourOfour.jsx";
 
 function App() {
@@ -20,6 +21,7 @@ function App() {
     const [displayMenu, setDisplayMenu] = useState(false);
     const [companies, setCompanies] = useState([]);
     const [invoices, setInvoices] = useState([]);
+    const [invoiceId, setInvoiceId] = useState(null);
     const [contacts, setContacts] = useState([]);
 
     /* Loading data function */
@@ -83,14 +85,31 @@ function App() {
                         companies={companies}
                         contacts={contacts}
                         invoices={invoices}
+                        setPage={setPage}
+                        setInvoiceId={setInvoiceId}
                     />
                 );
             case "INVOICES":
-                return <Invoices data={invoices} companies={companies} />;
+                return (
+                    <Invoices
+                        data={invoices}
+                        companies={companies}
+                        setPage={setPage}
+                        setInvoiceId={setInvoiceId}
+                    />
+                );
+            case "INVOICE":
+                return <Invoice invoices={invoices} invoiceId={invoiceId} />;
             case "CONTACTS":
-                return <Contacts data={contacts} companies={companies} />;
+                return (
+                    <Contacts
+                        data={contacts}
+                        companies={companies}
+                        setPage={setPage}
+                    />
+                );
             case "COMPANIES":
-                return <Companies data={companies} />;
+                return <Companies data={companies} setPage={setPage} />;
             default:
                 return <FourOfour />;
         }
@@ -104,7 +123,12 @@ function App() {
                     pageRouter()
                 ) : (
                     <main>
-                        <h2 style={{ textAlign: "center" }}>Loading</h2>
+                        <h2 style={{ textAlign: "center" }}>
+                            Welcome {isAuth.username}.
+                        </h2>
+                        <p style={{ textAlign: "center" }}>
+                            Please wait while we are loading your environment
+                        </p>
                     </main>
                 )
             ) : (
