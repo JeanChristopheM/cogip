@@ -1,5 +1,5 @@
 import Header from "./components/Header.jsx";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import Login from "./components/Login.jsx";
 import Homepage from "./components/Homepage.jsx";
 import MobileMenu from "./components/MobileMenu.jsx";
@@ -8,6 +8,7 @@ import Companies from "./components/Companies.jsx";
 import Contacts from "./components/Contacts.jsx";
 import FourOfour from "./components/FourOfour.jsx";
 import Invoices from "./components/Invoices.jsx";
+import { getCompanies, getInvoices, getContacts } from "./logic/getData";
 
 function App() {
     const [isAuth, setAuth] = useState(null);
@@ -25,29 +26,14 @@ function App() {
         }
     }, []);
 
-    const getCompanies = async () => {
-        let response = await fetch("/companies.json");
-        let data = await response.json();
-        setCompanies(data);
-    };
-    const getInvoices = async () => {
-        let response = await fetch("/invoices.json");
-        let data = await response.json();
-        setInvoices(data);
-    };
-    const getContacts = async () => {
-        let response = await fetch("/contacts.json");
-        let data = await response.json();
-        setContacts(data);
-    };
-    const getData = () => {
-        getCompanies();
-        getInvoices();
-        getContacts();
+    const loadData = async () => {
+        setCompanies(await getCompanies());
+        setInvoices(await getInvoices());
+        setContacts(await getContacts());
     };
     /* Loading data */
     useEffect(() => {
-        getData();
+        loadData();
     }, []);
 
     /* Mobile Menu related functions */
@@ -84,9 +70,9 @@ function App() {
                     />
                 );
             case "INVOICES":
-                return <Invoices />;
+                return <Invoices data={invoices} companies={companies} />;
             case "CONTACTS":
-                return <Contacts />;
+                return <Contacts data={contacts} companies={companies} />;
             case "COMPANIES":
                 return <Companies data={companies} />;
             default:

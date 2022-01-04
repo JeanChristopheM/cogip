@@ -38,7 +38,7 @@ function Homepage({ userdata, companies, invoices, contacts }) {
                 <h2>Companies</h2>
                 <ul>
                     {companies.map((entry) => {
-                        return <CompanyLi data={entry} key={entry.id} />;
+                        return <CompanyLi company={entry} key={entry.id} />;
                     })}
                 </ul>
             </section>

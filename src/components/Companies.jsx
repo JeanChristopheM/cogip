@@ -7,7 +7,7 @@ function Companies({ data }) {
                 <h2>Companies</h2>
                 <ul>
                     {data.map((entry) => {
-                        return <CompanyLi data={entry} key={entry.id} />;
+                        return <CompanyLi company={entry} key={entry.id} />;
                     })}
                 </ul>
             </section>
