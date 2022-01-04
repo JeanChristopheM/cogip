@@ -1,5 +1,5 @@
 import { useRef } from "react";
-import dbUserCheck from "../db.js";
+import dbUserCheck from "../authTemp.js";
 
 function Login({ setAuth, setPage }) {
     const logo = new URL("../media/img/logo.png", import.meta.url);

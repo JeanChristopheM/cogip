@@ -1,24 +1,33 @@
-import Header from "./components/Header.jsx";
+/* Functions */
 import { useState, useEffect } from "react";
+import { getCompanies, getInvoices, getContacts } from "./logic/getData";
+/* Components */
+import Header from "./components/Header.jsx";
+import Footer from "./components/Footer.jsx";
+/* Page Contents */
 import Login from "./components/Login.jsx";
 import Homepage from "./components/Homepage.jsx";
 import MobileMenu from "./components/MobileMenu.jsx";
-import Footer from "./components/Footer.jsx";
 import Companies from "./components/Companies.jsx";
 import Contacts from "./components/Contacts.jsx";
-import FourOfour from "./components/FourOfour.jsx";
 import Invoices from "./components/Invoices.jsx";
-import { getCompanies, getInvoices, getContacts } from "./logic/getData";
+import FourOfour from "./components/FourOfour.jsx";
 
 function App() {
-    const [isAuth, setAuth] = useState(null);
+    const [isAuth, setAuth] = useState(false);
+    const [isLoaded, setIsLoaded] = useState(false);
     const [page, setPage] = useState("Login");
     const [displayMenu, setDisplayMenu] = useState(false);
     const [companies, setCompanies] = useState([]);
     const [invoices, setInvoices] = useState([]);
     const [contacts, setContacts] = useState([]);
-    const [isLoaded, setIsLoaded] = useState(false);
 
+    /* Loading data function */
+    const loadData = async () => {
+        setCompanies(await getCompanies());
+        setInvoices(await getInvoices());
+        setContacts(await getContacts());
+    };
     /* If cookie, set the authentification to cache and redirect to homepage */
     useEffect(() => {
         if (localStorage.getItem("cogipAuth")) {
@@ -26,6 +35,11 @@ function App() {
             setPage(`HOMEPAGE`);
         }
     }, []);
+    useEffect(() => {
+        if (isAuth) {
+            loadData();
+        }
+    }, [isAuth]);
 
     /* Check if all data is loaded */
     useEffect(() => {
@@ -37,18 +51,6 @@ function App() {
             setIsLoaded(true);
         }
     }, [companies, invoices, contacts]);
-
-    /* Loading data */
-    const loadData = async () => {
-        setCompanies(await getCompanies());
-        setInvoices(await getInvoices());
-        setContacts(await getContacts());
-    };
-    useEffect(() => {
-        setTimeout(() => {
-            loadData();
-        }, 2000);
-    }, []);
 
     /* Mobile Menu related functions */
     const closeMenu = (e) => {
@@ -102,7 +104,7 @@ function App() {
                     pageRouter()
                 ) : (
                     <main>
-                        <p style={{ textAlign: "center" }}>Loading</p>
+                        <h2 style={{ textAlign: "center" }}>Loading</h2>
                     </main>
                 )
             ) : (
