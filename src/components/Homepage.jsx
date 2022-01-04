@@ -9,7 +9,7 @@ function Homepage({ userdata, companies, invoices, contacts }) {
             <section className="invoices card">
                 <h2>Invoices</h2>
                 <ul>
-                    {invoices.map((entry) => {
+                    {invoices.slice(0, 5).map((entry) => {
                         return (
                             <InvoiceLi
                                 invoice={entry}

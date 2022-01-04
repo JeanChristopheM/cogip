@@ -17,6 +17,7 @@ function App() {
     const [companies, setCompanies] = useState([]);
     const [invoices, setInvoices] = useState([]);
     const [contacts, setContacts] = useState([]);
+    const [isLoaded, setIsLoaded] = useState(false);
 
     /* If cookie, set the authentification to cache and redirect to homepage */
     useEffect(() => {
@@ -26,14 +27,27 @@ function App() {
         }
     }, []);
 
+    /* Check if all data is loaded */
+    useEffect(() => {
+        if (
+            companies.length > 0 &&
+            invoices.length > 0 &&
+            contacts.length > 0
+        ) {
+            setIsLoaded(true);
+        }
+    }, [companies, invoices, contacts]);
+
+    /* Loading data */
     const loadData = async () => {
         setCompanies(await getCompanies());
         setInvoices(await getInvoices());
         setContacts(await getContacts());
     };
-    /* Loading data */
     useEffect(() => {
-        loadData();
+        setTimeout(() => {
+            loadData();
+        }, 2000);
     }, []);
 
     /* Mobile Menu related functions */
@@ -84,7 +98,13 @@ function App() {
         <>
             <Header page={page} openMenu={openMenu} />
             {isAuth ? (
-                pageRouter()
+                isLoaded ? (
+                    pageRouter()
+                ) : (
+                    <main>
+                        <p style={{ textAlign: "center" }}>Loading</p>
+                    </main>
+                )
             ) : (
                 <Login setAuth={setAuth} setPage={setPage} />
             )}

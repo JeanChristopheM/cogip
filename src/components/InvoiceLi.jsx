@@ -5,7 +5,12 @@ function InvoiceLi({ invoice, companies }) {
     let month = invoice.received.slice(5, 7);
     let day = invoice.received.slice(8, 10);
     return (
-        <li>
+        <li
+            onClick={() => {
+                console.log(invoice.reference);
+            }}
+            className={"invoiceLi"}
+        >
             <span className="svg">
                 <i className={`fas fa-arrow-${arrow}`}></i>
             </span>
