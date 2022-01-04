@@ -35,7 +35,7 @@ function MobileMenu({ onLogout, changePage }) {
                     Log out
                 </li>
                 <li id="menuCross">
-                    <i class="fas fa-times"></i>
+                    <i className="fas fa-times"></i>
                 </li>
             </ul>
         </div>

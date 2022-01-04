@@ -4,10 +4,12 @@
 
 #app {
     display: grid;
-    grid-template-rows: max-content auto max-content;
+    grid-template-rows: auto max-content;
     min-height: 100%;
 }
 .header {
+    position: fixed;
+    width: 100%;
     background: $clr-primary-low;
     padding: 0.6rem;
     box-shadow: 0 4px 8px 2px $clr-secondary;
