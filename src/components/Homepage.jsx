@@ -8,7 +8,7 @@ function Homepage({ userdata }) {
                 <ul>
                     <li>
                         <span className="svg">
-                            <i class="fas fa-arrow-down"></i>
+                            <i className="fas fa-arrow-down"></i>
                         </span>
                         <span className="invoiceName">Becode</span>
                         <span className="invoiceNumber">INV_012</span>
@@ -17,7 +17,7 @@ function Homepage({ userdata }) {
                     </li>
                     <li>
                         <span className="svg">
-                            <i class="fas fa-arrow-up"></i>
+                            <i className="fas fa-arrow-up"></i>
                         </span>
                         <span className="invoiceName">Mestdagh</span>
                         <span className="invoiceNumber">INV_011</span>
@@ -26,7 +26,7 @@ function Homepage({ userdata }) {
                     </li>
                     <li>
                         <span className="svg">
-                            <i class="fas fa-arrow-up"></i>
+                            <i className="fas fa-arrow-up"></i>
                         </span>
                         <span className="invoiceName">Castro&Co</span>
                         <span className="invoiceNumber">INV_010</span>
@@ -35,7 +35,7 @@ function Homepage({ userdata }) {
                     </li>
                     <li>
                         <span className="svg">
-                            <i class="fas fa-arrow-up"></i>
+                            <i className="fas fa-arrow-up"></i>
                         </span>
                         <span className="invoiceName">Castro&Co</span>
                         <span className="invoiceNumber">INV_010</span>
@@ -44,7 +44,7 @@ function Homepage({ userdata }) {
                     </li>
                     <li>
                         <span className="svg">
-                            <i class="fas fa-arrow-up"></i>
+                            <i className="fas fa-arrow-up"></i>
                         </span>
                         <span className="invoiceName">Castro&Co</span>
                         <span className="invoiceNumber">INV_010</span>
@@ -58,7 +58,7 @@ function Homepage({ userdata }) {
                 <ul>
                     <li>
                         <span className="svg">
-                            <i class="fas fa-user"></i>
+                            <i className="fas fa-user"></i>
                         </span>
                         <span className="contactName">Baptiste Geron</span>
                         <span className="contactMail">bap@bap.com</span>
@@ -66,7 +66,7 @@ function Homepage({ userdata }) {
                     </li>
                     <li>
                         <span className="svg">
-                            <i class="fas fa-user"></i>
+                            <i className="fas fa-user"></i>
                         </span>
                         <span className="contactName">Nicolas Jamar</span>
                         <span className="contactMail">n.jamar@becode.org</span>
@@ -74,7 +74,7 @@ function Homepage({ userdata }) {
                     </li>
                     <li>
                         <span className="svg">
-                            <i class="fas fa-user"></i>
+                            <i className="fas fa-user"></i>
                         </span>
                         <span className="contactName">Caroline Coumanne</span>
                         <span className="contactMail">caroline@wingsgo.be</span>
@@ -82,7 +82,7 @@ function Homepage({ userdata }) {
                     </li>
                     <li>
                         <span className="svg">
-                            <i class="fas fa-user"></i>
+                            <i className="fas fa-user"></i>
                         </span>
                         <span className="contactName">Caroline Coumanne</span>
                         <span className="contactMail">caroline@wingsgo.be</span>
@@ -90,7 +90,7 @@ function Homepage({ userdata }) {
                     </li>
                     <li>
                         <span className="svg">
-                            <i class="fas fa-user"></i>
+                            <i className="fas fa-user"></i>
                         </span>
                         <span className="contactName">Caroline Coumanne</span>
                         <span className="contactMail">caroline@wingsgo.be</span>
@@ -103,35 +103,35 @@ function Homepage({ userdata }) {
                 <ul>
                     <li>
                         <span className="svg">
-                            <i class="fas fa-building"></i>
+                            <i className="fas fa-building"></i>
                         </span>
                         <span className="companyName">Logala Enterprise</span>
                         <span className="companyType">Client</span>
                     </li>
                     <li>
                         <span className="svg">
-                            <i class="fas fa-building"></i>
+                            <i className="fas fa-building"></i>
                         </span>
                         <span className="companyName">Wingsgo</span>
                         <span className="companyType">Client</span>
                     </li>
                     <li>
                         <span className="svg">
-                            <i class="fas fa-building"></i>
+                            <i className="fas fa-building"></i>
                         </span>
                         <span className="companyName">Unilever</span>
                         <span className="companyType">Provider</span>
                     </li>
                     <li>
                         <span className="svg">
-                            <i class="fas fa-building"></i>
+                            <i className="fas fa-building"></i>
                         </span>
                         <span className="companyName">Unilever</span>
                         <span className="companyType">Provider</span>
                     </li>
                     <li>
                         <span className="svg">
-                            <i class="fas fa-building"></i>
+                            <i className="fas fa-building"></i>
                         </span>
                         <span className="companyName">Unilever</span>
                         <span className="companyType">Provider</span>

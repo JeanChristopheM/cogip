@@ -3,8 +3,8 @@
     box-shadow: 0 4px 8px 2px $clr-secondary;
     padding: 1rem;
     border-radius: 1rem;
-    margin: 1rem 2rem;
+    margin: 1rem 1rem;
 }
-.card:not(first-child) {
+.card + .card {
     margin-top: 2rem;
 }

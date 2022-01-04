@@ -9,11 +9,35 @@
 }
 .header {
     background: $clr-primary-low;
-    padding: 1rem;
-    text-align: center;
+    padding: 0.6rem;
     box-shadow: 0 4px 8px 2px $clr-secondary;
+    display: grid;
+    grid-template-columns: 2rem 1fr;
+    align-items: center;
+    justify-items: center;
+    #burger {
+        font-size: 2rem;
+        padding: 0.5rem;
+        cursor: pointer;
+    }
+    h1 {
+        width: max-content;
+        transform: translateX(-1rem);
+    }
+}
+.footer {
+    margin-top: 3rem;
+    background: $clr-primary-low;
+    padding-block: 1rem;
+    text-align: center;
+    border-top: 1px solid $clr-secondary-low;
+    a {
+        text-decoration: underline;
+        cursor: pointer;
+    }
 }
 
 @import "card";
+@import "mobilemenu";
 @import "login";
 @import "homepage";

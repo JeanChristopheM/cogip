@@ -1,5 +1,4 @@
 .login {
-    margin: 0 auto;
     img {
         mix-blend-mode: darken;
         max-width: 60%;
@@ -14,17 +13,21 @@
         display: flex;
         flex-wrap: wrap;
         gap: 1rem;
-        input {
+        .loginInput {
             flex-basis: 100%;
         }
-        input:first-of-type {
+        .loginInput:first-of-type {
             margin-top: 2rem;
-        }
-        input:last-of-type {
-            margin-bottom: 2rem;
         }
         button {
             margin: 0 auto;
         }
+    }
+    .rememberMe {
+        flex-basis: 100%;
+        display: flex;
+        justify-content: center;
+        margin-bottom: 1rem;
+        cursor: pointer;
     }
 }
