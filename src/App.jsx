@@ -99,7 +99,13 @@ function App() {
                     />
                 );
             case "INVOICE":
-                return <Invoice invoices={invoices} invoiceId={invoiceId} />;
+                return (
+                    <Invoice
+                        invoices={invoices}
+                        invoiceId={invoiceId}
+                        setPage={setPage}
+                    />
+                );
             case "CONTACTS":
                 return (
                     <Contacts
