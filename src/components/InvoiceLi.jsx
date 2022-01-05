@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 
-function InvoiceLi({ invoice, companies, setInvoiceId }) {
+function InvoiceLi({ invoice, companies }) {
     let navigate = useNavigate();
     let company = companies.find((company) => company.id === invoice.company);
     let arrow = company.status === "Client" ? "down" : "up";
@@ -17,7 +17,6 @@ function InvoiceLi({ invoice, companies, setInvoiceId }) {
                 className="invoiceNumber"
                 onClick={() => {
                     navigate(`/invoice/${invoice.id}`);
-                    setInvoiceId(invoice.id);
                 }}
             >
                 {invoice.reference}

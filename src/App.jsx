@@ -1,12 +1,7 @@
 /* Functions */
-import { useState, useEffect } from "react";
+import { useState, useEffect, useLayoutEffect } from "react";
 import { getCompanies, getInvoices, getContacts } from "./logic/getData";
-import {
-    BrowserRouter as Router,
-    Routes,
-    Route,
-    useNavigate,
-} from "react-router-dom";
+import { Routes, Route, useNavigate, useLocation } from "react-router-dom";
 /* Components */
 import Header from "./components/Header.jsx";
 import Footer from "./components/Footer.jsx";
@@ -22,13 +17,12 @@ import Invoice from "./components/Invoice.jsx";
 import FourOfour from "./components/FourOfour.jsx";
 
 function App() {
-    let navigate = useNavigate();
+    const navigate = useNavigate();
     const [isAuth, setAuth] = useState(false);
     const [isLoaded, setIsLoaded] = useState(false);
     const [displayMenu, setDisplayMenu] = useState(false);
     const [companies, setCompanies] = useState([]);
     const [invoices, setInvoices] = useState([]);
-    const [invoiceId, setInvoiceId] = useState(null);
     const [contacts, setContacts] = useState([]);
 
     /* Loading data function */
@@ -41,15 +35,18 @@ function App() {
     useEffect(() => {
         if (sessionStorage.getItem("cogipAuth")) {
             setAuth(JSON.parse(sessionStorage.getItem("cogipAuth")));
-        }
-        if (localStorage.getItem("cogipAuth")) {
+        } else if (localStorage.getItem("cogipAuth")) {
             setAuth(JSON.parse(localStorage.getItem("cogipAuth")));
         }
     }, []);
     /* If we logged in -> Load the data */
+    const url = useLocation();
     useEffect(() => {
+        console.log(url);
+        console.log(isAuth);
         if (isAuth) {
             loadData();
+            navigate("/home");
         }
     }, [isAuth]);
 
@@ -82,7 +79,6 @@ function App() {
     const logout = () => {
         localStorage.removeItem("cogipAuth");
         sessionStorage.removeItem("cogipAuth");
-        //navigate("/login");
         setAuth(null);
         setDisplayMenu(false);
     };
@@ -99,7 +95,10 @@ function App() {
         <>
             <Header openMenu={openMenu} possibleRoutes={possibleRoutes} />
             <Routes>
-                <Route path="/login" element={<Login setAuth={setAuth} />} />
+                <Route
+                    path="/login"
+                    element={<Login setAuth={setAuth} isAuth={isAuth} />}
+                />
                 <Route
                     path="/home"
                     element={
@@ -111,7 +110,6 @@ function App() {
                                     companies={companies}
                                     contacts={contacts}
                                     invoices={invoices}
-                                    setInvoiceId={setInvoiceId}
                                 />
                             }
                         />
@@ -135,7 +133,6 @@ function App() {
                                 <Invoices
                                     data={invoices}
                                     companies={companies}
-                                    setInvoiceId={setInvoiceId}
                                 />
                             }
                         />

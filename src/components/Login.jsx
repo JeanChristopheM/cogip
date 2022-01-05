@@ -2,7 +2,7 @@ import { useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import dbUserCheck from "../authTemp.js";
 
-function Login({ setAuth }) {
+function Login({ setAuth, isAuth }) {
     const logo = new URL("../media/img/logo.png", import.meta.url);
     const usernameInput = useRef(null);
     const pwdInput = useRef(null);
@@ -28,7 +28,6 @@ function Login({ setAuth }) {
         navigate("/home");
         setAuth(response);
     };
-
     return (
         <main className="login">
             <figure>
