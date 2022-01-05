@@ -1,9 +1,13 @@
 import React from "react";
+import { useLocation } from "react-router-dom";
 
-function Header({ page, openMenu }) {
+function Header({ openMenu, possibleRoutes }) {
+    const url = useLocation();
+    const location = url.pathname.slice(1, url.pathname.length).split("/")[0];
+    const finalLocation = possibleRoutes.includes(location) ? location : "404";
     return (
         <header className="header">
-            {page === "Login" ? (
+            {finalLocation === "login" ? (
                 <span id="burger"></span>
             ) : (
                 <i
@@ -14,7 +18,7 @@ function Header({ page, openMenu }) {
                     }}
                 ></i>
             )}
-            <h1>{page}</h1>
+            <h1>{finalLocation.toUpperCase()}</h1>
         </header>
     );
 }

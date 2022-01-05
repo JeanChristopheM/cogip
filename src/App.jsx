@@ -1,10 +1,17 @@
 /* Functions */
 import { useState, useEffect } from "react";
 import { getCompanies, getInvoices, getContacts } from "./logic/getData";
+import {
+    BrowserRouter as Router,
+    Routes,
+    Route,
+    useNavigate,
+} from "react-router-dom";
 /* Components */
 import Header from "./components/Header.jsx";
 import Footer from "./components/Footer.jsx";
 /* Page Contents */
+import PrivateRoute from "./components/PrivateRoute.jsx";
 import Login from "./components/Login.jsx";
 import Homepage from "./components/Homepage.jsx";
 import MobileMenu from "./components/MobileMenu.jsx";
@@ -15,9 +22,9 @@ import Invoice from "./components/Invoice.jsx";
 import FourOfour from "./components/FourOfour.jsx";
 
 function App() {
+    let navigate = useNavigate();
     const [isAuth, setAuth] = useState(false);
     const [isLoaded, setIsLoaded] = useState(false);
-    const [page, setPage] = useState("Login");
     const [displayMenu, setDisplayMenu] = useState(false);
     const [companies, setCompanies] = useState([]);
     const [invoices, setInvoices] = useState([]);
@@ -32,11 +39,14 @@ function App() {
     };
     /* If cookie, set the authentification to cache and redirect to homepage */
     useEffect(() => {
+        if (sessionStorage.getItem("cogipAuth")) {
+            setAuth(JSON.parse(sessionStorage.getItem("cogipAuth")));
+        }
         if (localStorage.getItem("cogipAuth")) {
             setAuth(JSON.parse(localStorage.getItem("cogipAuth")));
-            setPage(`HOMEPAGE`);
         }
     }, []);
+    /* If we logged in -> Load the data */
     useEffect(() => {
         if (isAuth) {
             loadData();
@@ -71,78 +81,87 @@ function App() {
     /* Logout function */
     const logout = () => {
         localStorage.removeItem("cogipAuth");
-        setPage("Login");
+        sessionStorage.removeItem("cogipAuth");
+        //navigate("/login");
         setAuth(null);
         setDisplayMenu(false);
     };
-
-    const pageRouter = () => {
-        switch (page) {
-            case "HOMEPAGE":
-                return (
-                    <Homepage
-                        userdata={isAuth}
-                        companies={companies}
-                        contacts={contacts}
-                        invoices={invoices}
-                        setPage={setPage}
-                        setInvoiceId={setInvoiceId}
-                    />
-                );
-            case "INVOICES":
-                return (
-                    <Invoices
-                        data={invoices}
-                        companies={companies}
-                        setPage={setPage}
-                        setInvoiceId={setInvoiceId}
-                    />
-                );
-            case "INVOICE":
-                return (
-                    <Invoice
-                        invoices={invoices}
-                        invoiceId={invoiceId}
-                        setPage={setPage}
-                    />
-                );
-            case "CONTACTS":
-                return (
-                    <Contacts
-                        data={contacts}
-                        companies={companies}
-                        setPage={setPage}
-                    />
-                );
-            case "COMPANIES":
-                return <Companies data={companies} setPage={setPage} />;
-            default:
-                return <FourOfour />;
-        }
-    };
-
+    /* Possible Routes */
+    const possibleRoutes = [
+        "login",
+        "home",
+        "companies",
+        "contacts",
+        "invoices",
+        "invoice",
+    ];
     return (
         <>
-            <Header page={page} openMenu={openMenu} />
-            {isAuth ? (
-                isLoaded ? (
-                    pageRouter()
-                ) : (
-                    <main>
-                        <h2 style={{ textAlign: "center" }}>
-                            Welcome {isAuth.username}.
-                        </h2>
-                        <p style={{ textAlign: "center" }}>
-                            Please wait while we are loading your environment
-                        </p>
-                    </main>
-                )
-            ) : (
-                <Login setAuth={setAuth} setPage={setPage} />
-            )}
-            {displayMenu && (
-                <MobileMenu onLogout={logout} changePage={setPage} />
-            )}
+            <Header openMenu={openMenu} possibleRoutes={possibleRoutes} />
+            <Routes>
+                <Route path="/login" element={<Login setAuth={setAuth} />} />
+                <Route
+                    path="/home"
+                    element={
+                        <PrivateRoute
+                            isAuth={isAuth}
+                            element={
+                                <Homepage
+                                    userdata={isAuth}
+                                    companies={companies}
+                                    contacts={contacts}
+                                    invoices={invoices}
+                                    setInvoiceId={setInvoiceId}
+                                />
+                            }
+                        />
+                    }
+                />
+                <Route
+                    path="/companies"
+                    element={
+                        <PrivateRoute
+                            isAuth={isAuth}
+                            element={<Companies data={companies} />}
+                        />
+                    }
+                />
+                <Route
+                    path="/invoices"
+                    element={
+                        <PrivateRoute
+                            isAuth={isAuth}
+                            element={
+                                <Invoices
+                                    data={invoices}
+                                    companies={companies}
+                                    setInvoiceId={setInvoiceId}
+                                />
+                            }
+                        />
+                    }
+                />
+                <Route
+                    path="invoice/:invoiceId"
+                    element={<Invoice invoices={invoices} />}
+                />
+                <Route
+                    path="/contacts"
+                    element={
+                        <PrivateRoute
+                            isAuth={isAuth}
+                            element={
+                                <Contacts
+                                    data={contacts}
+                                    companies={companies}
+                                />
+                            }
+                        />
+                    }
+                />
+                <Route path="*" element={<FourOfour />} />
+            </Routes>
+            {displayMenu && <MobileMenu onLogout={logout} />}
             <Footer />
         </>
     );

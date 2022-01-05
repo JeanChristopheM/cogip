@@ -1,5 +1,8 @@
+import { useParams } from "react-router-dom";
+
 function Invoice({ invoices, invoiceId }) {
-    const invoice = invoices.find((el) => el.id === invoiceId);
+    let params = useParams();
+    const invoice = invoices.find((el) => el.id == params.invoiceId);
     return (
         <main>
             <div className="card">

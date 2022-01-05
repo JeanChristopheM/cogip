@@ -2,6 +2,7 @@
     img {
         mix-blend-mode: darken;
         max-width: 60%;
+        z-index: -1;
     }
     figure {
         display: grid;

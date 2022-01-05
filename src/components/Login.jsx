@@ -1,11 +1,13 @@
 import { useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import dbUserCheck from "../authTemp.js";
 
-function Login({ setAuth, setPage }) {
+function Login({ setAuth }) {
     const logo = new URL("../media/img/logo.png", import.meta.url);
     const usernameInput = useRef(null);
     const pwdInput = useRef(null);
     const rememberInput = useRef(null);
+    const navigate = useNavigate();
 
     const onAuthClick = async (e) => {
         e.preventDefault();
@@ -22,10 +24,11 @@ function Login({ setAuth, setPage }) {
         if (rememberInput.current.checked) {
             localStorage.setItem("cogipAuth", JSON.stringify(response));
         }
-
-        setPage(`HOMEPAGE`);
+        sessionStorage.setItem("cogipAuth", JSON.stringify(response));
+        navigate("/home");
         setAuth(response);
     };
+
     return (
         <main className="login">
             <figure>

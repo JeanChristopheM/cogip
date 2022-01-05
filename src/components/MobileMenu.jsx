@@ -1,30 +1,31 @@
-import React from "react";
+import { useNavigate } from "react-router-dom";
 
-function MobileMenu({ onLogout, changePage }) {
+function MobileMenu({ onLogout }) {
+    let navigate = useNavigate();
     return (
         <div id="mobileMenu">
             <ul className={"mobileMenu__list card"}>
                 <li
                     className={"mobileMenu__list__item"}
-                    onClick={() => changePage("HOMEPAGE")}
+                    onClick={() => navigate("/home")}
                 >
                     Home
                 </li>
                 <li
                     className={"mobileMenu__list__item"}
-                    onClick={() => changePage("INVOICES")}
+                    onClick={() => navigate("/invoices")}
                 >
                     Invoices
                 </li>
                 <li
                     className={"mobileMenu__list__item"}
-                    onClick={() => changePage("CONTACTS")}
+                    onClick={() => navigate("/contacts")}
                 >
                     Contacts
                 </li>
                 <li
                     className={"mobileMenu__list__item"}
-                    onClick={() => changePage("COMPANIES")}
+                    onClick={() => navigate("/companies")}
                 >
                     Companies
                 </li>

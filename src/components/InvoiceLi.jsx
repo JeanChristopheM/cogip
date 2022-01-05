@@ -1,4 +1,7 @@
-function InvoiceLi({ invoice, companies, setPage, setInvoiceId }) {
+import { useNavigate } from "react-router-dom";
+
+function InvoiceLi({ invoice, companies, setInvoiceId }) {
+    let navigate = useNavigate();
     let company = companies.find((company) => company.id === invoice.company);
     let arrow = company.status === "Client" ? "down" : "up";
     let year = invoice.received.slice(0, 4);
@@ -13,7 +16,7 @@ function InvoiceLi({ invoice, companies, setPage, setInvoiceId }) {
             <span
                 className="invoiceNumber"
                 onClick={() => {
-                    setPage("INVOICE");
+                    navigate(`/invoice/${invoice.id}`);
                     setInvoiceId(invoice.id);
                 }}
             >
