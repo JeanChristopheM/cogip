@@ -11,6 +11,9 @@ function MobileMenu({ onLogout }) {
                 >
                     Home
                 </li>
+                <li style={{ cursor: "initial", pointerEvents: "none" }}>
+                    ___
+                </li>
                 <li
                     className={"mobileMenu__list__item"}
                     onClick={() => navigate("/invoices")}
