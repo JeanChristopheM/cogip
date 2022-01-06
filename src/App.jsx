@@ -11,7 +11,9 @@ import Login from "./components/Login.jsx";
 import Homepage from "./components/Homepage.jsx";
 import MobileMenu from "./components/MobileMenu.jsx";
 import Companies from "./components/Companies.jsx";
+import Company from "./components/Company.jsx";
 import Contacts from "./components/Contacts.jsx";
+import Contact from "./components/Contact.jsx";
 import Invoices from "./components/Invoices.jsx";
 import Invoice from "./components/Invoice.jsx";
 import FourOfour from "./components/FourOfour.jsx";
@@ -84,7 +86,9 @@ function App() {
         "login",
         "home",
         "companies",
+        "company",
         "contacts",
+        "contact",
         "invoices",
         "invoice",
     ];
@@ -122,6 +126,15 @@ function App() {
                     }
                 />
                 <Route
+                    path="/company/:companyId"
+                    element={
+                        <PrivateRoute
+                            isAuth={isAuth}
+                            element={<Company companies={companies} />}
+                        />
+                    }
+                />
+                <Route
                     path="/invoices"
                     element={
                         <PrivateRoute
@@ -136,7 +149,7 @@ function App() {
                     }
                 />
                 <Route
-                    path="invoice/:invoiceId"
+                    path="/invoice/:invoiceId"
                     element={
                         <PrivateRoute
                             isAuth={isAuth}
@@ -161,6 +174,15 @@ function App() {
                                     companies={companies}
                                 />
                             }
+                        />
+                    }
+                />
+                <Route
+                    path="/contact/:contactId"
+                    element={
+                        <PrivateRoute
+                            isAuth={isAuth}
+                            element={<Contact contacts={contacts} />}
                         />
                     }
                 />

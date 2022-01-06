@@ -12,7 +12,14 @@ function InvoiceLi({ invoice, companies }) {
             <span className="svg">
                 <i className={`fas fa-arrow-${arrow}`}></i>
             </span>
-            <span className="invoiceName">{company.name}</span>
+            <span
+                className="invoiceName"
+                onClick={() => {
+                    navigate(`/company/${company.id}`);
+                }}
+            >
+                {company.name}
+            </span>
             <span
                 className="invoiceNumber"
                 onClick={() => {

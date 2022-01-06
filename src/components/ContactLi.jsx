@@ -1,4 +1,7 @@
+import { useNavigate } from "react-router-dom";
+
 function ContactLi({ contact, companies }) {
+    const navigate = useNavigate();
     let company = companies.find(
         (company) => company.id == contact.contactcompany
     );
@@ -7,11 +10,23 @@ function ContactLi({ contact, companies }) {
             <span className="svg">
                 <i className="fas fa-user"></i>
             </span>
-            <span className="contactName">
+            <span
+                className="contactName"
+                onClick={() => {
+                    navigate(`/contact/${contact.id}`);
+                }}
+            >
                 {contact.firstname + contact.lastname}
             </span>
             <span className="contactMail">{contact.email}</span>
-            <span className="contactCompany">{company.name}</span>
+            <span
+                className="contactCompany"
+                onClick={() => {
+                    navigate(`/company/${company.id}`);
+                }}
+            >
+                {company.name}
+            </span>
         </li>
     );
 }

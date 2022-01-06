@@ -66,45 +66,6 @@ function InvoiceControls({
             </button>
         </div>
     );
-    return (
-        <div className={"invoiceControls"}>
-            {isDeleting ? "" : ""}
-            {isModifying ? (
-                <>
-                    <button type="button">Submit</button>
-                    <button
-                        type="button"
-                        onClick={() => {
-                            setIsModifying(false);
-                            setSelectedCompany(originalCompany);
-                            setSelectedContact(originalContact);
-                        }}
-                    >
-                        Cancel
-                    </button>
-                </>
-            ) : (
-                <>
-                    <button
-                        type="button"
-                        onClick={() => {
-                            setIsModifying(true);
-                        }}
-                    >
-                        Modify
-                    </button>
-                    <button
-                        type="button"
-                        onClick={() => {
-                            setIsDeleting(true);
-                        }}
-                    >
-                        Delete
-                    </button>
-                </>
-            )}
-        </div>
-    );
 }
 
 export default InvoiceControls;

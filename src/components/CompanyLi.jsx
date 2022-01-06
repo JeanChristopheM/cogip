@@ -1,10 +1,20 @@
+import { useNavigate } from "react-router-dom";
+
 function CompanyLi({ company }) {
+    let navigate = useNavigate();
     return (
         <li>
             <span className="svg">
                 <i className="fas fa-building"></i>
             </span>
-            <span className="companyName">{company.name}</span>
+            <span
+                className="companyName"
+                onClick={() => {
+                    navigate(`/company/${company.id}`);
+                }}
+            >
+                {company.name}
+            </span>
             <span className="companyType">{company.status}</span>
         </li>
     );

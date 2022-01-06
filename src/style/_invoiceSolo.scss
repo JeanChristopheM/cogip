@@ -1,4 +1,5 @@
-.invoiceGrid {
+.invoiceGrid,
+.companyGrid {
     display: grid;
     grid-template-columns: 1fr 1fr;
     margin-top: 1rem;
@@ -9,7 +10,8 @@
         text-align: right;
     }
 }
-.invoiceControls {
+.invoiceControls,
+.companyControls {
     margin-top: 1.5rem;
     display: flex;
     justify-content: space-between;
