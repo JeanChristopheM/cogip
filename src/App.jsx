@@ -1,6 +1,6 @@
 /* Functions */
 import { useState, useEffect, useLayoutEffect } from "react";
-import { getCompanies, getInvoices, getContacts } from "./logic/getData";
+import { getData } from "./logic/getData";
 import { Routes, Route, useNavigate, useLocation } from "react-router-dom";
 /* Components */
 import Header from "./components/Header.jsx";
@@ -44,9 +44,9 @@ function App() {
     const remote = 1;
     /* Loading data function */
     const loadData = async () => {
-        setCompanies(await getCompanies(companiesSrc[remote]));
-        setInvoices(await getInvoices(invoicesSrc[remote]));
-        setContacts(await getContacts(contactsSrc[remote]));
+        setCompanies(await getData(companiesSrc[remote]));
+        setInvoices(await getData(invoicesSrc[remote]));
+        setContacts(await getData(contactsSrc[remote]));
     };
     /* If cookie, set the authentification to cache and redirect to homepage */
     useEffect(() => {

@@ -32,7 +32,7 @@ function Homepage({
             <section className="contacts card">
                 <h2>Contacts</h2>
                 <ul>
-                    {contacts.map((entry) => {
+                    {contacts.slice(0, 5).map((entry) => {
                         return (
                             <ContactLi
                                 contact={entry}
@@ -46,7 +46,7 @@ function Homepage({
             <section className="companies card">
                 <h2>Companies</h2>
                 <ul>
-                    {companies.map((entry) => {
+                    {companies.slice(0, 5).map((entry) => {
                         return <CompanyLi company={entry} key={entry.id} />;
                     })}
                 </ul>
