@@ -40,15 +40,12 @@ function App() {
         }
     }, []);
     /* If we logged in -> Load the data */
-    const url = useLocation();
-    useEffect(() => {
-        console.log(url);
-        console.log(isAuth);
-        if (isAuth) {
+    useLayoutEffect(() => {
+        if (isAuth && !isLoaded) {
             loadData();
             navigate("/home");
         }
-    }, [isAuth]);
+    }, [isAuth, isLoaded]);
 
     /* Check if all data is loaded */
     useEffect(() => {
@@ -140,7 +137,18 @@ function App() {
                 />
                 <Route
                     path="invoice/:invoiceId"
-                    element={<Invoice invoices={invoices} />}
+                    element={
+                        <PrivateRoute
+                            isAuth={isAuth}
+                            element={
+                                <Invoice
+                                    invoices={invoices}
+                                    companies={companies}
+                                    contacts={contacts}
+                                />
+                            }
+                        />
+                    }
                 />
                 <Route
                     path="/contacts"
@@ -151,6 +159,22 @@ function App() {
                                 <Contacts
                                     data={contacts}
                                     companies={companies}
+                                />
+                            }
+                        />
+                    }
+                />
+                <Route
+                    path="/"
+                    element={
+                        <PrivateRoute
+                            isAuth={isAuth}
+                            element={
+                                <Homepage
+                                    userdata={isAuth}
+                                    companies={companies}
+                                    contacts={contacts}
+                                    invoices={invoices}
                                 />
                             }
                         />
