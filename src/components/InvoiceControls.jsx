@@ -15,7 +15,14 @@ function InvoiceControls({
     if (isModifying) {
         return (
             <div className={"invoiceControls"}>
-                <button type="button">Submit</button>
+                <button
+                    type="button"
+                    onClick={() => {
+                        console.log("Submitting changes");
+                    }}
+                >
+                    Submit
+                </button>
                 <button
                     type="button"
                     onClick={() => {

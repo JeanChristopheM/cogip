@@ -27,11 +27,26 @@ function App() {
     const [invoices, setInvoices] = useState([]);
     const [contacts, setContacts] = useState([]);
 
+    /* LINKS TO DATA */
+    const companiesSrc = [
+        "/companies.json",
+        "https://csharpproject.somee.com/api/company",
+    ];
+    const contactsSrc = [
+        "/contacts.json",
+        "https://csharpproject.somee.com/api/contact",
+    ];
+    const invoicesSrc = [
+        "/invoices.json",
+        "https://csharpproject.somee.com/api/invoice",
+    ];
+    const local = 0;
+    const remote = 1;
     /* Loading data function */
     const loadData = async () => {
-        setCompanies(await getCompanies());
-        setInvoices(await getInvoices());
-        setContacts(await getContacts());
+        setCompanies(await getCompanies(companiesSrc[remote]));
+        setInvoices(await getInvoices(invoicesSrc[remote]));
+        setContacts(await getContacts(contactsSrc[remote]));
     };
     /* If cookie, set the authentification to cache and redirect to homepage */
     useEffect(() => {
