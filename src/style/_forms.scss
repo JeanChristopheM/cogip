@@ -1,0 +1,14 @@
+.invoiceForm,
+.contactForm,
+.companyForm {
+  ul {
+    margin-top: 1rem;
+  }
+  li {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    & > *:last-child {
+      text-align: right;
+    }
+  }
+}
