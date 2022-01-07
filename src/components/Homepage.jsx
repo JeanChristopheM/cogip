@@ -20,7 +20,13 @@ function Homepage({
     <main className="homepage">
       <section className="invoices card">
         <h2>
-          Invoices
+          <span
+            onClick={() => {
+              navigate("/invoices");
+            }}
+          >
+            Invoices
+          </span>
           <i
             className="fas fa-plus-square plusButton"
             id="invoiceAdd"
@@ -43,7 +49,13 @@ function Homepage({
       </section>
       <section className="contacts card">
         <h2>
-          Contacts
+          <span
+            onClick={() => {
+              navigate("/contacts");
+            }}
+          >
+            Contacts
+          </span>
           <i
             className="fas fa-plus-square plusButton"
             id="contactAdd"
@@ -60,7 +72,13 @@ function Homepage({
       </section>
       <section className="companies card">
         <h2>
-          Companies
+          <span
+            onClick={() => {
+              navigate("/companies");
+            }}
+          >
+            Companies
+          </span>
           <i
             className="fas fa-plus-square plusButton"
             id="companyAdd"
