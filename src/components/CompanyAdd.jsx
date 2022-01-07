@@ -1,7 +1,15 @@
+import postData from "../logic/postData";
+
 function CompanyAdd() {
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log("submitting form");
+    const formData = {
+      name: e.target.name.value,
+      vat: e.target.vat.value,
+      status: e.target.status.value,
+    };
+    postData("https://csharpproject.somee.com/api/company", formData);
   };
   return (
     <main>

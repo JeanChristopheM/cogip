@@ -1,6 +1,11 @@
 import { useState } from "react";
 
-function CompanySelector({ companies, handleCompanyChange, currentCompany }) {
+function CompanySelector({
+  companies,
+  handleCompanyChange,
+  currentCompany,
+  name,
+}) {
   return (
     <select
       onChange={(e) => {
@@ -10,6 +15,7 @@ function CompanySelector({ companies, handleCompanyChange, currentCompany }) {
         handleCompanyChange(company);
       }}
       defaultValue={currentCompany.name}
+      name={name}
     >
       <option value="">Select a company</option>
       {companies.map((company) => {

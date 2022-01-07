@@ -1,12 +1,27 @@
+import { useState } from "react";
+import postData from "../logic/postData";
 import CompanySelector from "./CompanySelector";
 
 function ContactAdd({ companies }) {
+  const [selectedCompany, setSelectedCompany] = useState("");
+
   const handleSubmit = (e) => {
+    e.preventDefault();
     console.log("Submitting form");
+    const formData = {
+      firstname: e.target.firstname.value,
+      lastname: e.target.lastname.value,
+      contactcompany: selectedCompany.id.toString(),
+      email: e.target.email.value,
+      phonenumber: e.target.phonenumber.value,
+    };
+    postData("https://csharpproject.somee.com/api/contact", formData);
   };
+
   const handleCompanyChange = (value) => {
-    console.log(value);
+    setSelectedCompany(value);
   };
+
   return (
     <main>
       <div className="card">
@@ -15,7 +30,7 @@ function ContactAdd({ companies }) {
           <ul>
             <li>
               <span>Firstname : </span>
-              <input name="first" type="text" placeholder="Ex : Johnny" />
+              <input name="firstname" type="text" placeholder="Ex : Johnny" />
             </li>
             <li>
               <span>Lastname : </span>
@@ -23,7 +38,12 @@ function ContactAdd({ companies }) {
             </li>
             <li>
               <span>Company : </span>
-              <CompanySelector companies={companies} currentCompany={""} />
+              <CompanySelector
+                companies={companies}
+                currentCompany={""}
+                handleCompanyChange={handleCompanyChange}
+                name={"company"}
+              />
             </li>
             <li>
               <span>Email : </span>
