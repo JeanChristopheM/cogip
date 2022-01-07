@@ -4,14 +4,31 @@ import ContactSelector from "./ContactSelector";
 
 function InvoiceAdd({ contacts, companies }) {
   const [selectedCompany, setSelectedCompany] = useState("");
+  const [selectedContact, setSelectedContact] = useState("");
 
   const handleCompanyChange = (value) => {
     setSelectedCompany(value);
   };
-  const handleContactChange = (value) => {};
+  const handleContactChange = (value) => {
+    setSelectedContact(value);
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log("submitting form");
+
+    const contact = contacts.find(
+      (el) => `${el.firstname} ${el.lastname}` == selectedContact
+    );
+    const formData = {
+      reference: "Idunno",
+      amount: "Idunno",
+      company: selectedCompany.id.toString(),
+      contact: contact.id.toString(),
+      received: e.target.date.value,
+      //paid: e.target.paid.value,
+    };
+    console.log(formData);
   };
   return (
     <main>
@@ -35,15 +52,24 @@ function InvoiceAdd({ contacts, companies }) {
                 selectedCompany={selectedCompany}
                 handleContactChange={handleContactChange}
                 currentContact={{ name: "" }}
+                name={"company"}
               />
             </li>
             <li>
-              <span>Status : </span>
-              <select name="status">
-                <option value="">Select a status</option>
-                <option value="Supplier">Supplier</option>
-                <option value="Client">Client</option>
-              </select>
+              <span>Date of reception : </span>
+              <input type="date" name="date" />
+            </li>
+            <li>
+              <span>Paid status : </span>
+              <label htmlFor="paid" className="switchToggle">
+                <input
+                  type="checkbox"
+                  name="paid"
+                  id="paid"
+                  className="switchCheck"
+                />
+                <span className="slider"></span>
+              </label>
             </li>
           </ul>
           <button>Submit</button>
