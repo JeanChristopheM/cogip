@@ -4,7 +4,10 @@ function CompanySelector({ companies, handleCompanyChange, currentCompany }) {
   return (
     <select
       onChange={(e) => {
-        handleCompanyChange(companies.find((el) => el.name == e.target.value));
+        let company = companies.find((el) => el.name == e.target.value)
+          ? companies.find((el) => el.name == e.target.value)
+          : "";
+        handleCompanyChange(company);
       }}
       defaultValue={currentCompany.name}
     >

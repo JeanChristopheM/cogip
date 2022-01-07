@@ -11,9 +11,13 @@ function ContactSelector({
       }}
       defaultValue={`${currentContact.firstname} ${currentContact.lastname}`}
     >
-      <option value="">Select a contact</option>
+      <option value="">
+        {selectedCompany == "" ? "Select a company first" : "Select a contact"}
+      </option>
       {contacts.map((contact) => {
-        if (selectedCompany.id == contact.contactcompany) {
+        if (selectedCompany == "") {
+          return;
+        } else if (selectedCompany.id == contact.contactcompany) {
           return (
             <option
               value={`${contact.firstname} ${contact.lastname}`}
