@@ -94,6 +94,7 @@ input[type="number"] {
       -webkit-transition: 0.4s;
       transition: 0.4s;
       border-radius: 1rem;
+      border: 4px solid $clr-secondary-low;
     }
   }
   input:checked + .slider {
@@ -102,5 +103,6 @@ input[type="number"] {
   }
   input:checked + .slider:before {
     transform: translateX(3rem);
+    border: 4px solid $clr-secondary;
   }
 }
