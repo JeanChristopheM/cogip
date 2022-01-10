@@ -10,6 +10,9 @@
     & > *:last-child {
       text-align: right;
     }
+    .switchToggle {
+      justify-self: right;
+    }
   }
   li + li {
     margin-top: 0.5rem;

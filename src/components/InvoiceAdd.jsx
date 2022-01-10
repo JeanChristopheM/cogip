@@ -1,4 +1,6 @@
 import { useState } from "react";
+import postData from "../logic/postData";
+
 import CompanySelector from "./CompanySelector";
 import ContactSelector from "./ContactSelector";
 
@@ -21,14 +23,15 @@ function InvoiceAdd({ contacts, companies }) {
       (el) => `${el.firstname} ${el.lastname}` == selectedContact
     );
     const formData = {
-      reference: "Idunno",
-      amount: "Idunno",
+      reference: e.target.reference.value,
+      amount: e.target.amount.value,
       company: selectedCompany.id.toString(),
       contact: contact.id.toString(),
       received: e.target.date.value,
-      //paid: e.target.paid.value,
+      paid: e.target.paid.checked,
     };
     console.log(formData);
+    //postData("https://csharpproject.somee.com/api/Invoice", formData);
   };
   return (
     <main>
@@ -36,6 +39,10 @@ function InvoiceAdd({ contacts, companies }) {
         <h2>Fill up the form</h2>
         <form className="invoiceForm" onSubmit={handleSubmit}>
           <ul>
+            <li>
+              <span>Reference : </span>
+              <input type="text" name="reference" />
+            </li>
             <li>
               <span>Company : </span>
               <CompanySelector
@@ -58,6 +65,10 @@ function InvoiceAdd({ contacts, companies }) {
             <li>
               <span>Date of reception : </span>
               <input type="date" name="date" />
+            </li>
+            <li>
+              <span>Amount : </span>
+              <input type="number" name="amount" />
             </li>
             <li>
               <span>Paid status : </span>
