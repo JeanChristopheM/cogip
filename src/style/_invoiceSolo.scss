@@ -1,18 +1,20 @@
 .invoiceGrid,
-.companyGrid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    margin-top: 1rem;
-    & > * {
-        margin-top: 0.3rem;
-    }
-    & > *:nth-child(even) {
-        text-align: right;
-    }
+.companyGrid,
+.contactGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  margin-top: 1rem;
+  & > * {
+    margin-top: 0.3rem;
+  }
+  & > *:nth-child(even) {
+    text-align: right;
+  }
 }
 .invoiceControls,
-.companyControls {
-    margin-top: 1.5rem;
-    display: flex;
-    justify-content: space-between;
+.companyControls,
+.contactControls {
+  margin-top: 1.5rem;
+  display: flex;
+  justify-content: space-between;
 }
