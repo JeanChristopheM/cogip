@@ -1,5 +1,5 @@
 import { useState, useRef } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import InvoiceControls from "./InvoiceControls.jsx";
 import CompanySelector from "./CompanySelector.jsx";
 import ContactSelector from "./ContactSelector.jsx";
@@ -8,6 +8,7 @@ import { invoiceVerify } from "../logic/formValidation.js";
 
 function Invoice({ invoices, companies, contacts, setIsLoaded }) {
   let params = useParams();
+  const navigate = useNavigate();
   const invoice = invoices.find((el) => el.id == params.invoiceId);
   const company = companies.find((el) => el.id == invoice.company);
   const contact = contacts.find((el) => el.id == invoice.contact);
@@ -94,7 +95,15 @@ function Invoice({ invoices, companies, contacts, setIsLoaded }) {
               currentCompany={company}
             />
           ) : (
-            <span id="invoiceCompany">{company.name}</span>
+            <span
+              id="invoiceCompany"
+              onClick={() => {
+                navigate(`/company/${company.id}`);
+              }}
+              style={{ cursor: "pointer" }}
+            >
+              {company.name}
+            </span>
           )}
 
           <span>Contact : </span>
@@ -107,7 +116,13 @@ function Invoice({ invoices, companies, contacts, setIsLoaded }) {
               handleContactChange={handleContactChange}
             />
           ) : (
-            <span id="invoiceContact">{`${contact.firstname} ${contact.lastname}`}</span>
+            <span
+              id="invoiceContact"
+              onClick={() => {
+                navigate(`/contact/${contact.id}`);
+              }}
+              style={{ cursor: "pointer" }}
+            >{`${contact.firstname} ${contact.lastname}`}</span>
           )}
 
           <span>Date : </span>

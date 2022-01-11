@@ -26,6 +26,7 @@ function Homepage({
             onClick={() => {
               navigate("/invoices");
             }}
+            style={{ cursor: "pointer" }}
           >
             Invoices
           </span>
@@ -36,17 +37,21 @@ function Homepage({
           ></i>
         </h2>
         <ul>
-          {invoices.slice(0, 5).map((entry) => {
-            return (
-              <InvoiceLi
-                invoice={entry}
-                key={entry.id}
-                companies={companies}
-                setPage={setPage}
-                setInvoiceId={setInvoiceId}
-              />
-            );
-          })}
+          {invoices.length > 0 ? (
+            invoices.slice(0, 5).map((entry) => {
+              return (
+                <InvoiceLi
+                  invoice={entry}
+                  key={entry.id}
+                  companies={companies}
+                  setPage={setPage}
+                  setInvoiceId={setInvoiceId}
+                />
+              );
+            })
+          ) : (
+            <li>{"Loading"}</li>
+          )}
         </ul>
       </section>
       <section className="contacts card">
@@ -55,6 +60,7 @@ function Homepage({
             onClick={() => {
               navigate("/contacts");
             }}
+            style={{ cursor: "pointer" }}
           >
             Contacts
           </span>
@@ -65,11 +71,19 @@ function Homepage({
           ></i>
         </h2>
         <ul>
-          {contacts.slice(0, 5).map((entry) => {
-            return (
-              <ContactLi contact={entry} key={entry.id} companies={companies} />
-            );
-          })}
+          {contacts.length > 0 ? (
+            contacts.slice(0, 5).map((entry) => {
+              return (
+                <ContactLi
+                  contact={entry}
+                  key={entry.id}
+                  companies={companies}
+                />
+              );
+            })
+          ) : (
+            <li>{"Loading"}</li>
+          )}
         </ul>
       </section>
       <section className="companies card">
@@ -78,6 +92,7 @@ function Homepage({
             onClick={() => {
               navigate("/companies");
             }}
+            style={{ cursor: "pointer" }}
           >
             Companies
           </span>
@@ -88,9 +103,13 @@ function Homepage({
           ></i>
         </h2>
         <ul>
-          {companies.slice(0, 5).map((entry) => {
-            return <CompanyLi company={entry} key={entry.id} />;
-          })}
+          {companies.length > 0 ? (
+            companies.slice(0, 5).map((entry) => {
+              return <CompanyLi company={entry} key={entry.id} />;
+            })
+          ) : (
+            <li>{"Loading"}</li>
+          )}
         </ul>
       </section>
       <section className="chart card">

@@ -1,11 +1,12 @@
 import { useState, useRef } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { companyVerify } from "../logic/formValidation.js";
 import putData from "../logic/putData";
 import CompanyControls from "./CompanyControls.jsx";
 
-function Company({ companies, setIsLoaded }) {
+function Company({ companies, contacts, setIsLoaded }) {
   let params = useParams();
+  const navigate = useNavigate();
   let company = companies.find((el) => el.id == params.companyId);
 
   const [isModifying, setIsModifying] = useState(false);
@@ -76,6 +77,24 @@ function Company({ companies, setIsLoaded }) {
           ) : (
             <span id="companyStatus">{company.status}</span>
           )}
+          <span>___</span>
+          <span>___</span>
+          <span>Contacts : </span>
+          <ul>
+            {contacts.map((el) => {
+              if (el.contactcompany == company.id) {
+                return (
+                  <li
+                    key={el.id}
+                    onClick={() => {
+                      navigate(`/contact/${el.id}`);
+                    }}
+                    style={{ cursor: "pointer" }}
+                  >{`${el.firstname} ${el.lastname}`}</li>
+                );
+              }
+            })}
+          </ul>
         </div>
         <CompanyControls
           isModifying={isModifying}

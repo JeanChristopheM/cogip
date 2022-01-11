@@ -1,5 +1,5 @@
 import { useState, useRef } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import ContactControls from "./ContactControls.jsx";
 import CompanySelector from "./CompanySelector";
 import putData from "../logic/putData";
@@ -7,6 +7,7 @@ import { contactVerify } from "../logic/formValidation.js";
 
 function Contact({ contacts, companies, setIsLoaded }) {
   const params = useParams();
+  const navigate = useNavigate();
   const contact = contacts.find((el) => el.id == params.contactId);
   const company = companies.find((el) => el.id == contact.contactcompany);
 
@@ -84,7 +85,15 @@ function Contact({ contacts, companies, setIsLoaded }) {
               handleCompanyChange={handleCompanyChange}
             />
           ) : (
-            <span id="contactCompany">{company.name}</span>
+            <span
+              id="contactCompany"
+              onClick={() => {
+                navigate(`/company/${company.id}`);
+              }}
+              style={{ cursor: "pointer" }}
+            >
+              {company.name}
+            </span>
           )}
           <span>Email : </span>
           {isModifying ? (

@@ -154,6 +154,7 @@ function App() {
                   companies={companies}
                   setIsLoaded={setIsLoaded}
                   getAllData={loadData}
+                  contacts={contacts}
                 />
               }
             />
