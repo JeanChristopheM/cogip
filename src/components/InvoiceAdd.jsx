@@ -21,6 +21,7 @@ function InvoiceAdd({ contacts, companies, setIsLoaded }) {
     const contact = contacts.find(
       (el) => `${el.firstname} ${el.lastname}` == selectedContact
     );
+    /* Instantiate object with form data */
     const formData = {
       reference: e.target.reference.value,
       amount: e.target.amount.value,
@@ -29,12 +30,15 @@ function InvoiceAdd({ contacts, companies, setIsLoaded }) {
       received: e.target.date.value,
       paid: e.target.paid.checked,
     };
+    /* Data verification */
     let check = invoiceVerify(formData);
+    /* Posting data if OK */
     if (check.ok) {
       console.log(formData);
       await postData("https://csharpproject.somee.com/api/Invoice", formData);
       setIsLoaded(false);
     } else {
+      /* Handling Errors */
       const issues = Object.keys(check);
       for (let issue of issues) {
         if (issue !== "ok") alert(check[issue]);
