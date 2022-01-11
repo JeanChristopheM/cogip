@@ -2,6 +2,8 @@ import React from "react";
 import CompanyLi from "./CompanyLi.jsx";
 import ContactLi from "./ContactLi.jsx";
 import InvoiceLi from "./InvoiceLi.jsx";
+import Chart from "./Chart.jsx";
+
 import { useNavigate } from "react-router-dom";
 
 function Homepage({
@@ -90,6 +92,12 @@ function Homepage({
             return <CompanyLi company={entry} key={entry.id} />;
           })}
         </ul>
+      </section>
+      <section className="chart card">
+        <h2>Payement Status</h2>
+        <div style={{ position: "relative" }}>
+          <Chart invoices={invoices} />
+        </div>
       </section>
     </main>
   );
