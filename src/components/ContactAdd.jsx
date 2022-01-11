@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { contactVerify } from "../logic/formValidation";
 import postData from "../logic/postData";
 import CompanySelector from "./CompanySelector";
 
@@ -7,7 +8,6 @@ function ContactAdd({ companies }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("Submitting form");
     const formData = {
       firstname: e.target.firstname.value,
       lastname: e.target.lastname.value,
@@ -15,7 +15,16 @@ function ContactAdd({ companies }) {
       email: e.target.email.value,
       phonenumber: e.target.phonenumber.value,
     };
-    postData("https://csharpproject.somee.com/api/contact", formData);
+    let check = contactVerify(formData);
+    if (check.ok) {
+      console.log(formData);
+      //postData("https://csharpproject.somee.com/api/contact", formData);
+    } else {
+      const issues = Object.keys(check);
+      for (let issue of issues) {
+        if (issue !== "ok") alert(check[issue]);
+      }
+    }
   };
 
   const handleCompanyChange = (value) => {
@@ -30,11 +39,21 @@ function ContactAdd({ companies }) {
           <ul>
             <li>
               <span>Firstname : </span>
-              <input name="firstname" type="text" placeholder="Ex : Johnny" />
+              <input
+                name="firstname"
+                type="text"
+                placeholder="Ex : Johnny"
+                required
+              />
             </li>
             <li>
               <span>Lastname : </span>
-              <input name="lastname" type="text" placeholder="Ex : Begood" />
+              <input
+                name="lastname"
+                type="text"
+                placeholder="Ex : Begood"
+                required
+              />
             </li>
             <li>
               <span>Company : </span>
@@ -51,6 +70,7 @@ function ContactAdd({ companies }) {
                 name="email"
                 type="text"
                 placeholder="Ex : johnny.begood@yahoo.fr"
+                required
               />
             </li>
             <li>
@@ -59,6 +79,7 @@ function ContactAdd({ companies }) {
                 name="phonenumber"
                 type="text"
                 placeholder="Ex : 0487272320"
+                required
               />
             </li>
           </ul>

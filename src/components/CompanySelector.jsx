@@ -14,6 +14,7 @@ function CompanySelector({
       }}
       defaultValue={currentCompany.name}
       name={name}
+      required
     >
       <option value="">Select a company</option>
       {companies.map((company) => {

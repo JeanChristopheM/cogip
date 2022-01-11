@@ -1,5 +1,6 @@
 import { useState } from "react";
 import postData from "../logic/postData";
+import { invoiceVerify } from "../logic/formValidation";
 
 import CompanySelector from "./CompanySelector";
 import ContactSelector from "./ContactSelector";
@@ -17,8 +18,6 @@ function InvoiceAdd({ contacts, companies }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("submitting form");
-
     const contact = contacts.find(
       (el) => `${el.firstname} ${el.lastname}` == selectedContact
     );
@@ -30,8 +29,16 @@ function InvoiceAdd({ contacts, companies }) {
       received: e.target.date.value,
       paid: e.target.paid.checked,
     };
-    console.log(formData);
-    //postData("https://csharpproject.somee.com/api/Invoice", formData);
+    let check = invoiceVerify(formData);
+    if (check.ok) {
+      console.log(formData);
+      //postData("https://csharpproject.somee.com/api/Invoice", formData);
+    } else {
+      const issues = Object.keys(check);
+      for (let issue of issues) {
+        if (issue !== "ok") alert(check[issue]);
+      }
+    }
   };
   return (
     <main>
@@ -41,7 +48,13 @@ function InvoiceAdd({ contacts, companies }) {
           <ul>
             <li>
               <span>Reference : </span>
-              <input type="text" name="reference" />
+              <input
+                type="text"
+                name="reference"
+                minLength="3"
+                maxLength="45"
+                required
+              />
             </li>
             <li>
               <span>Company : </span>
@@ -64,11 +77,11 @@ function InvoiceAdd({ contacts, companies }) {
             </li>
             <li>
               <span>Date of reception : </span>
-              <input type="date" name="date" />
+              <input type="date" name="date" required />
             </li>
             <li>
               <span>Amount : </span>
-              <input type="number" name="amount" />
+              <input type="number" name="amount" required />
             </li>
             <li>
               <span>Paid status : </span>

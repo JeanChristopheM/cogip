@@ -1,15 +1,24 @@
 import postData from "../logic/postData";
+import { companyVerify } from "../logic/formValidation";
 
 function CompanyAdd() {
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("submitting form");
     const formData = {
       name: e.target.name.value,
       vat: e.target.vat.value,
       status: e.target.status.value,
     };
-    postData("https://csharpproject.somee.com/api/company", formData);
+    let check = companyVerify(formData);
+    if (check.ok) {
+      console.log(formData);
+      //postData("https://csharpproject.somee.com/api/company", formData);
+    } else {
+      const issues = Object.keys(check);
+      for (let issue of issues) {
+        if (issue !== "ok") alert(check[issue]);
+      }
+    }
   };
   return (
     <main>
@@ -19,15 +28,25 @@ function CompanyAdd() {
           <ul>
             <li>
               <span>Name : </span>
-              <input name="name" type="text" placeholder="Ex : BeCode" />
+              <input
+                name="name"
+                type="text"
+                placeholder="Ex : BeCode"
+                required
+              />
             </li>
             <li>
               <span>VAT : </span>
-              <input name="vat" type="text" placeholder="Ex : 1235431658" />
+              <input
+                name="vat"
+                type="text"
+                placeholder="Ex : 1235431658"
+                required
+              />
             </li>
             <li>
               <span>Status : </span>
-              <select name="status">
+              <select name="status" required>
                 <option value="">Select a status</option>
                 <option value="Supplier">Supplier</option>
                 <option value="Client">Client</option>
