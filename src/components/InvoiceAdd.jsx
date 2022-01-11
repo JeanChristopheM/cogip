@@ -5,7 +5,7 @@ import { invoiceVerify } from "../logic/formValidation";
 import CompanySelector from "./CompanySelector";
 import ContactSelector from "./ContactSelector";
 
-function InvoiceAdd({ contacts, companies }) {
+function InvoiceAdd({ contacts, companies, setIsLoaded }) {
   const [selectedCompany, setSelectedCompany] = useState("");
   const [selectedContact, setSelectedContact] = useState("");
 
@@ -16,7 +16,7 @@ function InvoiceAdd({ contacts, companies }) {
     setSelectedContact(value);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const contact = contacts.find(
       (el) => `${el.firstname} ${el.lastname}` == selectedContact
@@ -32,7 +32,8 @@ function InvoiceAdd({ contacts, companies }) {
     let check = invoiceVerify(formData);
     if (check.ok) {
       console.log(formData);
-      //postData("https://csharpproject.somee.com/api/Invoice", formData);
+      await postData("https://csharpproject.somee.com/api/Invoice", formData);
+      setIsLoaded(false);
     } else {
       const issues = Object.keys(check);
       for (let issue of issues) {

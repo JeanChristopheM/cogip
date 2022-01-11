@@ -149,7 +149,13 @@ function App() {
           element={
             <PrivateRoute
               isAuth={isAuth}
-              element={<Company companies={companies} />}
+              element={
+                <Company
+                  companies={companies}
+                  setIsLoaded={setIsLoaded}
+                  getAllData={loadData}
+                />
+              }
             />
           }
         />
@@ -172,6 +178,7 @@ function App() {
                   invoices={invoices}
                   companies={companies}
                   contacts={contacts}
+                  setIsLoaded={setIsLoaded}
                 />
               }
             />
@@ -191,7 +198,13 @@ function App() {
           element={
             <PrivateRoute
               isAuth={isAuth}
-              element={<Contact contacts={contacts} companies={companies} />}
+              element={
+                <Contact
+                  contacts={contacts}
+                  companies={companies}
+                  setIsLoaded={setIsLoaded}
+                />
+              }
             />
           }
         />
@@ -200,7 +213,9 @@ function App() {
           element={
             <PrivateRoute
               isAuth={isAuth}
-              element={<ContactAdd companies={companies} />}
+              element={
+                <ContactAdd companies={companies} setIsLoaded={setIsLoaded} />
+              }
             />
           }
         />
@@ -209,13 +224,24 @@ function App() {
           element={
             <PrivateRoute
               isAuth={isAuth}
-              element={<InvoiceAdd companies={companies} contacts={contacts} />}
+              element={
+                <InvoiceAdd
+                  companies={companies}
+                  contacts={contacts}
+                  setIsLoaded={setIsLoaded}
+                />
+              }
             />
           }
         />
         <Route
           path="/companyAdd"
-          element={<PrivateRoute isAuth={isAuth} element={<CompanyAdd />} />}
+          element={
+            <PrivateRoute
+              isAuth={isAuth}
+              element={<CompanyAdd setIsLoaded={setIsLoaded} />}
+            />
+          }
         />
         <Route
           path="/"

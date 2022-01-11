@@ -8,17 +8,15 @@ function InvoiceControls({
   setIsDeleting,
   originalContact,
   setSelectedContact,
+  handleModif,
 }) {
   const handleDelete = () => {
     console.log("deleted");
   };
-  const handleSubmit = () => {
-    console.log("Submitting changes");
-  };
   if (isModifying) {
     return (
       <div className={"invoiceControls"}>
-        <button type="button" onClick={handleSubmit}>
+        <button type="button" onClick={handleModif}>
           Submit
         </button>
         <button

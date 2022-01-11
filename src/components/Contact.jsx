@@ -1,15 +1,50 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useParams } from "react-router-dom";
 import ContactControls from "./ContactControls.jsx";
 import CompanySelector from "./CompanySelector";
+import putData from "../logic/putData";
+import { contactVerify } from "../logic/formValidation.js";
 
-function Contact({ contacts, companies }) {
+function Contact({ contacts, companies, setIsLoaded }) {
   const params = useParams();
   const contact = contacts.find((el) => el.id == params.contactId);
   const company = companies.find((el) => el.id == contact.contactcompany);
 
+  const [selectedCompany, setSelectedCompany] = useState(company);
   const [isModifying, setIsModifying] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
+
+  const firstnameRef = useRef();
+  const lastnameRef = useRef();
+  const companyRef = useRef();
+  const emailRef = useRef();
+  const phonenumberRef = useRef();
+  const handleCompanyChange = (company) => {
+    setSelectedCompany(company);
+  };
+  const handleModif = async () => {
+    const formData = {
+      firstname: firstnameRef.current.value,
+      lastname: lastnameRef.current.value,
+      contactcompany: selectedCompany.id.toString(),
+      email: emailRef.current.value,
+      phonenumber: phonenumberRef.current.value,
+    };
+    let check = contactVerify(formData);
+    if (check.ok) {
+      console.log(formData);
+      await putData(
+        `https://csharpproject.somee.com/api/contact/${params.contactId}`,
+        formData
+      );
+      setIsLoaded(false);
+    } else {
+      const issues = Object.keys(check);
+      for (let issue of issues) {
+        if (issue !== "ok") alert(check[issue]);
+      }
+    }
+  };
 
   return (
     <main>
@@ -23,7 +58,8 @@ function Contact({ contacts, companies }) {
             <input
               type="text"
               name="contactFirstname"
-              placeholder={contact.firstname}
+              defaultValue={contact.firstname}
+              ref={firstnameRef}
             />
           ) : (
             <span id="contactFirstname">{contact.firstname}</span>
@@ -33,7 +69,8 @@ function Contact({ contacts, companies }) {
             <input
               type="text"
               name="contactLastname"
-              placeholder={contact.lastname}
+              defaultValue={contact.lastname}
+              ref={lastnameRef}
             />
           ) : (
             <span id="contactLastname">{contact.lastname}</span>
@@ -44,6 +81,7 @@ function Contact({ contacts, companies }) {
               currentCompany={company}
               companies={companies}
               name={"contactCompany"}
+              handleCompanyChange={handleCompanyChange}
             />
           ) : (
             <span id="contactCompany">{company.name}</span>
@@ -53,7 +91,8 @@ function Contact({ contacts, companies }) {
             <input
               type="text"
               name="contactEmail"
-              placeholder={contact.email}
+              defaultValue={contact.email}
+              ref={emailRef}
             />
           ) : (
             <span id="contactEmail">{contact.email}</span>
@@ -63,7 +102,8 @@ function Contact({ contacts, companies }) {
             <input
               type="number"
               name="contactPhonenumber"
-              placeholder={contact.phonenumber}
+              defaultValue={contact.phonenumber}
+              ref={phonenumberRef}
             />
           ) : (
             <span id="contactPhonenumber">{contact.phonenumber}</span>
@@ -74,6 +114,7 @@ function Contact({ contacts, companies }) {
           setIsModifying={setIsModifying}
           isDeleting={isDeleting}
           setIsDeleting={setIsDeleting}
+          handleModif={handleModif}
         />
       </div>
     </main>

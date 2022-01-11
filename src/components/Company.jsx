@@ -1,13 +1,41 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useParams } from "react-router-dom";
+import { companyVerify } from "../logic/formValidation.js";
+import putData from "../logic/putData";
 import CompanyControls from "./CompanyControls.jsx";
 
-function Company({ companies }) {
+function Company({ companies, setIsLoaded }) {
   let params = useParams();
   let company = companies.find((el) => el.id == params.companyId);
 
   const [isModifying, setIsModifying] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
+
+  const nameRef = useRef();
+  const vatRef = useRef();
+  const statusRef = useRef();
+
+  const handleModif = async () => {
+    const formData = {
+      name: nameRef.current.value,
+      vat: vatRef.current.value,
+      status: statusRef.current.value,
+    };
+    let check = companyVerify(formData);
+    if (check.ok) {
+      console.log(formData);
+      await putData(
+        `https://csharpproject.somee.com/api/company/${params.companyId}`,
+        formData
+      );
+      setIsLoaded(false);
+    } else {
+      const issues = Object.keys(check);
+      for (let issue of issues) {
+        if (issue !== "ok") alert(check[issue]);
+      }
+    }
+  };
 
   return (
     <main>
@@ -16,19 +44,31 @@ function Company({ companies }) {
         <div className="companyGrid">
           <span>Name : </span>
           {isModifying ? (
-            <input type="text" name="companyName" placeholder={company.name} />
+            <input
+              type="text"
+              name="companyName"
+              placeholder={company.name}
+              ref={nameRef}
+              required
+            />
           ) : (
             <span id="companyName">{company.name}</span>
           )}
           <span>VAT : </span>
           {isModifying ? (
-            <input type="number" name="companyVat" placeholder={company.vat} />
+            <input
+              type="number"
+              name="companyVat"
+              placeholder={company.vat}
+              ref={vatRef}
+              required
+            />
           ) : (
             <span id="companyVat">{company.vat}</span>
           )}
           <span>Status : </span>
           {isModifying ? (
-            <select name="companyStatus">
+            <select name="companyStatus" ref={statusRef} required>
               <option value="">Select a status</option>
               <option value="Supplier">Supplier</option>
               <option value="Client">Client</option>
@@ -42,6 +82,7 @@ function Company({ companies }) {
           isDeleting={isDeleting}
           setIsDeleting={setIsDeleting}
           setIsModifying={setIsModifying}
+          handleModif={handleModif}
         />
       </div>
     </main>

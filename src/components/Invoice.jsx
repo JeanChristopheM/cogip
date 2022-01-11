@@ -1,10 +1,12 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useParams } from "react-router-dom";
 import InvoiceControls from "./InvoiceControls.jsx";
 import CompanySelector from "./CompanySelector.jsx";
 import ContactSelector from "./ContactSelector.jsx";
+import putData from "../logic/putData";
+import { invoiceVerify } from "../logic/formValidation.js";
 
-function Invoice({ invoices, companies, contacts }) {
+function Invoice({ invoices, companies, contacts, setIsLoaded }) {
   let params = useParams();
   const invoice = invoices.find((el) => el.id == params.invoiceId);
   const company = companies.find((el) => el.id == invoice.company);
@@ -24,21 +26,66 @@ function Invoice({ invoices, companies, contacts }) {
   const handleCompanyChange = (value) => {
     setSelectedCompany(value);
   };
+  const referenceRef = useRef();
+  const amountRef = useRef();
+  const receivedRef = useRef();
+  const paidRef = useRef();
 
+  const handleModif = async () => {
+    const formData = {
+      reference: referenceRef.current.value,
+      amount: amountRef.current.value,
+      company: selectedCompany.id.toString(),
+      contact: selectedContact.id.toString(),
+      received: receivedRef.current.value,
+      paid: paidRef.current.checked,
+    };
+    let check = invoiceVerify(formData);
+    if (check.ok) {
+      console.log(formData);
+      await putData(
+        `https://csharpproject.somee.com/api/invoice/${params.invoiceId}`,
+        formData
+      );
+      setIsLoaded(false);
+    } else {
+      const issues = Object.keys(check);
+      for (let issue of issues) {
+        if (issue !== "ok") alert(check[issue]);
+      }
+    }
+  };
   return (
     <main>
       <div className="card">
         <h2>Details about invoice {invoice.reference}</h2>
         <div className="invoiceGrid">
+          <span>Reference : </span>
+          {isModifying ? (
+            <input
+              type="text"
+              name="reference"
+              ref={referenceRef}
+              defaultValue={invoice.reference}
+              required
+            />
+          ) : (
+            <span id="invoiceReference">{invoice.reference}</span>
+          )}
+
           <span>Amount : </span>
-          <span
-            id="invoiceAmout"
-            style={
-              invoice.paid === "true" ? { color: "green" } : { color: "red" }
-            }
-          >
-            {invoice.amount} €
-          </span>
+          {isModifying ? (
+            <input
+              type="number"
+              name="amount"
+              ref={amountRef}
+              defaultValue={invoice.amount}
+              required
+            />
+          ) : (
+            <span id="invoiceAmout">{invoice.amount} €</span>
+          )}
+
           <span>Company : </span>
           {isModifying ? (
             <CompanySelector
@@ -49,6 +96,7 @@ function Invoice({ invoices, companies, contacts }) {
           ) : (
             <span id="invoiceCompany">{company.name}</span>
           )}
+
           <span>Contact : </span>
           {isModifying ? (
             <ContactSelector
@@ -61,8 +109,45 @@ function Invoice({ invoices, companies, contacts }) {
           ) : (
             <span id="invoiceContact">{`${contact.firstname} ${contact.lastname}`}</span>
           )}
+
           <span>Date : </span>
-          <span id="invoiceReceived">{`${day}-${month}-${year}`}</span>
+          {isModifying ? (
+            <input
+              type="date"
+              name="date"
+              ref={receivedRef}
+              defaultValue={`${year}-${month}-${day}`}
+              required
+            />
+          ) : (
+            <span id="invoiceReceived">{`${day}-${month}-${year}`}</span>
+          )}
+          <span>Paid status : </span>
+          {isModifying ? (
+            <label htmlFor="paid" className="switchToggle">
+              {invoice.paid ? (
+                <input
+                  type="checkbox"
+                  name="paid"
+                  id="paid"
+                  className="switchCheck"
+                  ref={paidRef}
+                  defaultChecked
+                />
+              ) : (
+                <input
+                  type="checkbox"
+                  name="paid"
+                  id="paid"
+                  className="switchCheck"
+                  ref={paidRef}
+                />
+              )}
+              <span className="slider"></span>
+            </label>
+          ) : (
+            <span>{invoice.paid ? "Paid" : "To be paid"}</span>
+          )}
         </div>
         <InvoiceControls
           invoice={invoice.id}
@@ -74,6 +159,7 @@ function Invoice({ invoices, companies, contacts }) {
           setSelectedCompany={setSelectedCompany}
           originalContact={contact}
           setSelectedContact={setSelectedContact}
+          handleModif={handleModif}
         />
       </div>
     </main>

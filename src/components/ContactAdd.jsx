@@ -3,10 +3,10 @@ import { contactVerify } from "../logic/formValidation";
 import postData from "../logic/postData";
 import CompanySelector from "./CompanySelector";
 
-function ContactAdd({ companies }) {
+function ContactAdd({ companies, setIsLoaded }) {
   const [selectedCompany, setSelectedCompany] = useState("");
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const formData = {
       firstname: e.target.firstname.value,
@@ -18,7 +18,8 @@ function ContactAdd({ companies }) {
     let check = contactVerify(formData);
     if (check.ok) {
       console.log(formData);
-      //postData("https://csharpproject.somee.com/api/contact", formData);
+      await postData("https://csharpproject.somee.com/api/contact", formData);
+      setIsLoaded(false);
     } else {
       const issues = Object.keys(check);
       for (let issue of issues) {

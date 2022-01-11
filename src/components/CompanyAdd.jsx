@@ -1,8 +1,8 @@
 import postData from "../logic/postData";
 import { companyVerify } from "../logic/formValidation";
 
-function CompanyAdd() {
-  const handleSubmit = (e) => {
+function CompanyAdd({ setIsLoaded }) {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const formData = {
       name: e.target.name.value,
@@ -12,7 +12,8 @@ function CompanyAdd() {
     let check = companyVerify(formData);
     if (check.ok) {
       console.log(formData);
-      //postData("https://csharpproject.somee.com/api/company", formData);
+      await postData("https://csharpproject.somee.com/api/company", formData);
+      setIsLoaded(false);
     } else {
       const issues = Object.keys(check);
       for (let issue of issues) {
