@@ -141,7 +141,7 @@ function App() {
           element={
             <PrivateRoute
               isAuth={isAuth}
-              element={<Companies data={companies} />}
+              element={<Companies companies={companies} />}
             />
           }
         />

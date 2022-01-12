@@ -48,7 +48,7 @@ function Company({ companies, contacts, setIsLoaded, isAuth }) {
             <input
               type="text"
               name="companyName"
-              placeholder={company.name}
+              defaultValue={company.name}
               ref={nameRef}
               required
             />
@@ -60,7 +60,7 @@ function Company({ companies, contacts, setIsLoaded, isAuth }) {
             <input
               type="number"
               name="companyVat"
-              placeholder={company.vat}
+              defaultValue={company.vat}
               ref={vatRef}
               required
             />
