@@ -1,7 +1,6 @@
 import { useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { useTable, useSortBy } from "react-table";
-import CompanyLi from "./CompanyLi.jsx";
 
 function Companies({ companies }) {
   const navigate = useNavigate();
@@ -10,16 +9,15 @@ function Companies({ companies }) {
   };
 
   /* SETTING UP TABLE */
-  console.log(companies);
   const data = useMemo(() => {
     let results = [];
     for (let entry of companies) {
       let obj = {
         icon:
           entry.status == "Supplier" ? (
-            <i class="fas fa-parachute-box"></i>
+            <i className="fas fa-parachute-box"></i>
           ) : (
-            <i class="fas fa-shopping-basket"></i>
+            <i className="fas fa-shopping-basket"></i>
           ),
         col1: entry.name,
         col2: entry.status,
@@ -28,6 +26,7 @@ function Companies({ companies }) {
           5,
           7
         )}-${entry.added.slice(0, 4)}`,
+        id: entry.id,
       };
       results.push(obj);
     }
@@ -35,7 +34,12 @@ function Companies({ companies }) {
   }, []);
   const columns = useMemo(
     () => [
-      { Header: "", accessor: "icon", className: "companyIcon" },
+      {
+        Header: "",
+        accessor: "icon",
+        className: "companyIcon",
+        disableSortBy: true,
+      },
       {
         Header: "Name",
         accessor: "col1",
@@ -44,6 +48,7 @@ function Companies({ companies }) {
       { Header: "Status", accessor: "col2", className: "companyType" },
       { Header: "VAT", accessor: "col3", className: "companyVat" },
       { Header: "Added", accessor: "col4", className: "companyAdded" },
+      { Header: "ID", accessor: "id", className: "companyId" },
     ],
     []
   );
@@ -52,7 +57,10 @@ function Companies({ companies }) {
       {
         columns,
         data,
-        initialState: { sortBy: [{ id: "col2", desc: false }] },
+        initialState: {
+          sortBy: [{ id: "col1", desc: false }],
+          hiddenColumns: ["id"],
+        },
       },
       useSortBy
     );
@@ -68,29 +76,29 @@ function Companies({ companies }) {
             onClick={handleAdd}
           ></i>
         </h2>
-        <ul>
+        {/* <ul>
           {companies.map((entry) => {
             return <CompanyLi company={entry} key={entry.id} />;
           })}
-        </ul>
+        </ul> */}
 
-        <table {...getTableProps()} style={{ width: "100%" }}>
+        <table {...getTableProps()} className="table">
           <thead>
             {headerGroups.map((headerGroup) => (
               <tr {...headerGroup.getHeaderGroupProps()}>
                 {headerGroup.headers.map((column) => (
                   <th
                     {...column.getHeaderProps(
-                      {
+                      column.getSortByToggleProps({
                         className: column.className,
-                      },
-                      column.getSortByToggleProps()
+                      })
                     )}
                     style={{
                       color: "rgb(39, 76, 119)",
                       fontWeight: "bold",
                       cursor: "pointer",
                       fontSize: "1.2rem",
+                      padding: "1rem",
                     }}
                   >
                     {column.render("Header")}
@@ -117,10 +125,27 @@ function Companies({ companies }) {
                         {...cell.getCellProps({
                           className: cell.column.className,
                         })}
-                        style={{
-                          padding: "10px",
-                          //border: "solid 1px rgb(135, 156, 179)",
-                        }}
+                        style={
+                          cell.column.Header == "Name"
+                            ? {
+                                padding: "1rem",
+                                //border: "solid 1px rgb(135, 156, 179)",
+                                cursor: "pointer",
+                              }
+                            : {
+                                padding: "1rem",
+                                //border: "solid 1px rgb(135, 156, 179)",
+                              }
+                        }
+                        onClick={
+                          cell.column.Header == "Name"
+                            ? () => {
+                                navigate(
+                                  `/company/${cell.row.allCells[5].value}`
+                                );
+                              }
+                            : () => {}
+                        }
                       >
                         {cell.render("Cell")}
                       </td>

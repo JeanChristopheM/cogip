@@ -1,0 +1,79 @@
+.table {
+  width: 100%;
+  /* COMPANY SETTINGS */
+  .companyName {
+    font-weight: bold;
+  }
+  .companyType {
+    font-size: 0.8rem;
+    color: $clr-secondary-low;
+  }
+  @media screen and (max-width: 700px) {
+    .companyVat {
+      display: none;
+    }
+  }
+  @media screen and (max-width: 500px) {
+    .companyAdded {
+      display: none;
+    }
+  }
+  @media screen and (max-width: 400px) {
+    .companyType {
+      display: none;
+    }
+  }
+  /* CONTACT SETTINGS */
+  .contactName {
+    font-weight: bold;
+  }
+  @media screen and (max-width: 900px) {
+    .contactEmail {
+      display: none;
+    }
+  }
+  @media screen and (max-width: 760px) {
+    .contactPhonenumber {
+      display: none;
+    }
+  }
+  @media screen and (max-width: 600px) {
+    .contactAdded {
+      display: none;
+    }
+  }
+  @media screen and (max-width: 500px) {
+    .contactContactcompany {
+      display: none;
+    }
+  }
+  /* INVOICE SETTINGS */
+  .invoiceReference {
+    font-weight: bold;
+  }
+  @media screen and (max-width: 900px) {
+    .invoiceContact {
+      display: none;
+    }
+  }
+  @media screen and (max-width: 760px) {
+    .invoiceReceived {
+      display: none;
+    }
+  }
+  @media screen and (max-width: 650px) {
+    .invoiceCompany {
+      display: none;
+    }
+  }
+  @media screen and (max-width: 500px) {
+    .invoicePaid {
+      display: none;
+    }
+  }
+  @media screen and (max-width: 400px) {
+    .invoiceAmount {
+      display: none;
+    }
+  }
+}

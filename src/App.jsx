@@ -167,7 +167,13 @@ function App() {
           element={
             <PrivateRoute
               isAuth={isAuth}
-              element={<Invoices data={invoices} companies={companies} />}
+              element={
+                <Invoices
+                  invoices={invoices}
+                  contacts={contacts}
+                  companies={companies}
+                />
+              }
             />
           }
         />
@@ -193,7 +199,7 @@ function App() {
           element={
             <PrivateRoute
               isAuth={isAuth}
-              element={<Contacts data={contacts} companies={companies} />}
+              element={<Contacts contacts={contacts} companies={companies} />}
             />
           }
         />
