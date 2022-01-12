@@ -114,7 +114,7 @@ function Homepage({
       </section>
       <section className="chart card">
         <h2>Payement Status</h2>
-        <div style={{ position: "relative" }}>
+        <div style={{ position: "relative" }} id="canvasContainer">
           <Chart invoices={invoices} />
         </div>
       </section>
