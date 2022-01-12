@@ -7,7 +7,7 @@ import Chart from "./Chart.jsx";
 import { useNavigate } from "react-router-dom";
 
 function Homepage({
-  userdata,
+  isAuth,
   companies,
   invoices,
   contacts,

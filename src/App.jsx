@@ -1,7 +1,7 @@
 /* Functions */
 import { useState, useEffect, useLayoutEffect } from "react";
 import { getData } from "./logic/getData";
-import { Routes, Route, useNavigate, useLocation } from "react-router-dom";
+import { Routes, Route, useNavigate } from "react-router-dom";
 /* Components */
 import Header from "./components/Header.jsx";
 import Footer from "./components/Footer.jsx";
@@ -96,6 +96,7 @@ function App() {
     sessionStorage.removeItem("cogipAuth");
     setAuth(null);
     setDisplayMenu(false);
+    navigate("/home");
   };
   /* Possible Routes */
   const possibleRoutes = [
@@ -126,7 +127,7 @@ function App() {
               isAuth={isAuth}
               element={
                 <Homepage
-                  userdata={isAuth}
+                  isAuth={isAuth}
                   companies={companies}
                   contacts={contacts}
                   invoices={invoices}
@@ -155,6 +156,7 @@ function App() {
                   setIsLoaded={setIsLoaded}
                   getAllData={loadData}
                   contacts={contacts}
+                  isAuth={isAuth}
                 />
               }
             />
@@ -180,6 +182,7 @@ function App() {
                   companies={companies}
                   contacts={contacts}
                   setIsLoaded={setIsLoaded}
+                  isAuth={isAuth}
                 />
               }
             />
@@ -204,6 +207,7 @@ function App() {
                   contacts={contacts}
                   companies={companies}
                   setIsLoaded={setIsLoaded}
+                  isAuth={isAuth}
                 />
               }
             />

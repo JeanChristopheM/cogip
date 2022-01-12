@@ -6,7 +6,7 @@ import ContactSelector from "./ContactSelector.jsx";
 import putData from "../logic/putData";
 import { invoiceVerify } from "../logic/formValidation.js";
 
-function Invoice({ invoices, companies, contacts, setIsLoaded }) {
+function Invoice({ invoices, companies, contacts, setIsLoaded, isAuth }) {
   let params = useParams();
   const navigate = useNavigate();
   const invoice = invoices.find((el) => el.id == params.invoiceId);
@@ -164,18 +164,22 @@ function Invoice({ invoices, companies, contacts, setIsLoaded }) {
             <span>{invoice.paid ? "Paid" : "To be paid"}</span>
           )}
         </div>
-        <InvoiceControls
-          invoice={invoice.id}
-          isModifying={isModifying}
-          setIsModifying={setIsModifying}
-          isDeleting={isDeleting}
-          setIsDeleting={setIsDeleting}
-          originalCompany={company}
-          setSelectedCompany={setSelectedCompany}
-          originalContact={contact}
-          setSelectedContact={setSelectedContact}
-          handleModif={handleModif}
-        />
+        {isAuth.admin ? (
+          <InvoiceControls
+            invoice={invoice.id}
+            isModifying={isModifying}
+            setIsModifying={setIsModifying}
+            isDeleting={isDeleting}
+            setIsDeleting={setIsDeleting}
+            originalCompany={company}
+            setSelectedCompany={setSelectedCompany}
+            originalContact={contact}
+            setSelectedContact={setSelectedContact}
+            handleModif={handleModif}
+          />
+        ) : (
+          ""
+        )}
       </div>
     </main>
   );

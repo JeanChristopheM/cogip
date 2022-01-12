@@ -5,7 +5,7 @@ import CompanySelector from "./CompanySelector";
 import putData from "../logic/putData";
 import { contactVerify } from "../logic/formValidation.js";
 
-function Contact({ contacts, companies, setIsLoaded }) {
+function Contact({ contacts, companies, setIsLoaded, isAuth }) {
   const params = useParams();
   const navigate = useNavigate();
   const contact = contacts.find((el) => el.id == params.contactId);
@@ -17,7 +17,6 @@ function Contact({ contacts, companies, setIsLoaded }) {
 
   const firstnameRef = useRef();
   const lastnameRef = useRef();
-  const companyRef = useRef();
   const emailRef = useRef();
   const phonenumberRef = useRef();
   const handleCompanyChange = (company) => {
@@ -118,13 +117,17 @@ function Contact({ contacts, companies, setIsLoaded }) {
             <span id="contactPhonenumber">{contact.phonenumber}</span>
           )}
         </div>
-        <ContactControls
-          isModifying={isModifying}
-          setIsModifying={setIsModifying}
-          isDeleting={isDeleting}
-          setIsDeleting={setIsDeleting}
-          handleModif={handleModif}
-        />
+        {isAuth.admin ? (
+          <ContactControls
+            isModifying={isModifying}
+            setIsModifying={setIsModifying}
+            isDeleting={isDeleting}
+            setIsDeleting={setIsDeleting}
+            handleModif={handleModif}
+          />
+        ) : (
+          ""
+        )}
       </div>
     </main>
   );

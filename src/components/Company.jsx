@@ -4,7 +4,7 @@ import { companyVerify } from "../logic/formValidation.js";
 import putData from "../logic/putData";
 import CompanyControls from "./CompanyControls.jsx";
 
-function Company({ companies, contacts, setIsLoaded }) {
+function Company({ companies, contacts, setIsLoaded, isAuth }) {
   let params = useParams();
   const navigate = useNavigate();
   let company = companies.find((el) => el.id == params.companyId);
@@ -96,13 +96,17 @@ function Company({ companies, contacts, setIsLoaded }) {
             })}
           </ul>
         </div>
-        <CompanyControls
-          isModifying={isModifying}
-          isDeleting={isDeleting}
-          setIsDeleting={setIsDeleting}
-          setIsModifying={setIsModifying}
-          handleModif={handleModif}
-        />
+        {isAuth.admin ? (
+          <CompanyControls
+            isModifying={isModifying}
+            isDeleting={isDeleting}
+            setIsDeleting={setIsDeleting}
+            setIsModifying={setIsModifying}
+            handleModif={handleModif}
+          />
+        ) : (
+          ""
+        )}
       </div>
     </main>
   );
