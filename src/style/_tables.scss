@@ -7,7 +7,10 @@
       display: none;
     }
   }
-
+  .thContainer {
+    display: grid;
+    grid-template-columns: auto min-content;
+  }
   /* COMPANY SETTINGS */
   .companyName {
     font-weight: bold;
