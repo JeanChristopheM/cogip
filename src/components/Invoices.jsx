@@ -1,6 +1,7 @@
 import { useMemo } from "react";
 import { useNavigate } from "react-router-dom";
-import { useTable, useSortBy } from "react-table";
+import { useTable, useSortBy, useFilters } from "react-table";
+import SelectFilter from "./SelectFilter";
 
 function Invoices({ invoices, contacts, companies, setInvoiceId }) {
   const navigate = useNavigate();
@@ -38,26 +39,53 @@ function Invoices({ invoices, contacts, companies, setInvoiceId }) {
         accessor: "icon",
         className: "invoiceIcon",
         disableSortBy: true,
+        disableFilters: true,
       },
       {
         Header: "Reference",
         accessor: "col1",
         className: "invoiceReference",
+        disableFilters: true,
       },
-      { Header: "Amount", accessor: "col2", className: "invoiceAmount" },
+      {
+        Header: "Amount",
+        accessor: "col2",
+        className: "invoiceAmount",
+        disableFilters: true,
+      },
       {
         Header: "Company",
         accessor: "col3",
         className: "invoiceCompany",
+        Filter: SelectFilter,
+        filter: "includes",
       },
       {
         Header: "Contact",
         accessor: "col4",
         className: "invoiceContact",
+        Filter: SelectFilter,
+        filter: "includes",
       },
-      { Header: "Received", accessor: "col5", className: "invoiceReceived" },
-      { Header: "Status", accessor: "col6", className: "invoicePaid" },
-      { Header: "ID", accessor: "id", className: "contactId" },
+      {
+        Header: "Received",
+        accessor: "col5",
+        className: "invoiceReceived",
+        disableFilters: true,
+      },
+      {
+        Header: "Status",
+        accessor: "col6",
+        className: "invoicePaid",
+        Filter: SelectFilter,
+        filter: "includes",
+      },
+      {
+        Header: "ID",
+        accessor: "id",
+        className: "contactId",
+        disableFilters: true,
+      },
     ],
     []
   );
@@ -71,6 +99,7 @@ function Invoices({ invoices, contacts, companies, setInvoiceId }) {
           hiddenColumns: ["id"],
         },
       },
+      useFilters,
       useSortBy
     );
   const handleClick = (header, contactName, companyName, invoiceId) => {
@@ -164,6 +193,17 @@ function Invoices({ invoices, contacts, companies, setInvoiceId }) {
                           ></i>
                         )}
                       </span>
+                    </div>
+                  </th>
+                ))}
+              </tr>
+            ))}
+            {headerGroups.map((headerGroup) => (
+              <tr {...headerGroup.getHeaderGroupProps()}>
+                {headerGroup.headers.map((column) => (
+                  <th key={column.id}>
+                    <div className="filterContainer">
+                      {column.canFilter ? column.render("Filter") : null}
                     </div>
                   </th>
                 ))}

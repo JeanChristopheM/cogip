@@ -1,0 +1,14 @@
+.selectFilter {
+  border: 1px solid $clr-secondary;
+  font-weight: 400;
+  font-size: 1rem;
+  padding: 0.2rem;
+  &__option {
+    padding-right: 1rem;
+  }
+}
+.filterContainer {
+  display: flex;
+  justify-content: center;
+  position: relative;
+}
