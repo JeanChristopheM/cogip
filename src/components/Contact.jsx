@@ -108,7 +108,7 @@ function Contact({ contacts, companies, setIsLoaded, isAuth }) {
           <span>Phone number : </span>
           {isModifying ? (
             <input
-              type="number"
+              type="text"
               name="contactPhonenumber"
               defaultValue={contact.phonenumber}
               ref={phonenumberRef}

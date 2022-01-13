@@ -58,7 +58,7 @@ function Company({ companies, contacts, setIsLoaded, isAuth }) {
           <span>VAT : </span>
           {isModifying ? (
             <input
-              type="number"
+              type="text"
               name="companyVat"
               defaultValue={company.vat}
               ref={vatRef}
@@ -69,7 +69,12 @@ function Company({ companies, contacts, setIsLoaded, isAuth }) {
           )}
           <span>Status : </span>
           {isModifying ? (
-            <select name="companyStatus" ref={statusRef} required>
+            <select
+              name="companyStatus"
+              ref={statusRef}
+              defaultValue={company.status}
+              required
+            >
               <option value="">Select a status</option>
               <option value="Supplier">Supplier</option>
               <option value="Client">Client</option>

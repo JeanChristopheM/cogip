@@ -116,11 +116,37 @@ function Contacts({ contacts, companies }) {
                   >
                     {column.render("Header")}
                     <span>
-                      {column.isSorted
-                        ? column.isSortedDesc
-                          ? " 🔼"
-                          : " 🔽"
-                        : ""}
+                      {column.isSorted ? (
+                        column.isSortedDesc ? (
+                          <i
+                            style={{
+                              color: "rgb(39, 76, 119)",
+                              fontSize: ".9rem",
+                              paddingLeft: ".2rem",
+                            }}
+                            class="fas fa-arrow-alt-circle-up"
+                          ></i>
+                        ) : (
+                          <i
+                            style={{
+                              color: "rgb(39, 76, 119)",
+                              fontSize: ".9rem",
+                              paddingLeft: ".2rem",
+                            }}
+                            class="fas fa-arrow-alt-circle-down"
+                          ></i>
+                        )
+                      ) : (
+                        <i
+                          style={{
+                            color: "rgb(135, 156, 179)",
+                            fontSize: ".9rem",
+                            paddingLeft: ".2rem",
+                            opacity: ".3",
+                          }}
+                          class="fas fa-arrow-alt-circle-down"
+                        ></i>
+                      )}
                     </span>
                   </th>
                 ))}
