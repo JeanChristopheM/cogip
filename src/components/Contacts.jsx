@@ -88,11 +88,14 @@ function Contacts({ contacts, companies }) {
       <section className="contacts card">
         <h2>
           Contacts
-          <i
-            className="fas fa-plus-square plusButton"
+          <button
+            type="button"
             id="contactAdd"
             onClick={handleAdd}
-          ></i>
+            style={{ padding: "0 .5rem" }}
+          >
+            +
+          </button>
         </h2>
 
         <table className="table" {...getTableProps()}>

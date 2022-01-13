@@ -30,11 +30,14 @@ function Homepage({
           >
             Invoices
           </span>
-          <i
-            className="fas fa-plus-square plusButton"
+          <button
+            type="button"
             id="invoiceAdd"
             onClick={handleAdd}
-          ></i>
+            style={{ padding: "0 .5rem" }}
+          >
+            +
+          </button>
         </h2>
         <ul>
           {invoices.length > 0 ? (
@@ -64,11 +67,14 @@ function Homepage({
           >
             Contacts
           </span>
-          <i
-            className="fas fa-plus-square plusButton"
+          <button
+            type="button"
             id="contactAdd"
             onClick={handleAdd}
-          ></i>
+            style={{ padding: "0 .5rem" }}
+          >
+            +
+          </button>
         </h2>
         <ul>
           {contacts.length > 0 ? (
@@ -96,11 +102,14 @@ function Homepage({
           >
             Companies
           </span>
-          <i
-            className="fas fa-plus-square plusButton"
+          <button
+            type="button"
             id="companyAdd"
             onClick={handleAdd}
-          ></i>
+            style={{ padding: "0 .5rem" }}
+          >
+            +
+          </button>
         </h2>
         <ul>
           {companies.length > 0 ? (

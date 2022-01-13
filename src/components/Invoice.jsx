@@ -37,7 +37,9 @@ function Invoice({ invoices, companies, contacts, setIsLoaded, isAuth }) {
       reference: referenceRef.current.value,
       amount: amountRef.current.value,
       company: selectedCompany.id.toString(),
-      contact: selectedContact.id.toString(),
+      contact: contacts
+        .find((el) => `${el.firstname} ${el.lastname}` == selectedContact)
+        .id.toString(),
       received: receivedRef.current.value,
       paid: paidRef.current.checked,
     };

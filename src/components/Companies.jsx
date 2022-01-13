@@ -70,11 +70,14 @@ function Companies({ companies }) {
       <section className="companies card">
         <h2>
           Companies
-          <i
-            className="fas fa-plus-square plusButton"
+          <button
+            type="button"
             id="companyAdd"
             onClick={handleAdd}
-          ></i>
+            style={{ padding: "0 .5rem" }}
+          >
+            +
+          </button>
         </h2>
         {/* <ul>
           {companies.map((entry) => {
@@ -112,7 +115,7 @@ function Companies({ companies }) {
                                 fontSize: ".9rem",
                                 paddingLeft: ".2rem",
                               }}
-                              class="fas fa-arrow-alt-circle-up"
+                              className="fas fa-arrow-alt-circle-up"
                             ></i>
                           ) : (
                             <i
@@ -121,7 +124,7 @@ function Companies({ companies }) {
                                 fontSize: ".9rem",
                                 paddingLeft: ".2rem",
                               }}
-                              class="fas fa-arrow-alt-circle-down"
+                              className="fas fa-arrow-alt-circle-down"
                             ></i>
                           )
                         ) : (
@@ -132,7 +135,7 @@ function Companies({ companies }) {
                               paddingLeft: ".2rem",
                               opacity: ".3",
                             }}
-                            class="fas fa-arrow-alt-circle-down"
+                            className="fas fa-arrow-alt-circle-down"
                           ></i>
                         )}
                       </span>

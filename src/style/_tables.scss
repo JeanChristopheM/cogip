@@ -1,15 +1,17 @@
 .table {
   width: 100%;
-  .contactIcon,
-  .companyIcon,
-  .invoiceIcon {
-    i {
-      display: none;
-    }
-  }
   .thContainer {
     display: grid;
     grid-template-columns: auto min-content;
+  }
+  .contactIcon,
+  .companyIcon,
+  .invoiceIcon {
+    .thContainer {
+      i {
+        display: none;
+      }
+    }
   }
   /* COMPANY SETTINGS */
   .companyName {

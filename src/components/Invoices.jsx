@@ -101,11 +101,14 @@ function Invoices({ invoices, contacts, companies, setInvoiceId }) {
       <section className="invoices card">
         <h2>
           Invoices
-          <i
-            className="fas fa-plus-square plusButton"
+          <button
+            type="button"
             id="invoiceAdd"
             onClick={handleAdd}
-          ></i>
+            style={{ padding: "0 .5rem" }}
+          >
+            +
+          </button>
         </h2>
         <table className="table" {...getTableProps()}>
           <thead>
@@ -137,7 +140,7 @@ function Invoices({ invoices, contacts, companies, setInvoiceId }) {
                                 fontSize: ".9rem",
                                 paddingLeft: ".2rem",
                               }}
-                              class="fas fa-arrow-alt-circle-up"
+                              className="fas fa-arrow-alt-circle-up"
                             ></i>
                           ) : (
                             <i
@@ -146,7 +149,7 @@ function Invoices({ invoices, contacts, companies, setInvoiceId }) {
                                 fontSize: ".9rem",
                                 paddingLeft: ".2rem",
                               }}
-                              class="fas fa-arrow-alt-circle-down"
+                              className="fas fa-arrow-alt-circle-down"
                             ></i>
                           )
                         ) : (
@@ -157,7 +160,7 @@ function Invoices({ invoices, contacts, companies, setInvoiceId }) {
                               paddingLeft: ".2rem",
                               opacity: ".3",
                             }}
-                            class="fas fa-arrow-alt-circle-down"
+                            className="fas fa-arrow-alt-circle-down"
                           ></i>
                         )}
                       </span>
