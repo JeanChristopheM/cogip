@@ -5,6 +5,7 @@ import { Routes, Route, useNavigate } from "react-router-dom";
 /* Components */
 import Header from "./components/Header.jsx";
 import Footer from "./components/Footer.jsx";
+import ScrollToTop from "./components/ScrollToTop.jsx";
 /* Page Contents */
 import PrivateRoute from "./components/PrivateRoute.jsx";
 import Login from "./components/Login.jsx";
@@ -115,6 +116,7 @@ function App() {
   return (
     <>
       <Header openMenu={openMenu} possibleRoutes={possibleRoutes} />
+      <ScrollToTop />
       <Routes>
         <Route
           path="/login"

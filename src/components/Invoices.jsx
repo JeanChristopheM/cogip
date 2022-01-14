@@ -201,7 +201,12 @@ function Invoices({ invoices, contacts, companies, setInvoiceId }) {
             {headerGroups.map((headerGroup) => (
               <tr {...headerGroup.getHeaderGroupProps()}>
                 {headerGroup.headers.map((column) => (
-                  <th key={column.id}>
+                  <th
+                    key={column.id}
+                    {...column.getHeaderProps({
+                      className: column.className,
+                    })}
+                  >
                     <div className="filterContainer">
                       {column.canFilter ? column.render("Filter") : null}
                     </div>

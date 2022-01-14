@@ -55,7 +55,7 @@
       display: none;
     }
   }
-  @media screen and (max-width: 500px) {
+  @media screen and (max-width: 400px) {
     .contactContactcompany {
       display: none;
     }
@@ -88,5 +88,8 @@
     .invoiceAmount {
       display: none;
     }
+  }
+  td:first-child {
+    width: 0rem;
   }
 }
