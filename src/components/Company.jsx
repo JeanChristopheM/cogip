@@ -11,6 +11,7 @@ function Company({ companies, contacts, setIsLoaded, isAuth }) {
 
   const [isModifying, setIsModifying] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
+  const [isFetching, setIsFetching] = useState(false);
 
   const nameRef = useRef();
   const vatRef = useRef();
@@ -23,6 +24,7 @@ function Company({ companies, contacts, setIsLoaded, isAuth }) {
       status: statusRef.current.value,
     };
     let check = companyVerify(formData);
+    setIsFetching(true);
     if (check.ok) {
       console.log(formData);
       await putData(
@@ -30,7 +32,9 @@ function Company({ companies, contacts, setIsLoaded, isAuth }) {
         formData
       );
       setIsLoaded(false);
+      setIsFetching(false);
     } else {
+      setIsFetching(false);
       const issues = Object.keys(check);
       for (let issue of issues) {
         if (issue !== "ok") alert(check[issue]);
@@ -40,79 +44,85 @@ function Company({ companies, contacts, setIsLoaded, isAuth }) {
 
   return (
     <main>
-      <div className="card">
-        <h2>Details about {company.name}</h2>
-        <div className="companyGrid">
-          <span>Name : </span>
-          {isModifying ? (
-            <input
-              type="text"
-              name="companyName"
-              defaultValue={company.name}
-              ref={nameRef}
-              required
-            />
-          ) : (
-            <span id="companyName">{company.name}</span>
-          )}
-          <span>VAT : </span>
-          {isModifying ? (
-            <input
-              type="text"
-              name="companyVat"
-              defaultValue={company.vat}
-              ref={vatRef}
-              required
-            />
-          ) : (
-            <span id="companyVat">{company.vat}</span>
-          )}
-          <span>Status : </span>
-          {isModifying ? (
-            <select
-              name="companyStatus"
-              ref={statusRef}
-              defaultValue={company.status}
-              required
-            >
-              <option value="">Select a status</option>
-              <option value="Supplier">Supplier</option>
-              <option value="Client">Client</option>
-            </select>
-          ) : (
-            <span id="companyStatus">{company.status}</span>
-          )}
-          <span>___</span>
-          <span>___</span>
-          <span>Contacts : </span>
-          <ul>
-            {contacts.map((el) => {
-              if (el.contactcompany == company.id) {
-                return (
-                  <li
-                    key={el.id}
-                    onClick={() => {
-                      navigate(`/contact/${el.id}`);
-                    }}
-                    style={{ cursor: "pointer" }}
-                  >{`${el.firstname} ${el.lastname}`}</li>
-                );
-              }
-            })}
-          </ul>
+      {isFetching ? (
+        <div className="fetching">
+          <div className="lds-dual-ring"></div>
         </div>
-        {isAuth.admin ? (
-          <CompanyControls
-            isModifying={isModifying}
-            isDeleting={isDeleting}
-            setIsDeleting={setIsDeleting}
-            setIsModifying={setIsModifying}
-            handleModif={handleModif}
-          />
-        ) : (
-          ""
-        )}
-      </div>
+      ) : (
+        <div className="card">
+          <h2>Details about {company.name}</h2>
+          <div className="companyGrid">
+            <span>Name : </span>
+            {isModifying ? (
+              <input
+                type="text"
+                name="companyName"
+                defaultValue={company.name}
+                ref={nameRef}
+                required
+              />
+            ) : (
+              <span id="companyName">{company.name}</span>
+            )}
+            <span>VAT : </span>
+            {isModifying ? (
+              <input
+                type="text"
+                name="companyVat"
+                defaultValue={company.vat}
+                ref={vatRef}
+                required
+              />
+            ) : (
+              <span id="companyVat">{company.vat}</span>
+            )}
+            <span>Status : </span>
+            {isModifying ? (
+              <select
+                name="companyStatus"
+                ref={statusRef}
+                defaultValue={company.status}
+                required
+              >
+                <option value="">Select a status</option>
+                <option value="Supplier">Supplier</option>
+                <option value="Client">Client</option>
+              </select>
+            ) : (
+              <span id="companyStatus">{company.status}</span>
+            )}
+            <span>___</span>
+            <span>___</span>
+            <span>Contacts : </span>
+            <ul>
+              {contacts.map((el) => {
+                if (el.contactcompany == company.id) {
+                  return (
+                    <li
+                      key={el.id}
+                      onClick={() => {
+                        navigate(`/contact/${el.id}`);
+                      }}
+                      style={{ cursor: "pointer" }}
+                    >{`${el.firstname} ${el.lastname}`}</li>
+                  );
+                }
+              })}
+            </ul>
+          </div>
+          {isAuth.admin ? (
+            <CompanyControls
+              isModifying={isModifying}
+              isDeleting={isDeleting}
+              setIsDeleting={setIsDeleting}
+              setIsModifying={setIsModifying}
+              handleModif={handleModif}
+            />
+          ) : (
+            ""
+          )}
+        </div>
+      )}
     </main>
   );
 }

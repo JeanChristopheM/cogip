@@ -20,9 +20,12 @@ function Invoice({ invoices, companies, contacts, setIsLoaded, isAuth }) {
   const [isDeleting, setIsDeleting] = useState(false);
   const [selectedCompany, setSelectedCompany] = useState(company);
   const [selectedContact, setSelectedContact] = useState(contact);
+  const [isFetching, setIsFetching] = useState(false);
 
   const handleContactChange = (value) => {
-    setSelectedContact(value);
+    setSelectedContact(
+      contacts.find((el) => `${el.firstname} ${el.lastname}` == value)
+    );
   };
   const handleCompanyChange = (value) => {
     setSelectedCompany(value);
@@ -38,12 +41,13 @@ function Invoice({ invoices, companies, contacts, setIsLoaded, isAuth }) {
       amount: amountRef.current.value,
       company: selectedCompany.id.toString(),
       contact: contacts
-        .find((el) => `${el.firstname} ${el.lastname}` == selectedContact)
+        .find((el) => el.name == selectedContact.name)
         .id.toString(),
       received: receivedRef.current.value,
       paid: paidRef.current.checked,
     };
     let check = invoiceVerify(formData);
+    setIsFetching(true);
     if (check.ok) {
       console.log(formData);
       await putData(
@@ -51,7 +55,9 @@ function Invoice({ invoices, companies, contacts, setIsLoaded, isAuth }) {
         formData
       );
       setIsLoaded(false);
+      setIsFetching(false);
     } else {
+      setIsFetching(false);
       const issues = Object.keys(check);
       for (let issue of issues) {
         if (issue !== "ok") alert(check[issue]);
@@ -60,129 +66,135 @@ function Invoice({ invoices, companies, contacts, setIsLoaded, isAuth }) {
   };
   return (
     <main>
-      <div className="card">
-        <h2>Details about invoice {invoice.reference}</h2>
-        <div className="invoiceGrid">
-          <span>Reference : </span>
-          {isModifying ? (
-            <input
-              type="text"
-              name="reference"
-              ref={referenceRef}
-              defaultValue={invoice.reference}
-              required
-            />
-          ) : (
-            <span id="invoiceReference">{invoice.reference}</span>
-          )}
+      {isFetching ? (
+        <div className="fetching">
+          <div className="lds-dual-ring"></div>
+        </div>
+      ) : (
+        <div className="card">
+          <h2>Details about invoice {invoice.reference}</h2>
+          <div className="invoiceGrid">
+            <span>Reference : </span>
+            {isModifying ? (
+              <input
+                type="text"
+                name="reference"
+                ref={referenceRef}
+                defaultValue={invoice.reference}
+                required
+              />
+            ) : (
+              <span id="invoiceReference">{invoice.reference}</span>
+            )}
 
-          <span>Amount : </span>
-          {isModifying ? (
-            <input
-              type="number"
-              name="amount"
-              ref={amountRef}
-              defaultValue={invoice.amount}
-              required
-            />
-          ) : (
-            <span id="invoiceAmout">{invoice.amount} €</span>
-          )}
+            <span>Amount : </span>
+            {isModifying ? (
+              <input
+                type="number"
+                name="amount"
+                ref={amountRef}
+                defaultValue={invoice.amount}
+                required
+              />
+            ) : (
+              <span id="invoiceAmout">{invoice.amount} €</span>
+            )}
 
-          <span>Company : </span>
-          {isModifying ? (
-            <CompanySelector
-              companies={companies}
-              handleCompanyChange={handleCompanyChange}
-              currentCompany={company}
-            />
-          ) : (
-            <span
-              id="invoiceCompany"
-              onClick={() => {
-                navigate(`/company/${company.id}`);
-              }}
-              style={{ cursor: "pointer" }}
-            >
-              {company.name}
-            </span>
-          )}
+            <span>Company : </span>
+            {isModifying ? (
+              <CompanySelector
+                companies={companies}
+                handleCompanyChange={handleCompanyChange}
+                currentCompany={company}
+              />
+            ) : (
+              <span
+                id="invoiceCompany"
+                onClick={() => {
+                  navigate(`/company/${company.id}`);
+                }}
+                style={{ cursor: "pointer" }}
+              >
+                {company.name}
+              </span>
+            )}
 
-          <span>Contact : </span>
-          {isModifying ? (
-            <ContactSelector
-              contacts={contacts}
-              currentContact={contact}
-              currentCompany={company}
-              selectedCompany={selectedCompany}
-              handleContactChange={handleContactChange}
-            />
-          ) : (
-            <span
-              id="invoiceContact"
-              onClick={() => {
-                navigate(`/contact/${contact.id}`);
-              }}
-              style={{ cursor: "pointer" }}
-            >{`${contact.firstname} ${contact.lastname}`}</span>
-          )}
+            <span>Contact : </span>
+            {isModifying ? (
+              <ContactSelector
+                contacts={contacts}
+                currentContact={contact}
+                currentCompany={company}
+                selectedCompany={selectedCompany}
+                handleContactChange={handleContactChange}
+              />
+            ) : (
+              <span
+                id="invoiceContact"
+                onClick={() => {
+                  navigate(`/contact/${contact.id}`);
+                }}
+                style={{ cursor: "pointer" }}
+              >{`${contact.firstname} ${contact.lastname}`}</span>
+            )}
 
-          <span>Date : </span>
-          {isModifying ? (
-            <input
-              type="date"
-              name="date"
-              ref={receivedRef}
-              defaultValue={`${year}-${month}-${day}`}
-              required
+            <span>Date : </span>
+            {isModifying ? (
+              <input
+                type="date"
+                name="date"
+                ref={receivedRef}
+                defaultValue={`${year}-${month}-${day}`}
+                required
+              />
+            ) : (
+              <span id="invoiceReceived">{`${day}-${month}-${year}`}</span>
+            )}
+            <span>Paid status : </span>
+            {isModifying ? (
+              <label htmlFor="paid" className="switchToggle">
+                {invoice.paid ? (
+                  <input
+                    type="checkbox"
+                    name="paid"
+                    id="paid"
+                    className="switchCheck"
+                    ref={paidRef}
+                    defaultChecked
+                  />
+                ) : (
+                  <input
+                    type="checkbox"
+                    name="paid"
+                    id="paid"
+                    className="switchCheck"
+                    ref={paidRef}
+                  />
+                )}
+                <span className="slider"></span>
+              </label>
+            ) : (
+              <span>{invoice.paid ? "Paid" : "To be paid"}</span>
+            )}
+          </div>
+          {isAuth.admin ? (
+            <InvoiceControls
+              invoice={invoice.id}
+              isModifying={isModifying}
+              setIsModifying={setIsModifying}
+              isDeleting={isDeleting}
+              setIsDeleting={setIsDeleting}
+              originalCompany={company}
+              setSelectedCompany={setSelectedCompany}
+              originalContact={contact}
+              setSelectedContact={setSelectedContact}
+              handleModif={handleModif}
             />
           ) : (
-            <span id="invoiceReceived">{`${day}-${month}-${year}`}</span>
-          )}
-          <span>Paid status : </span>
-          {isModifying ? (
-            <label htmlFor="paid" className="switchToggle">
-              {invoice.paid ? (
-                <input
-                  type="checkbox"
-                  name="paid"
-                  id="paid"
-                  className="switchCheck"
-                  ref={paidRef}
-                  defaultChecked
-                />
-              ) : (
-                <input
-                  type="checkbox"
-                  name="paid"
-                  id="paid"
-                  className="switchCheck"
-                  ref={paidRef}
-                />
-              )}
-              <span className="slider"></span>
-            </label>
-          ) : (
-            <span>{invoice.paid ? "Paid" : "To be paid"}</span>
+            ""
           )}
         </div>
-        {isAuth.admin ? (
-          <InvoiceControls
-            invoice={invoice.id}
-            isModifying={isModifying}
-            setIsModifying={setIsModifying}
-            isDeleting={isDeleting}
-            setIsDeleting={setIsDeleting}
-            originalCompany={company}
-            setSelectedCompany={setSelectedCompany}
-            originalContact={contact}
-            setSelectedContact={setSelectedContact}
-            handleModif={handleModif}
-          />
-        ) : (
-          ""
-        )}
-      </div>
+      )}
     </main>
   );
 }
