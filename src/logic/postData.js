@@ -1,8 +1,9 @@
-const postData = async (src, data) => {
+const postData = async (src, data, token) => {
   const options = {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
     },
     body: JSON.stringify(data),
   };

@@ -1,31 +1,31 @@
 #mobileMenu {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    width: 100%;
-    height: 100%;
-    background: hsla(211, 0%, 0%, 0.5);
-    transform: translate(-50%, -50%);
-    pointer-events: none;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    ul {
-        pointer-events: auto;
-        background: $clr-primary-low;
-        padding: 2rem;
-        text-align: center;
-        position: relative;
-    }
-    li {
-        padding: 0.5rem;
-        font-size: 1.2rem;
-        font-weight: 600;
-        cursor: pointer;
-    }
-    #menuCross {
-        position: absolute;
-        top: 0;
-        right: 0.5rem;
-    }
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  width: 100%;
+  height: 100%;
+  background: hsla(211, 0%, 0%, 0.5);
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  ul {
+    pointer-events: auto;
+    background: $clr-primary-low;
+    padding: 2rem;
+    text-align: center;
+    position: relative;
+  }
+  li {
+    padding: 0.5rem;
+    font-size: 1.2rem;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  #menuCross {
+    position: absolute;
+    top: 0;
+    right: 0.5rem;
+  }
 }

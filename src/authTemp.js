@@ -1,20 +1,19 @@
-export default dbUserCheck = (username, pwd) => {
-    const users = ["jc", "bap"];
-    const pwds = ["jc", "bap"];
-    const emails = ["jc@jc.com", "bap@bap.com"];
-    const admins = [true, false];
-
-    const index = users.indexOf(username);
-
-    if (!users.includes(username)) {
-        return "user not found";
-    }
-    if (pwds[index] !== pwd) {
-        return "Password did not match";
-    }
-    return {
-        username,
-        email: emails[index],
-        admin: admins[index],
-    };
+export default dbUserCheck = async (data) => {
+  const options = {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  };
+  try {
+    const response = await fetch(
+      "https://csharpproject.somee.com/api/Auth/login",
+      options
+    );
+    const res = [response.status, await response.text()];
+    return res;
+  } catch (error) {
+    return error;
+  }
 };

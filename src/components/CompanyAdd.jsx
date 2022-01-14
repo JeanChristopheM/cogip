@@ -1,9 +1,12 @@
+import { useState } from "react";
 import postData from "../logic/postData";
 import { companyVerify } from "../logic/formValidation";
 
-function CompanyAdd({ setIsLoaded }) {
+function CompanyAdd({ setIsLoaded, isAuth }) {
+  const [isFetching, setIsFetching] = useState(false);
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsFetching(true);
     const formData = {
       name: e.target.name.value,
       vat: e.target.vat.value,
@@ -12,9 +15,15 @@ function CompanyAdd({ setIsLoaded }) {
     let check = companyVerify(formData);
     if (check.ok) {
       console.log(formData);
-      await postData("https://csharpproject.somee.com/api/company", formData);
+      await postData(
+        "https://csharpproject.somee.com/api/company",
+        formData,
+        isAuth
+      );
+      setIsFetching(false);
       setIsLoaded(false);
     } else {
+      setIsFetching(false);
       const issues = Object.keys(check);
       for (let issue of issues) {
         if (issue !== "ok") alert(check[issue]);
@@ -57,6 +66,11 @@ function CompanyAdd({ setIsLoaded }) {
           <button>Submit</button>
         </form>
       </div>
+      {isFetching ? (
+        <div className="fetching dark">
+          <div className="lds-dual-ring"></div>
+        </div>
+      ) : null}
     </main>
   );
 }

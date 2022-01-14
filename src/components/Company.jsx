@@ -3,6 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { companyVerify } from "../logic/formValidation.js";
 import putData from "../logic/putData";
 import CompanyControls from "./CompanyControls.jsx";
+import parseJwt from "../logic/tokenDecrypter.js";
 
 function Company({ companies, contacts, setIsLoaded, isAuth }) {
   let params = useParams();
@@ -29,7 +30,8 @@ function Company({ companies, contacts, setIsLoaded, isAuth }) {
       console.log(formData);
       await putData(
         `https://csharpproject.somee.com/api/company/${params.companyId}`,
-        formData
+        formData,
+        isAuth
       );
       setIsLoaded(false);
       setIsFetching(false);
@@ -41,6 +43,8 @@ function Company({ companies, contacts, setIsLoaded, isAuth }) {
       }
     }
   };
+
+  const key = "http://schemas.microsoft.com/ws/2008/06/identity/claims/role";
 
   return (
     <main>
@@ -110,7 +114,7 @@ function Company({ companies, contacts, setIsLoaded, isAuth }) {
               })}
             </ul>
           </div>
-          {isAuth.admin ? (
+          {parseJwt(isAuth)[key] == "Admin" ? (
             <CompanyControls
               isModifying={isModifying}
               isDeleting={isDeleting}

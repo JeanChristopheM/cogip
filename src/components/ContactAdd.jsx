@@ -3,11 +3,13 @@ import { contactVerify } from "../logic/formValidation";
 import postData from "../logic/postData";
 import CompanySelector from "./CompanySelector";
 
-function ContactAdd({ companies, setIsLoaded }) {
+function ContactAdd({ companies, setIsLoaded, isAuth }) {
   const [selectedCompany, setSelectedCompany] = useState("");
+  const [isFetching, setIsFetching] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsFetching(true);
     const formData = {
       firstname: e.target.firstname.value,
       lastname: e.target.lastname.value,
@@ -18,9 +20,15 @@ function ContactAdd({ companies, setIsLoaded }) {
     let check = contactVerify(formData);
     if (check.ok) {
       console.log(formData);
-      await postData("https://csharpproject.somee.com/api/contact", formData);
+      await postData(
+        "https://csharpproject.somee.com/api/contact",
+        formData,
+        isAuth
+      );
+      setIsFetching(false);
       setIsLoaded(false);
     } else {
+      setIsFetching(false);
       const issues = Object.keys(check);
       for (let issue of issues) {
         if (issue !== "ok") alert(check[issue]);
@@ -87,6 +95,11 @@ function ContactAdd({ companies, setIsLoaded }) {
           <button>Submit</button>
         </form>
       </div>
+      {isFetching ? (
+        <div className="fetching dark">
+          <div className="lds-dual-ring"></div>
+        </div>
+      ) : null}
     </main>
   );
 }

@@ -18,6 +18,18 @@ function Homepage({
   const handleAdd = (e) => {
     navigate(`/${e.target.id}`);
   };
+
+  /* Sorting data to get 5 latest addition */
+  invoices.sort((a, b) => {
+    return new Date(b.received) - new Date(a.received);
+  });
+  contacts.sort((a, b) => {
+    return new Date(b.added) - new Date(a.added);
+  });
+  companies.sort((a, b) => {
+    return new Date(b.added) - new Date(a.added);
+  });
+
   return (
     <main className="homepage">
       <section className="invoices card">
@@ -53,7 +65,11 @@ function Homepage({
               );
             })
           ) : (
-            <li>{"Loading"}</li>
+            <li>
+              <div className="spinner-centerer">
+                <div className="lds-dual-ring"></div>
+              </div>
+            </li>
           )}
         </ul>
       </section>
@@ -88,7 +104,11 @@ function Homepage({
               );
             })
           ) : (
-            <li>{"Loading"}</li>
+            <li>
+              <div className="spinner-centerer">
+                <div className="lds-dual-ring"></div>
+              </div>
+            </li>
           )}
         </ul>
       </section>
@@ -117,14 +137,26 @@ function Homepage({
               return <CompanyLi company={entry} key={entry.id} />;
             })
           ) : (
-            <li>{"Loading"}</li>
+            <li>
+              <div className="spinner-centerer">
+                <div className="lds-dual-ring"></div>
+              </div>
+            </li>
           )}
         </ul>
       </section>
       <section className="chart card">
         <h2>Payement Status</h2>
         <div style={{ position: "relative" }} id="canvasContainer">
-          <Chart invoices={invoices} />
+          {invoices.length > 0 ? (
+            <Chart invoices={invoices} />
+          ) : (
+            <li>
+              <div className="spinner-centerer">
+                <div className="lds-dual-ring"></div>
+              </div>
+            </li>
+          )}
         </div>
       </section>
     </main>

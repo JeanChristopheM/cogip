@@ -5,9 +5,10 @@ import { invoiceVerify } from "../logic/formValidation";
 import CompanySelector from "./CompanySelector";
 import ContactSelector from "./ContactSelector";
 
-function InvoiceAdd({ contacts, companies, setIsLoaded }) {
+function InvoiceAdd({ contacts, companies, setIsLoaded, isAuth }) {
   const [selectedCompany, setSelectedCompany] = useState("");
   const [selectedContact, setSelectedContact] = useState("");
+  const [isFetching, setIsFetching] = useState(false);
 
   const handleCompanyChange = (value) => {
     setSelectedCompany(value);
@@ -18,6 +19,7 @@ function InvoiceAdd({ contacts, companies, setIsLoaded }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsFetching(true);
     const contact = contacts.find(
       (el) => `${el.firstname} ${el.lastname}` == selectedContact
     );
@@ -35,9 +37,15 @@ function InvoiceAdd({ contacts, companies, setIsLoaded }) {
     /* Posting data if OK */
     if (check.ok) {
       console.log(formData);
-      await postData("https://csharpproject.somee.com/api/Invoice", formData);
+      await postData(
+        "https://csharpproject.somee.com/api/Invoice",
+        formData,
+        isAuth
+      );
+      setIsFetching(false);
       setIsLoaded(false);
     } else {
+      setIsFetching(false);
       /* Handling Errors */
       const issues = Object.keys(check);
       for (let issue of issues) {
@@ -104,6 +112,11 @@ function InvoiceAdd({ contacts, companies, setIsLoaded }) {
           <button>Submit</button>
         </form>
       </div>
+      {isFetching ? (
+        <div className="fetching dark">
+          <div className="lds-dual-ring"></div>
+        </div>
+      ) : null}
     </main>
   );
 }

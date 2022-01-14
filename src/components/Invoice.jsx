@@ -5,6 +5,7 @@ import CompanySelector from "./CompanySelector.jsx";
 import ContactSelector from "./ContactSelector.jsx";
 import putData from "../logic/putData";
 import { invoiceVerify } from "../logic/formValidation.js";
+import parseJwt from "../logic/tokenDecrypter.js";
 
 function Invoice({ invoices, companies, contacts, setIsLoaded, isAuth }) {
   let params = useParams();
@@ -52,7 +53,8 @@ function Invoice({ invoices, companies, contacts, setIsLoaded, isAuth }) {
       console.log(formData);
       await putData(
         `https://csharpproject.somee.com/api/invoice/${params.invoiceId}`,
-        formData
+        formData,
+        isAuth
       );
       setIsLoaded(false);
       setIsFetching(false);
@@ -64,6 +66,9 @@ function Invoice({ invoices, companies, contacts, setIsLoaded, isAuth }) {
       }
     }
   };
+
+  const key = "http://schemas.microsoft.com/ws/2008/06/identity/claims/role";
+
   return (
     <main>
       {isFetching ? (
@@ -177,7 +182,7 @@ function Invoice({ invoices, companies, contacts, setIsLoaded, isAuth }) {
               <span>{invoice.paid ? "Paid" : "To be paid"}</span>
             )}
           </div>
-          {isAuth.admin ? (
+          {parseJwt(isAuth)[key] == "Admin" ? (
             <InvoiceControls
               invoice={invoice.id}
               isModifying={isModifying}

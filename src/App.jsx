@@ -50,16 +50,16 @@ function App() {
   const remote = 1;
   /* Loading data function */
   const loadData = async () => {
-    setCompanies(await getData(companiesSrc[remote]));
-    setInvoices(await getData(invoicesSrc[remote]));
-    setContacts(await getData(contactsSrc[remote]));
+    setCompanies(await getData(companiesSrc[remote], isAuth));
+    setInvoices(await getData(invoicesSrc[remote], isAuth));
+    setContacts(await getData(contactsSrc[remote], isAuth));
   };
   /* If cookie, set the authentification to cache and redirect to homepage */
   useEffect(() => {
     if (sessionStorage.getItem("cogipAuth")) {
-      setAuth(JSON.parse(sessionStorage.getItem("cogipAuth")));
+      setAuth(sessionStorage.getItem("cogipAuth"));
     } else if (localStorage.getItem("cogipAuth")) {
-      setAuth(JSON.parse(localStorage.getItem("cogipAuth")));
+      setAuth(localStorage.getItem("cogipAuth"));
     }
   }, []);
   /* If we logged in -> Load the data */
@@ -227,7 +227,11 @@ function App() {
             <PrivateRoute
               isAuth={isAuth}
               element={
-                <ContactAdd companies={companies} setIsLoaded={setIsLoaded} />
+                <ContactAdd
+                  companies={companies}
+                  setIsLoaded={setIsLoaded}
+                  isAuth={isAuth}
+                />
               }
             />
           }
@@ -242,6 +246,7 @@ function App() {
                   companies={companies}
                   contacts={contacts}
                   setIsLoaded={setIsLoaded}
+                  isAuth={isAuth}
                 />
               }
             />
@@ -252,7 +257,7 @@ function App() {
           element={
             <PrivateRoute
               isAuth={isAuth}
-              element={<CompanyAdd setIsLoaded={setIsLoaded} />}
+              element={<CompanyAdd setIsLoaded={setIsLoaded} isAuth={isAuth} />}
             />
           }
         />

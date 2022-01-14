@@ -4,6 +4,7 @@ import ContactControls from "./ContactControls.jsx";
 import CompanySelector from "./CompanySelector";
 import putData from "../logic/putData";
 import { contactVerify } from "../logic/formValidation.js";
+import parseJwt from "../logic/tokenDecrypter.js";
 
 function Contact({ contacts, companies, setIsLoaded, isAuth }) {
   const params = useParams();
@@ -37,7 +38,8 @@ function Contact({ contacts, companies, setIsLoaded, isAuth }) {
       console.log(formData);
       await putData(
         `https://csharpproject.somee.com/api/contact/${params.contactId}`,
-        formData
+        formData,
+        isAuth
       );
       setIsLoaded(false);
       setIsFetching(false);
@@ -49,6 +51,8 @@ function Contact({ contacts, companies, setIsLoaded, isAuth }) {
       }
     }
   };
+
+  const key = "http://schemas.microsoft.com/ws/2008/06/identity/claims/role";
 
   return (
     <main>
@@ -126,7 +130,7 @@ function Contact({ contacts, companies, setIsLoaded, isAuth }) {
               <span id="contactPhonenumber">{contact.phonenumber}</span>
             )}
           </div>
-          {isAuth.admin ? (
+          {parseJwt(isAuth)[key] == "Admin" ? (
             <ContactControls
               isModifying={isModifying}
               setIsModifying={setIsModifying}
