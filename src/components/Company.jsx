@@ -6,6 +6,7 @@ import CompanyControls from "./CompanyControls.jsx";
 import parseJwt from "../logic/tokenDecrypter.js";
 
 function Company({ companies, contacts, setIsLoaded, isAuth }) {
+  const loaded = companies.length > 0 ? true : false;
   let params = useParams();
   const navigate = useNavigate();
   let company = companies.find((el) => el.id == params.companyId);
@@ -48,7 +49,7 @@ function Company({ companies, contacts, setIsLoaded, isAuth }) {
 
   return (
     <main>
-      {isFetching ? (
+      {isFetching || !loaded ? (
         <div className="fetching">
           <div className="lds-dual-ring"></div>
         </div>

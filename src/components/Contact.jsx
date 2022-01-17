@@ -7,6 +7,7 @@ import { contactVerify } from "../logic/formValidation.js";
 import parseJwt from "../logic/tokenDecrypter.js";
 
 function Contact({ contacts, companies, setIsLoaded, isAuth }) {
+  const loaded = contacts.length > 0 ? true : false;
   const params = useParams();
   const navigate = useNavigate();
   const contact = contacts.find((el) => el.id == params.contactId);
@@ -56,7 +57,7 @@ function Contact({ contacts, companies, setIsLoaded, isAuth }) {
 
   return (
     <main>
-      {isFetching ? (
+      {isFetching || !loaded ? (
         <div className="fetching">
           <div className="lds-dual-ring"></div>
         </div>

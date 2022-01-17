@@ -8,6 +8,7 @@ import { invoiceVerify } from "../logic/formValidation.js";
 import parseJwt from "../logic/tokenDecrypter.js";
 
 function Invoice({ invoices, companies, contacts, setIsLoaded, isAuth }) {
+  const loaded = invoices.length > 0 ? true : false;
   let params = useParams();
   const navigate = useNavigate();
   const invoice = invoices.find((el) => el.id == params.invoiceId);
@@ -71,7 +72,7 @@ function Invoice({ invoices, companies, contacts, setIsLoaded, isAuth }) {
 
   return (
     <main>
-      {isFetching ? (
+      {isFetching || !loaded ? (
         <div className="fetching">
           <div className="lds-dual-ring"></div>
         </div>
