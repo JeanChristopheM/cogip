@@ -29,7 +29,7 @@ function Homepage({
   companies.sort((a, b) => {
     return new Date(b.added) - new Date(a.added);
   });
-
+  console.log("homepage mounted");
   return (
     <main className="homepage">
       <section className="invoices card">

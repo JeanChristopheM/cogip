@@ -9,7 +9,7 @@ function Login({ setAuth, isAuth }) {
   const pwdInput = useRef(null);
   const rememberInput = useRef(null);
   const navigate = useNavigate();
-
+  console.log("login page mounted");
   const onAuthClick = async (e) => {
     e.preventDefault();
     setIsFetching(true);

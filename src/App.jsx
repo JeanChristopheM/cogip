@@ -55,7 +55,7 @@ function App() {
     setContacts(await getData(contactsSrc[remote], isAuth));
   };
   /* If cookie, set the authentification to cache and redirect to homepage */
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (sessionStorage.getItem("cogipAuth")) {
       setAuth(sessionStorage.getItem("cogipAuth"));
     } else if (localStorage.getItem("cogipAuth")) {
@@ -119,6 +119,7 @@ function App() {
       <ScrollToTop />
       <Routes>
         <Route
+          exact
           path="/login"
           element={<Login setAuth={setAuth} isAuth={isAuth} />}
         />
@@ -277,7 +278,17 @@ function App() {
             />
           }
         />
-        <Route path="*" element={<FourOfour />} />
+        <Route
+          path="*"
+          element={
+            <InvoiceAdd
+              companies={companies}
+              contacts={contacts}
+              setIsLoaded={setIsLoaded}
+              isAuth={isAuth}
+            />
+          }
+        />
       </Routes>
       {displayMenu && <MobileMenu onLogout={logout} />}
       <Footer />
