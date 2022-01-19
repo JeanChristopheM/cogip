@@ -2,14 +2,13 @@ import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import dbUserCheck from "../authTemp.js";
 
-function Login({ setAuth, isAuth }) {
+function Login({ setAuth, isAuth, location }) {
   const [isFetching, setIsFetching] = useState(false);
   const logo = new URL("../media/img/logo.png", import.meta.url);
   const usernameInput = useRef(null);
   const pwdInput = useRef(null);
   const rememberInput = useRef(null);
   const navigate = useNavigate();
-  console.log("login page mounted");
   const onAuthClick = async (e) => {
     e.preventDefault();
     setIsFetching(true);
@@ -24,11 +23,11 @@ function Login({ setAuth, isAuth }) {
       exit;
     } else {
       if (rememberInput.current.checked) {
-        localStorage.setItem("cogipAuth", response[1]);
+        localStorage.setItem("cogipAuth", JSON.stringify(response[1]));
       }
-      sessionStorage.setItem("cogipAuth", response[1]);
+      sessionStorage.setItem("cogipAuth", JSON.stringify(response[1]));
       setAuth(response[1]);
-      navigate("/home");
+      navigate(location.pathname);
     }
   };
   return (

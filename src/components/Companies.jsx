@@ -31,7 +31,7 @@ function Companies({ companies }) {
       results.push(obj);
     }
     return results;
-  }, []);
+  }, [companies]);
   const columns = useMemo(
     () => [
       {
@@ -50,7 +50,7 @@ function Companies({ companies }) {
       { Header: "Added", accessor: "col4", className: "companyAdded" },
       { Header: "ID", accessor: "id", className: "companyId" },
     ],
-    []
+    [companies]
   );
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
     useTable(
@@ -79,11 +79,6 @@ function Companies({ companies }) {
             +
           </button>
         </h2>
-        {/* <ul>
-          {companies.map((entry) => {
-            return <CompanyLi company={entry} key={entry.id} />;
-          })}
-        </ul> */}
 
         <table {...getTableProps()} className="table">
           <thead>

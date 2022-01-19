@@ -32,7 +32,7 @@ function Company({ companies, contacts, setIsLoaded, isAuth }) {
       await putData(
         `https://csharpproject.somee.com/api/company/${params.companyId}`,
         formData,
-        isAuth
+        isAuth.jwt
       );
       setIsLoaded(false);
       setIsFetching(false);
@@ -44,8 +44,6 @@ function Company({ companies, contacts, setIsLoaded, isAuth }) {
       }
     }
   };
-
-  const key = "http://schemas.microsoft.com/ws/2008/06/identity/claims/role";
 
   return (
     <main>
@@ -115,7 +113,7 @@ function Company({ companies, contacts, setIsLoaded, isAuth }) {
               })}
             </ul>
           </div>
-          {parseJwt(isAuth)[key] == "Admin" ? (
+          {isAuth.role == "Admin" ? (
             <CompanyControls
               isModifying={isModifying}
               isDeleting={isDeleting}

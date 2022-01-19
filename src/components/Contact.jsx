@@ -40,7 +40,7 @@ function Contact({ contacts, companies, setIsLoaded, isAuth }) {
       await putData(
         `https://csharpproject.somee.com/api/contact/${params.contactId}`,
         formData,
-        isAuth
+        isAuth.jwt
       );
       setIsLoaded(false);
       setIsFetching(false);
@@ -131,7 +131,7 @@ function Contact({ contacts, companies, setIsLoaded, isAuth }) {
               <span id="contactPhonenumber">{contact.phonenumber}</span>
             )}
           </div>
-          {parseJwt(isAuth)[key] == "Admin" ? (
+          {isAuth.role == "Admin" ? (
             <ContactControls
               isModifying={isModifying}
               setIsModifying={setIsModifying}

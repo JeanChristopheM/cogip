@@ -55,7 +55,7 @@ function Invoice({ invoices, companies, contacts, setIsLoaded, isAuth }) {
       await putData(
         `https://csharpproject.somee.com/api/invoice/${params.invoiceId}`,
         formData,
-        isAuth
+        isAuth.jwt
       );
       setIsLoaded(false);
       setIsFetching(false);
@@ -183,7 +183,7 @@ function Invoice({ invoices, companies, contacts, setIsLoaded, isAuth }) {
               <span>{invoice.paid ? "Paid" : "To be paid"}</span>
             )}
           </div>
-          {parseJwt(isAuth)[key] == "Admin" ? (
+          {isAuth.role == "Admin" ? (
             <InvoiceControls
               invoice={invoice.id}
               isModifying={isModifying}

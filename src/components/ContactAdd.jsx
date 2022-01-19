@@ -23,7 +23,7 @@ function ContactAdd({ companies, setIsLoaded, isAuth }) {
       await postData(
         "https://csharpproject.somee.com/api/contact",
         formData,
-        isAuth
+        isAuth.jwt
       );
       setIsFetching(false);
       setIsLoaded(false);

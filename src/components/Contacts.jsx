@@ -27,7 +27,7 @@ function Contacts({ contacts, companies }) {
       results.push(obj);
     }
     return results;
-  }, []);
+  }, [contacts]);
   const columns = useMemo(
     () => [
       {
@@ -55,7 +55,7 @@ function Contacts({ contacts, companies }) {
       { Header: "Added", accessor: "col5", className: "contactAdded" },
       { Header: "ID", accessor: "id", className: "contactId" },
     ],
-    []
+    [contacts]
   );
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
     useTable(

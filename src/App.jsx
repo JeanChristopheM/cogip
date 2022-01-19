@@ -1,7 +1,7 @@
 /* Functions */
 import { useState, useEffect, useLayoutEffect } from "react";
 import { getData } from "./logic/getData";
-import { Routes, Route, useNavigate } from "react-router-dom";
+import { Routes, Route, useNavigate, useLocation } from "react-router-dom";
 /* Components */
 import Header from "./components/Header.jsx";
 import Footer from "./components/Footer.jsx";
@@ -26,12 +26,15 @@ import InvoiceAdd from "./components/InvoiceAdd.jsx";
 
 function App() {
   const navigate = useNavigate();
+  const [checkedAuth, setCheckedAuth] = useState(false);
   const [isAuth, setAuth] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
   const [displayMenu, setDisplayMenu] = useState(false);
   const [companies, setCompanies] = useState([]);
   const [invoices, setInvoices] = useState([]);
   const [contacts, setContacts] = useState([]);
+
+  const location = useLocation();
 
   /* LINKS TO DATA */
   const companiesSrc = [
@@ -50,23 +53,23 @@ function App() {
   const remote = 1;
   /* Loading data function */
   const loadData = async () => {
-    setCompanies(await getData(companiesSrc[remote], isAuth));
-    setInvoices(await getData(invoicesSrc[remote], isAuth));
-    setContacts(await getData(contactsSrc[remote], isAuth));
+    setCompanies(await getData(companiesSrc[remote], isAuth.jwt));
+    setInvoices(await getData(invoicesSrc[remote], isAuth.jwt));
+    setContacts(await getData(contactsSrc[remote], isAuth.jwt));
   };
   /* If cookie, set the authentification to cache and redirect to homepage */
   useLayoutEffect(() => {
     if (sessionStorage.getItem("cogipAuth")) {
-      setAuth(sessionStorage.getItem("cogipAuth"));
+      setAuth(JSON.parse(sessionStorage.getItem("cogipAuth")));
     } else if (localStorage.getItem("cogipAuth")) {
-      setAuth(localStorage.getItem("cogipAuth"));
+      setAuth(JSON.parse(localStorage.getItem("cogipAuth")));
     }
+    setCheckedAuth(true);
   }, []);
   /* If we logged in -> Load the data */
   useLayoutEffect(() => {
     if (isAuth && !isLoaded) {
       loadData();
-      navigate("/home");
     }
   }, [isAuth, isLoaded]);
 
@@ -97,199 +100,126 @@ function App() {
     sessionStorage.removeItem("cogipAuth");
     setAuth(null);
     setDisplayMenu(false);
-    navigate("/home");
+    navigate("/");
   };
-  /* Possible Routes */
-  const possibleRoutes = [
-    "login",
-    "home",
-    "companies",
-    "company",
-    "contacts",
-    "contact",
-    "invoices",
-    "invoice",
-    "contactAdd",
-    "invoiceAdd",
-    "companyAdd",
-  ];
+
   return (
     <>
-      <Header openMenu={openMenu} possibleRoutes={possibleRoutes} />
-      <ScrollToTop />
-      <Routes>
-        <Route
-          exact
-          path="/login"
-          element={<Login setAuth={setAuth} isAuth={isAuth} />}
-        />
-        <Route
-          path="/home"
-          element={
-            <PrivateRoute
-              isAuth={isAuth}
-              element={
-                <Homepage
-                  isAuth={isAuth}
-                  companies={companies}
-                  contacts={contacts}
-                  invoices={invoices}
-                />
-              }
-            />
-          }
-        />
-        <Route
-          path="/companies"
-          element={
-            <PrivateRoute
-              isAuth={isAuth}
-              element={<Companies companies={companies} />}
-            />
-          }
-        />
-        <Route
-          path="/company/:companyId"
-          element={
-            <PrivateRoute
-              isAuth={isAuth}
-              element={
-                <Company
-                  companies={companies}
-                  setIsLoaded={setIsLoaded}
-                  getAllData={loadData}
-                  contacts={contacts}
-                  isAuth={isAuth}
-                />
-              }
-            />
-          }
-        />
-        <Route
-          path="/invoices"
-          element={
-            <PrivateRoute
-              isAuth={isAuth}
-              element={
-                <Invoices
-                  invoices={invoices}
-                  contacts={contacts}
-                  companies={companies}
-                />
-              }
-            />
-          }
-        />
-        <Route
-          path="/invoice/:invoiceId"
-          element={
-            <PrivateRoute
-              isAuth={isAuth}
-              element={
-                <Invoice
-                  invoices={invoices}
-                  companies={companies}
-                  contacts={contacts}
-                  setIsLoaded={setIsLoaded}
-                  isAuth={isAuth}
-                />
-              }
-            />
-          }
-        />
-        <Route
-          path="/contacts"
-          element={
-            <PrivateRoute
-              isAuth={isAuth}
-              element={<Contacts contacts={contacts} companies={companies} />}
-            />
-          }
-        />
-        <Route
-          path="/contact/:contactId"
-          element={
-            <PrivateRoute
-              isAuth={isAuth}
-              element={
-                <Contact
-                  contacts={contacts}
-                  companies={companies}
-                  setIsLoaded={setIsLoaded}
-                  isAuth={isAuth}
-                />
-              }
-            />
-          }
-        />
-        <Route
-          path="/contactAdd"
-          element={
-            <PrivateRoute
-              isAuth={isAuth}
-              element={
-                <ContactAdd
-                  companies={companies}
-                  setIsLoaded={setIsLoaded}
-                  isAuth={isAuth}
-                />
-              }
-            />
-          }
-        />
-        <Route
-          path="/invoiceAdd"
-          element={
-            <PrivateRoute
-              isAuth={isAuth}
-              element={
-                <InvoiceAdd
-                  companies={companies}
-                  contacts={contacts}
-                  setIsLoaded={setIsLoaded}
-                  isAuth={isAuth}
-                />
-              }
-            />
-          }
-        />
-        <Route
-          path="/companyAdd"
-          element={
-            <PrivateRoute
-              isAuth={isAuth}
-              element={<CompanyAdd setIsLoaded={setIsLoaded} isAuth={isAuth} />}
-            />
-          }
-        />
-        <Route
-          path="/"
-          element={
-            <PrivateRoute
-              isAuth={isAuth}
-              element={
-                <Homepage
-                  userdata={isAuth}
-                  companies={companies}
-                  contacts={contacts}
-                  invoices={invoices}
-                />
-              }
-            />
-          }
-        />
-        <Route
-          path="*"
-          element={
-            <InvoiceAdd
-              companies={companies}
-              contacts={contacts}
-              setIsLoaded={setIsLoaded}
-              isAuth={isAuth}
-            />
-          }
-        />
-      </Routes>
+      <Header openMenu={openMenu} />
+      {checkedAuth ? (
+        <>
+          {isAuth ? (
+            <>
+              {isLoaded ? (
+                <Routes>
+                  <Route
+                    path=""
+                    element={
+                      <Homepage
+                        isAuth={isAuth}
+                        companies={companies}
+                        contacts={contacts}
+                        invoices={invoices}
+                      />
+                    }
+                  />
+                  <Route
+                    path="/companies"
+                    element={<Companies companies={companies} />}
+                  />
+                  <Route
+                    path="/company/:companyId"
+                    element={
+                      <Company
+                        companies={companies}
+                        setIsLoaded={setIsLoaded}
+                        getAllData={loadData}
+                        contacts={contacts}
+                        isAuth={isAuth}
+                      />
+                    }
+                  />
+                  <Route
+                    path="/invoices"
+                    element={
+                      <Invoices
+                        invoices={invoices}
+                        contacts={contacts}
+                        companies={companies}
+                      />
+                    }
+                  />
+                  <Route
+                    path="/invoice/:invoiceId"
+                    element={
+                      <Invoice
+                        invoices={invoices}
+                        companies={companies}
+                        contacts={contacts}
+                        setIsLoaded={setIsLoaded}
+                        isAuth={isAuth}
+                      />
+                    }
+                  />
+                  <Route
+                    path="/contacts"
+                    element={
+                      <Contacts contacts={contacts} companies={companies} />
+                    }
+                  />
+                  <Route
+                    path="/contact/:contactId"
+                    element={
+                      <Contact
+                        contacts={contacts}
+                        companies={companies}
+                        setIsLoaded={setIsLoaded}
+                        isAuth={isAuth}
+                      />
+                    }
+                  />
+                  <Route
+                    path="/contactAdd"
+                    element={
+                      <ContactAdd
+                        companies={companies}
+                        setIsLoaded={setIsLoaded}
+                        isAuth={isAuth}
+                      />
+                    }
+                  />
+                  <Route
+                    path="/invoiceAdd"
+                    element={
+                      <InvoiceAdd
+                        companies={companies}
+                        contacts={contacts}
+                        setIsLoaded={setIsLoaded}
+                        isAuth={isAuth}
+                      />
+                    }
+                  />
+                  <Route
+                    path="/companyAdd"
+                    element={
+                      <CompanyAdd setIsLoaded={setIsLoaded} isAuth={isAuth} />
+                    }
+                  />
+                  <Route path="*" element={<FourOfour />} />
+                </Routes>
+              ) : (
+                <div className="fetching dark">
+                  <div className="lds-dual-ring"></div>
+                </div>
+              )}
+            </>
+          ) : (
+            <Login setAuth={setAuth} location={location} />
+          )}
+        </>
+      ) : (
+        <main>"Verifying Authentification"</main>
+      )}
       {displayMenu && <MobileMenu onLogout={logout} />}
       <Footer />
     </>

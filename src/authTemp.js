@@ -11,7 +11,7 @@ export default dbUserCheck = async (data) => {
       "https://csharpproject.somee.com/api/Auth/login",
       options
     );
-    const res = [response.status, await response.text()];
+    const res = [response.status, await response.json()];
     return res;
   } catch (error) {
     return error;

@@ -40,7 +40,7 @@ function InvoiceAdd({ contacts, companies, setIsLoaded, isAuth }) {
       await postData(
         "https://csharpproject.somee.com/api/Invoice",
         formData,
-        isAuth
+        isAuth.jwt
       );
       setIsFetching(false);
       setIsLoaded(false);

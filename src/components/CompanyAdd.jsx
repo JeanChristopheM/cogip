@@ -18,7 +18,7 @@ function CompanyAdd({ setIsLoaded, isAuth }) {
       await postData(
         "https://csharpproject.somee.com/api/company",
         formData,
-        isAuth
+        isAuth.jwt
       );
       setIsFetching(false);
       setIsLoaded(false);

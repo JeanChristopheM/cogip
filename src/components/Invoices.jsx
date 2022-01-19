@@ -31,7 +31,7 @@ function Invoices({ invoices, contacts, companies, setInvoiceId }) {
       results.push(obj);
     }
     return results;
-  }, []);
+  }, [invoices]);
   const columns = useMemo(
     () => [
       {
@@ -87,7 +87,7 @@ function Invoices({ invoices, contacts, companies, setInvoiceId }) {
         disableFilters: true,
       },
     ],
-    []
+    [invoices]
   );
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
     useTable(
