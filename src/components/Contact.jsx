@@ -2,7 +2,7 @@ import { useState, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import ContactControls from "./ContactControls.jsx";
 import CompanySelector from "./CompanySelector";
-import putData from "../logic/putData";
+import handleRequests from "../logic/handleRequests";
 import { contactVerify } from "../logic/formValidation.js";
 import parseJwt from "../logic/tokenDecrypter.js";
 
@@ -36,11 +36,11 @@ function Contact({ contacts, companies, setIsLoaded, isAuth }) {
     let check = contactVerify(formData);
     setIsFetching(true);
     if (check.ok) {
-      console.log(formData);
-      await putData(
+      await handleRequests(
+        "PUT",
         `https://csharpproject.somee.com/api/contact/${params.contactId}`,
-        formData,
-        isAuth.jwt
+        isAuth.jwt,
+        formData
       );
       setIsLoaded(false);
       setIsFetching(false);
@@ -52,8 +52,6 @@ function Contact({ contacts, companies, setIsLoaded, isAuth }) {
       }
     }
   };
-
-  const key = "http://schemas.microsoft.com/ws/2008/06/identity/claims/role";
 
   return (
     <main>

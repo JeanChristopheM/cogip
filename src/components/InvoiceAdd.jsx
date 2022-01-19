@@ -1,9 +1,14 @@
 import { useState } from "react";
-import postData from "../logic/postData";
+import handleRequests from "../logic/handleRequests";
 import { invoiceVerify } from "../logic/formValidation";
 
 import CompanySelector from "./CompanySelector";
 import ContactSelector from "./ContactSelector";
+
+// toaster
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+// end toaster
 
 function InvoiceAdd({ contacts, companies, setIsLoaded, isAuth }) {
   const [selectedCompany, setSelectedCompany] = useState("");
@@ -36,12 +41,22 @@ function InvoiceAdd({ contacts, companies, setIsLoaded, isAuth }) {
     let check = invoiceVerify(formData);
     /* Posting data if OK */
     if (check.ok) {
-      console.log(formData);
-      await postData(
+      const response = await handleRequests(
+        "POST",
         "https://csharpproject.somee.com/api/Invoice",
-        formData,
-        isAuth.jwt
+        isAuth.jwt,
+        formData
       );
+      toast(response.toString(), {
+        position: "bottom-left",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+      // COME BACK HERE JC
       setIsFetching(false);
       setIsLoaded(false);
     } else {
@@ -111,6 +126,7 @@ function InvoiceAdd({ contacts, companies, setIsLoaded, isAuth }) {
           </ul>
           <button>Submit</button>
         </form>
+        <ToastContainer />
       </div>
       {isFetching ? (
         <div className="fetching dark">

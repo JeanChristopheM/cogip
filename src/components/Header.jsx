@@ -1,7 +1,8 @@
 import React from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const Header = ({ openMenu }) => {
+  const navigate = useNavigate();
   /* Possible Routes */
   const possibleRoutes = [
     "login",
@@ -32,7 +33,14 @@ const Header = ({ openMenu }) => {
           }}
         ></i>
       )}
-      <h1>{finalLocation.toUpperCase()}</h1>
+      <h1
+        onClick={() => {
+          navigate("");
+        }}
+        style={{ cursor: "pointer" }}
+      >
+        {finalLocation.toUpperCase()}
+      </h1>
     </header>
   );
 };

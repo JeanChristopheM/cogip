@@ -1,13 +1,12 @@
 /* Functions */
 import { useState, useEffect, useLayoutEffect } from "react";
-import { getData } from "./logic/getData";
+import handleRequests from "./logic/handleRequests";
 import { Routes, Route, useNavigate, useLocation } from "react-router-dom";
 /* Components */
 import Header from "./components/Header.jsx";
 import Footer from "./components/Footer.jsx";
 import ScrollToTop from "./components/ScrollToTop.jsx";
 /* Page Contents */
-import PrivateRoute from "./components/PrivateRoute.jsx";
 import Login from "./components/Login.jsx";
 import Homepage from "./components/Homepage.jsx";
 import MobileMenu from "./components/MobileMenu.jsx";
@@ -53,9 +52,9 @@ function App() {
   const remote = 1;
   /* Loading data function */
   const loadData = async () => {
-    setCompanies(await getData(companiesSrc[remote], isAuth.jwt));
-    setInvoices(await getData(invoicesSrc[remote], isAuth.jwt));
-    setContacts(await getData(contactsSrc[remote], isAuth.jwt));
+    setCompanies(await handleRequests("GET", companiesSrc[remote], isAuth.jwt));
+    setInvoices(await handleRequests("GET", invoicesSrc[remote], isAuth.jwt));
+    setContacts(await handleRequests("GET", contactsSrc[remote], isAuth.jwt));
   };
   /* If cookie, set the authentification to cache and redirect to homepage */
   useLayoutEffect(() => {
@@ -208,9 +207,11 @@ function App() {
                   <Route path="*" element={<FourOfour />} />
                 </Routes>
               ) : (
-                <div className="fetching dark">
-                  <div className="lds-dual-ring"></div>
-                </div>
+                <main>
+                  <div className="fetching dark">
+                    <div className="lds-dual-ring"></div>
+                  </div>
+                </main>
               )}
             </>
           ) : (

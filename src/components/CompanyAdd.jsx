@@ -1,5 +1,5 @@
 import { useState } from "react";
-import postData from "../logic/postData";
+import handleRequests from "../logic/handleRequests";
 import { companyVerify } from "../logic/formValidation";
 
 function CompanyAdd({ setIsLoaded, isAuth }) {
@@ -14,11 +14,11 @@ function CompanyAdd({ setIsLoaded, isAuth }) {
     };
     let check = companyVerify(formData);
     if (check.ok) {
-      console.log(formData);
-      await postData(
+      await handleRequests(
+        "POST",
         "https://csharpproject.somee.com/api/company",
-        formData,
-        isAuth.jwt
+        isAuth.jwt,
+        formData
       );
       setIsFetching(false);
       setIsLoaded(false);

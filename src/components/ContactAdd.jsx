@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { contactVerify } from "../logic/formValidation";
-import postData from "../logic/postData";
+import handleRequests from "../logic/handleRequests";
 import CompanySelector from "./CompanySelector";
 
 function ContactAdd({ companies, setIsLoaded, isAuth }) {
@@ -19,11 +19,11 @@ function ContactAdd({ companies, setIsLoaded, isAuth }) {
     };
     let check = contactVerify(formData);
     if (check.ok) {
-      console.log(formData);
-      await postData(
+      await handleRequests(
+        "POST",
         "https://csharpproject.somee.com/api/contact",
-        formData,
-        isAuth.jwt
+        isAuth.jwt,
+        formData
       );
       setIsFetching(false);
       setIsLoaded(false);

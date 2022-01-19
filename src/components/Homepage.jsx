@@ -6,14 +6,7 @@ import Chart from "./Chart.jsx";
 
 import { useNavigate } from "react-router-dom";
 
-function Homepage({
-  isAuth,
-  companies,
-  invoices,
-  contacts,
-  setPage,
-  setInvoiceId,
-}) {
+function Homepage({ companies, invoices, contacts, setPage, setInvoiceId }) {
   const navigate = useNavigate();
   const handleAdd = (e) => {
     navigate(`/${e.target.id}`);
@@ -29,7 +22,7 @@ function Homepage({
   companies.sort((a, b) => {
     return new Date(b.added) - new Date(a.added);
   });
-  console.log("homepage mounted");
+
   return (
     <main className="homepage">
       <section className="invoices card">

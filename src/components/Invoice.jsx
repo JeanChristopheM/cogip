@@ -3,7 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import InvoiceControls from "./InvoiceControls.jsx";
 import CompanySelector from "./CompanySelector.jsx";
 import ContactSelector from "./ContactSelector.jsx";
-import putData from "../logic/putData";
+import handleRequests from "../logic/handleRequests";
 import { invoiceVerify } from "../logic/formValidation.js";
 import parseJwt from "../logic/tokenDecrypter.js";
 
@@ -51,11 +51,11 @@ function Invoice({ invoices, companies, contacts, setIsLoaded, isAuth }) {
     let check = invoiceVerify(formData);
     setIsFetching(true);
     if (check.ok) {
-      console.log(formData);
-      await putData(
+      await handleRequests(
+        "PUT",
         `https://csharpproject.somee.com/api/invoice/${params.invoiceId}`,
-        formData,
-        isAuth.jwt
+        isAuth.jwt,
+        formData
       );
       setIsLoaded(false);
       setIsFetching(false);
@@ -67,8 +67,6 @@ function Invoice({ invoices, companies, contacts, setIsLoaded, isAuth }) {
       }
     }
   };
-
-  const key = "http://schemas.microsoft.com/ws/2008/06/identity/claims/role";
 
   return (
     <main>

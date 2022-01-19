@@ -1,7 +1,7 @@
 import { useState, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { companyVerify } from "../logic/formValidation.js";
-import putData from "../logic/putData";
+import handleRequests from "../logic/handleRequests";
 import CompanyControls from "./CompanyControls.jsx";
 import parseJwt from "../logic/tokenDecrypter.js";
 
@@ -28,11 +28,11 @@ function Company({ companies, contacts, setIsLoaded, isAuth }) {
     let check = companyVerify(formData);
     setIsFetching(true);
     if (check.ok) {
-      console.log(formData);
-      await putData(
+      await handleRequests(
+        "PUT",
         `https://csharpproject.somee.com/api/company/${params.companyId}`,
-        formData,
-        isAuth.jwt
+        isAuth.jwt,
+        formData
       );
       setIsLoaded(false);
       setIsFetching(false);
