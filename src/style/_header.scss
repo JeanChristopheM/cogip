@@ -1,0 +1,105 @@
+.header {
+  position: fixed;
+  width: 100%;
+  background: $clr-primary-low;
+  box-shadow: 0 4px 8px 2px $clr-secondary;
+  z-index: 9;
+  #logoutLink {
+    color: $clr-secondary-low;
+  }
+  &__container {
+    max-width: calc(900px - 4rem);
+    margin: 0 auto;
+    @media screen and (min-width: 900px) {
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+    }
+  }
+  &__top {
+    display: grid;
+    grid-template-columns: 2rem 1fr;
+    align-items: center;
+    justify-items: center;
+    padding: 0.6rem;
+    #burger {
+      font-size: 2rem;
+      padding: 0.5rem;
+      cursor: pointer;
+    }
+    h1 {
+      width: max-content;
+      transform: translateX(-1rem);
+    }
+    .svgContainer {
+      transform: translateX(-2rem);
+    }
+    @media screen and (min-width: 900px) {
+      padding: 0;
+      display: block;
+      #burger {
+        display: none;
+        border: 1px solid red;
+        width: 100px;
+      }
+      h1 {
+        transform: translateX(0);
+      }
+      .svgContainer {
+        transform: translateX(0);
+      }
+    }
+  }
+  &__bottom {
+    display: none;
+    flex: 1 1 0;
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      font-weight: 600;
+      padding-inline: 2rem;
+      a {
+        cursor: pointer;
+        padding: 1rem;
+        position: relative;
+        overflow: hidden;
+        &::after {
+          position: absolute;
+          content: "";
+          bottom: 0;
+          left: 50%;
+          transform: translate(-50%, $size);
+          width: 1px;
+          height: 1px;
+          border-bottom: $size solid $clr-secondary;
+          border-top: $size solid transparent;
+          border-left: $size solid transparent;
+          border-right: $size solid transparent;
+          opacity: 0;
+          transition: opacity $animationSpeed ease-in-out,
+            transform $animationSpeed ease-in-out,
+            border-bottom $animationSpeed ease-in-out;
+        }
+        &.active {
+          &::after {
+            opacity: 1;
+            transform: translate(-50%, 0);
+          }
+        }
+        @media (hover: hover) {
+          &:not(.active):hover::after {
+            opacity: 1;
+            border-bottom: $size solid $clr-secondary-low;
+            transform: translate(-50%, 0);
+          }
+        }
+      }
+    }
+    @media screen and (min-width: 900px) {
+      display: block;
+    }
+  }
+  @media screen and (min-width: 900px) {
+  }
+}

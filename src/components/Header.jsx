@@ -1,9 +1,16 @@
-import React from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import Logo from "./Logo.jsx";
 
 const Header = ({ openMenu, onLogout, isAuth }) => {
+  const location = useLocation();
+  const [selected, setSelected] = useState();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    setSelected(location.pathname);
+  }, [location]);
+
   return (
     <header className="header">
       <div className="header__container">
@@ -32,10 +39,39 @@ const Header = ({ openMenu, onLogout, isAuth }) => {
         </div>
         <div className="header__bottom">
           <nav>
-            <Link to="">HOME</Link>
-            <Link to="/invoices">INVOICES</Link>
-            <Link to="/contacts">CONTACTS</Link>
-            <Link to="/companies">COMPANIES</Link>
+            <Link to="" className={selected === "/" ? "active" : null}>
+              HOME
+            </Link>
+            <Link
+              to="/invoices"
+              className={
+                selected === "/invoices" || selected === "/invoiceAdd"
+                  ? "active"
+                  : null
+              }
+            >
+              INVOICES
+            </Link>
+            <Link
+              to="/contacts"
+              className={
+                selected === "/contacts" || selected === "/contactAdd"
+                  ? "active"
+                  : null
+              }
+            >
+              CONTACTS
+            </Link>
+            <Link
+              to="/companies"
+              className={
+                selected === "/companies" || selected === "/companyAdd"
+                  ? "active"
+                  : null
+              }
+            >
+              COMPANIES
+            </Link>
             {isAuth ? (
               <Link to="" onClick={onLogout} id="logoutLink">
                 LOGOUT

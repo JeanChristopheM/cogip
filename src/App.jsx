@@ -102,6 +102,19 @@ function App() {
     navigate("/");
   };
 
+  // COME BACK HERE JC
+  /*
+
+  Journal financier
+
+  Listing des factures sur la page company/:companyId
+
+  Solde par company, par date, bilans, ...
+
+  TODO
+
+  */
+
   return (
     <>
       <Header openMenu={openMenu} onLogout={logout} isAuth={isAuth} />

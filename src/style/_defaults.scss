@@ -20,8 +20,11 @@ main {
   max-width: 900px;
   padding: 1rem;
   width: 100%;
-  margin-top: 5rem;
+  margin-top: 4.4rem;
   margin-inline: auto;
+  @media screen and (min-width: 900px) {
+    margin-top: 3rem;
+  }
 }
 .loginInput {
   padding: 0.5rem;

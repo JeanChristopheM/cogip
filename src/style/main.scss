@@ -1,73 +1,12 @@
 @import "reset";
 @import "vars";
 @import "defaults";
-
 #app {
   display: grid;
   grid-template-rows: auto max-content;
   min-height: 100%;
 }
-.header {
-  position: fixed;
-  width: 100%;
-  background: $clr-primary-low;
-  box-shadow: 0 4px 8px 2px $clr-secondary;
-  z-index: 9;
-  #logoutLink {
-    color: $clr-secondary-low;
-  }
-  &__container {
-    max-width: calc(900px - 4rem);
-    margin: 0 auto;
-    @media screen and (min-width: 900px) {
-      display: flex;
-      align-items: center;
-      gap: 2rem;
-    }
-  }
-  &__top {
-    padding: 0.6rem;
-    display: grid;
-    grid-template-columns: 2rem 1fr;
-    align-items: center;
-    justify-items: center;
-    #burger {
-      font-size: 2rem;
-      padding: 0.5rem;
-      cursor: pointer;
-    }
-    h1 {
-      width: max-content;
-      transform: translateX(-1rem);
-    }
-    @media screen and (min-width: 900px) {
-      display: block;
-      #burger {
-        display: none;
-      }
-      h1 {
-        transform: translateX(0);
-      }
-    }
-  }
-  &__bottom {
-    display: none;
-    flex: 1 1 0;
-    nav {
-      display: flex;
-      justify-content: space-between;
-      align-items: baseline;
-      font-weight: 600;
-      padding-inline: 2rem;
-      a {
-        cursor: pointer;
-      }
-    }
-    @media screen and (min-width: 900px) {
-      display: block;
-    }
-  }
-}
+
 .footer {
   margin-top: 3rem;
   background: $clr-primary-low;
@@ -90,6 +29,7 @@
     object-fit: contain;
   }
 }
+@import "header";
 @import "card";
 @import "mobilemenu";
 @import "login";
