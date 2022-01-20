@@ -45,13 +45,13 @@ function Company({ companies, contacts, setIsLoaded, isAuth }) {
           toast.success(message, {
             position: toast.POSITION.TOP_CENTER,
           });
-        }, 500);
+        }, 250);
       } else {
         setTimeout(() => {
           toast.error(message, {
             position: toast.POSITION.TOP_CENTER,
           });
-        }, 500);
+        }, 250);
       }
     } else {
       setIsFetching(false);
@@ -64,7 +64,7 @@ function Company({ companies, contacts, setIsLoaded, isAuth }) {
             });
           }
         }
-      }, 500);
+      }, 250);
     }
   };
 

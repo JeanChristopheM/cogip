@@ -104,7 +104,8 @@ function App() {
 
   return (
     <>
-      <Header openMenu={openMenu} />
+      <Header openMenu={openMenu} onLogout={logout} isAuth={isAuth} />
+      <ScrollToTop />
       {checkedAuth ? (
         <>
           {isAuth ? (

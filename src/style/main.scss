@@ -11,21 +11,61 @@
   position: fixed;
   width: 100%;
   background: $clr-primary-low;
-  padding: 0.6rem;
   box-shadow: 0 4px 8px 2px $clr-secondary;
-  display: grid;
-  grid-template-columns: 2rem 1fr;
-  align-items: center;
-  justify-items: center;
   z-index: 9;
-  #burger {
-    font-size: 2rem;
-    padding: 0.5rem;
-    cursor: pointer;
+  #logoutLink {
+    color: $clr-secondary-low;
   }
-  h1 {
-    width: max-content;
-    transform: translateX(-1rem);
+  &__container {
+    max-width: calc(900px - 4rem);
+    margin: 0 auto;
+    @media screen and (min-width: 900px) {
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+    }
+  }
+  &__top {
+    padding: 0.6rem;
+    display: grid;
+    grid-template-columns: 2rem 1fr;
+    align-items: center;
+    justify-items: center;
+    #burger {
+      font-size: 2rem;
+      padding: 0.5rem;
+      cursor: pointer;
+    }
+    h1 {
+      width: max-content;
+      transform: translateX(-1rem);
+    }
+    @media screen and (min-width: 900px) {
+      display: block;
+      #burger {
+        display: none;
+      }
+      h1 {
+        transform: translateX(0);
+      }
+    }
+  }
+  &__bottom {
+    display: none;
+    flex: 1 1 0;
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      font-weight: 600;
+      padding-inline: 2rem;
+      a {
+        cursor: pointer;
+      }
+    }
+    @media screen and (min-width: 900px) {
+      display: block;
+    }
   }
 }
 .footer {
@@ -39,6 +79,17 @@
     cursor: pointer;
   }
 }
+.svgContainer {
+  display: flex;
+  justify-content: center;
+  position: relative;
+  #svg {
+    fill: $clr-secondary;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+}
 @import "card";
 @import "mobilemenu";
 @import "login";
@@ -48,3 +99,4 @@
 @import "tables";
 @import "filters";
 @import "fetching";
+@import "toast";

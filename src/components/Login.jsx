@@ -1,6 +1,7 @@
 import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import handleRequests from "../logic/handleRequests.js";
+import Logo from "./Logo.jsx";
 
 // toaster
 import { ToastContainer, toast } from "react-toastify";
@@ -9,7 +10,6 @@ import "react-toastify/dist/ReactToastify.css";
 
 function Login({ setAuth, isAuth, location }) {
   const [isFetching, setIsFetching] = useState(false);
-  const logo = new URL("../media/img/logo.png", import.meta.url);
   const usernameInput = useRef(null);
   const pwdInput = useRef(null);
   const rememberInput = useRef(null);
@@ -34,7 +34,7 @@ function Login({ setAuth, isAuth, location }) {
         toast.error(message, {
           position: toast.POSITION.TOP_CENTER,
         });
-      }, 500);
+      }, 250);
     } else {
       if (rememberInput.current.checked) {
         localStorage.setItem("cogipAuth", JSON.stringify(dataPackage));
@@ -46,9 +46,7 @@ function Login({ setAuth, isAuth, location }) {
   };
   return (
     <main className="login">
-      <figure>
-        <img src={logo} alt="logo" />
-      </figure>
+      <Logo handleClick={null} handleStyle={{ height: "10rem" }} />
       <form className="loginForm card">
         <h2>Login</h2>
         <input

@@ -1,0 +1,11 @@
+.Toastify__toast-body {
+  color: $clr-secondary;
+  font-family: "Lato", sans-serif;
+  font-weight: 600;
+}
+html .Toastify__toast {
+  background: $clr-primary-low;
+}
+html .Toastify__progress-bar {
+  background: $clr-secondary-low;
+}
