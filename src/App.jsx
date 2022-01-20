@@ -112,7 +112,7 @@ function App() {
   Solde par company, par date, bilans, ...
 
   TODO
-
+  FIX TABLE OF INVOICE ON LARGE SCREENS
   */
 
   return (
