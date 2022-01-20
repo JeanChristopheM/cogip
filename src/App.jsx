@@ -35,26 +35,26 @@ function App() {
 
   const location = useLocation();
 
-  /* LINKS TO DATA */
-  const companiesSrc = [
-    "/companies.json",
-    "https://csharpproject.somee.com/api/company",
-  ];
-  const contactsSrc = [
-    "/contacts.json",
-    "https://csharpproject.somee.com/api/contact",
-  ];
-  const invoicesSrc = [
-    "/invoices.json",
-    "https://csharpproject.somee.com/api/invoice",
-  ];
-  const local = 0;
-  const remote = 1;
   /* Loading data function */
   const loadData = async () => {
-    setCompanies(await handleRequests("GET", companiesSrc[remote], isAuth.jwt));
-    setInvoices(await handleRequests("GET", invoicesSrc[remote], isAuth.jwt));
-    setContacts(await handleRequests("GET", contactsSrc[remote], isAuth.jwt));
+    const srcs = [
+      "https://csharpproject.somee.com/api/company",
+      "https://csharpproject.somee.com/api/invoice",
+      "https://csharpproject.somee.com/api/contact",
+    ];
+    const fn = [setCompanies, setInvoices, setContacts];
+    for (let x = 0; x < 3; x++) {
+      const { status, message, dataPackage } = await handleRequests(
+        "GET",
+        srcs[x],
+        isAuth.jwt
+      );
+      if (status === 200) {
+        fn[x](dataPackage);
+      } else {
+        alert("There was an error getting the data");
+      }
+    }
   };
   /* If cookie, set the authentification to cache and redirect to homepage */
   useLayoutEffect(() => {

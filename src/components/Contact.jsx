@@ -4,7 +4,11 @@ import ContactControls from "./ContactControls.jsx";
 import CompanySelector from "./CompanySelector";
 import handleRequests from "../logic/handleRequests";
 import { contactVerify } from "../logic/formValidation.js";
-import parseJwt from "../logic/tokenDecrypter.js";
+
+// toaster
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+// end toaster
 
 function Contact({ contacts, companies, setIsLoaded, isAuth }) {
   const loaded = contacts.length > 0 ? true : false;
@@ -36,7 +40,7 @@ function Contact({ contacts, companies, setIsLoaded, isAuth }) {
     let check = contactVerify(formData);
     setIsFetching(true);
     if (check.ok) {
-      await handleRequests(
+      const { status, message, dataPackage } = await handleRequests(
         "PUT",
         `https://csharpproject.somee.com/api/contact/${params.contactId}`,
         isAuth.jwt,
@@ -44,12 +48,31 @@ function Contact({ contacts, companies, setIsLoaded, isAuth }) {
       );
       setIsLoaded(false);
       setIsFetching(false);
+      if (status === 200) {
+        setTimeout(() => {
+          toast.success(message, {
+            position: toast.POSITION.TOP_CENTER,
+          });
+        }, 500);
+      } else {
+        setTimeout(() => {
+          toast.error(message, {
+            position: toast.POSITION.TOP_CENTER,
+          });
+        }, 500);
+      }
     } else {
       setIsFetching(false);
       const issues = Object.keys(check);
-      for (let issue of issues) {
-        if (issue !== "ok") alert(check[issue]);
-      }
+      setTimeout(() => {
+        for (let issue of issues) {
+          if (issue !== "ok") {
+            toast.error(check[issue], {
+              position: toast.POSITION.TOP_CENTER,
+            });
+          }
+        }
+      }, 500);
     }
   };
 
@@ -142,6 +165,7 @@ function Contact({ contacts, companies, setIsLoaded, isAuth }) {
           )}
         </div>
       )}
+      <ToastContainer />
     </main>
   );
 }

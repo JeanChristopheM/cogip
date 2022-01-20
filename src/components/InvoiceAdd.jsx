@@ -41,33 +41,43 @@ function InvoiceAdd({ contacts, companies, setIsLoaded, isAuth }) {
     let check = invoiceVerify(formData);
     /* Posting data if OK */
     if (check.ok) {
-      const response = await handleRequests(
+      const { status, message, dataPackage } = await handleRequests(
         "POST",
         "https://csharpproject.somee.com/api/Invoice",
         isAuth.jwt,
         formData
       );
-      toast(response.toString(), {
-        position: "bottom-left",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-      });
-      // COME BACK HERE JC
       setIsFetching(false);
       setIsLoaded(false);
+      if (status === 200) {
+        setTimeout(() => {
+          toast.success(message, {
+            position: toast.POSITION.TOP_CENTER,
+          });
+        }, 500);
+      } else {
+        setTimeout(() => {
+          toast.error(message, {
+            position: toast.POSITION.TOP_CENTER,
+          });
+        }, 500);
+      }
     } else {
       setIsFetching(false);
       /* Handling Errors */
       const issues = Object.keys(check);
-      for (let issue of issues) {
-        if (issue !== "ok") alert(check[issue]);
-      }
+      setTimeout(() => {
+        for (let issue of issues) {
+          if (issue !== "ok") {
+            toast.error(check[issue], {
+              position: toast.POSITION.TOP_CENTER,
+            });
+          }
+        }
+      }, 500);
     }
   };
+
   return (
     <main>
       <div className="card">

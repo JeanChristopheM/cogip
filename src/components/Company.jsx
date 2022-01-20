@@ -3,7 +3,11 @@ import { useParams, useNavigate } from "react-router-dom";
 import { companyVerify } from "../logic/formValidation.js";
 import handleRequests from "../logic/handleRequests";
 import CompanyControls from "./CompanyControls.jsx";
-import parseJwt from "../logic/tokenDecrypter.js";
+
+// toaster
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+// end toaster
 
 function Company({ companies, contacts, setIsLoaded, isAuth }) {
   const loaded = companies.length > 0 ? true : false;
@@ -28,7 +32,7 @@ function Company({ companies, contacts, setIsLoaded, isAuth }) {
     let check = companyVerify(formData);
     setIsFetching(true);
     if (check.ok) {
-      await handleRequests(
+      const { status, message, dataPackage } = await handleRequests(
         "PUT",
         `https://csharpproject.somee.com/api/company/${params.companyId}`,
         isAuth.jwt,
@@ -36,12 +40,31 @@ function Company({ companies, contacts, setIsLoaded, isAuth }) {
       );
       setIsLoaded(false);
       setIsFetching(false);
+      if (status === 200) {
+        setTimeout(() => {
+          toast.success(message, {
+            position: toast.POSITION.TOP_CENTER,
+          });
+        }, 500);
+      } else {
+        setTimeout(() => {
+          toast.error(message, {
+            position: toast.POSITION.TOP_CENTER,
+          });
+        }, 500);
+      }
     } else {
       setIsFetching(false);
       const issues = Object.keys(check);
-      for (let issue of issues) {
-        if (issue !== "ok") alert(check[issue]);
-      }
+      setTimeout(() => {
+        for (let issue of issues) {
+          if (issue !== "ok") {
+            toast.error(check[issue], {
+              position: toast.POSITION.TOP_CENTER,
+            });
+          }
+        }
+      }, 500);
     }
   };
 
@@ -126,6 +149,7 @@ function Company({ companies, contacts, setIsLoaded, isAuth }) {
           )}
         </div>
       )}
+      <ToastContainer />
     </main>
   );
 }

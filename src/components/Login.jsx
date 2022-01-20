@@ -1,6 +1,11 @@
 import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import dbUserCheck from "../authTemp.js";
+import handleRequests from "../logic/handleRequests.js";
+
+// toaster
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+// end toaster
 
 function Login({ setAuth, isAuth, location }) {
   const [isFetching, setIsFetching] = useState(false);
@@ -9,6 +14,7 @@ function Login({ setAuth, isAuth, location }) {
   const pwdInput = useRef(null);
   const rememberInput = useRef(null);
   const navigate = useNavigate();
+
   const onAuthClick = async (e) => {
     e.preventDefault();
     setIsFetching(true);
@@ -16,17 +22,25 @@ function Login({ setAuth, isAuth, location }) {
     const pwd = pwdInput.current.value;
     const data = { userName: username, password: pwd };
 
-    const response = await dbUserCheck(data);
+    const { status, message, dataPackage } = await handleRequests(
+      "POST",
+      "https://csharpproject.somee.com/api/Auth/login",
+      null,
+      data
+    );
     setIsFetching(false);
-    if (response[0] !== 200) {
-      alert(response[1]);
-      exit;
+    if (status !== 200) {
+      setTimeout(() => {
+        toast.error(message, {
+          position: toast.POSITION.TOP_CENTER,
+        });
+      }, 500);
     } else {
       if (rememberInput.current.checked) {
-        localStorage.setItem("cogipAuth", JSON.stringify(response[1]));
+        localStorage.setItem("cogipAuth", JSON.stringify(dataPackage));
       }
-      sessionStorage.setItem("cogipAuth", JSON.stringify(response[1]));
-      setAuth(response[1]);
+      sessionStorage.setItem("cogipAuth", JSON.stringify(dataPackage));
+      setAuth(dataPackage);
       navigate(location.pathname);
     }
   };
@@ -67,6 +81,7 @@ function Login({ setAuth, isAuth, location }) {
           <div className="lds-dual-ring"></div>
         </div>
       ) : null}
+      <ToastContainer />
     </main>
   );
 }

@@ -3,6 +3,11 @@ import { contactVerify } from "../logic/formValidation";
 import handleRequests from "../logic/handleRequests";
 import CompanySelector from "./CompanySelector";
 
+// toaster
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+// end toaster
+
 function ContactAdd({ companies, setIsLoaded, isAuth }) {
   const [selectedCompany, setSelectedCompany] = useState("");
   const [isFetching, setIsFetching] = useState(false);
@@ -19,20 +24,39 @@ function ContactAdd({ companies, setIsLoaded, isAuth }) {
     };
     let check = contactVerify(formData);
     if (check.ok) {
-      await handleRequests(
+      const { status, message, dataPackage } = await handleRequests(
         "POST",
-        "https://csharpproject.somee.com/api/contact",
+        "https://csharpproject.somee.com/api/Contact",
         isAuth.jwt,
         formData
       );
       setIsFetching(false);
       setIsLoaded(false);
+      if (status === 200) {
+        setTimeout(() => {
+          toast.success(message, {
+            position: toast.POSITION.TOP_CENTER,
+          });
+        }, 500);
+      } else {
+        setTimeout(() => {
+          toast.error(message, {
+            position: toast.POSITION.TOP_CENTER,
+          });
+        }, 500);
+      }
     } else {
       setIsFetching(false);
       const issues = Object.keys(check);
-      for (let issue of issues) {
-        if (issue !== "ok") alert(check[issue]);
-      }
+      setTimeout(() => {
+        for (let issue of issues) {
+          if (issue !== "ok") {
+            toast.error(check[issue], {
+              position: toast.POSITION.TOP_CENTER,
+            });
+          }
+        }
+      }, 500);
     }
   };
 
@@ -94,6 +118,7 @@ function ContactAdd({ companies, setIsLoaded, isAuth }) {
           </ul>
           <button>Submit</button>
         </form>
+        <ToastContainer />
       </div>
       {isFetching ? (
         <div className="fetching dark">
