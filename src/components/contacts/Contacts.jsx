@@ -1,6 +1,8 @@
 import { useMemo } from "react";
 import { useNavigate } from "react-router-dom";
-import { useTable, useSortBy } from "react-table";
+import { useTable, useSortBy, useFilters } from "react-table";
+import SelectFilter from "../reusables/SelectFilter";
+import { dateFormatter } from "../../logic/dateFormatter";
 
 function Contacts({ contacts, companies }) {
   const navigate = useNavigate();
@@ -11,18 +13,15 @@ function Contacts({ contacts, companies }) {
   /* SETTING UP TABLE */
   const data = useMemo(() => {
     let results = [];
-    for (let entry of contacts) {
+    for (let contact of contacts) {
       let obj = {
         icon: <i className="fas fa-user"></i>,
-        col1: `${entry.firstname} ${entry.lastname}`,
-        col2: entry.email,
-        col3: entry.phonenumber,
-        col4: companies.find((el) => el.id == entry.contactcompany).name,
-        col5: `${entry.added.slice(8, 10)}-${entry.added.slice(
-          5,
-          7
-        )}-${entry.added.slice(0, 4)}`,
-        id: entry.id,
+        col1: `${contact.firstname} ${contact.lastname}`,
+        col2: contact.email,
+        col3: contact.phonenumber,
+        col4: companies.find((el) => el.id == contact.contactcompany).name,
+        col5: dateFormatter(contact.added),
+        id: contact.id,
       };
       results.push(obj);
     }
@@ -35,25 +34,45 @@ function Contacts({ contacts, companies }) {
         accessor: "icon",
         className: "contactIcon",
         disableSortBy: true,
+        disableFilters: true,
       },
       {
         Header: "Name",
         accessor: "col1",
         className: "contactName",
+        disableFilters: true,
       },
-      { Header: "Email", accessor: "col2", className: "contactEmail" },
+      {
+        Header: "Email",
+        accessor: "col2",
+        className: "contactEmail",
+        disableFilters: true,
+      },
       {
         Header: "Phone number",
         accessor: "col3",
         className: "contactPhonenumber",
+        disableFilters: true,
       },
       {
         Header: "Company",
         accessor: "col4",
         className: "contactContactcompany",
+        Filter: SelectFilter,
+        filter: "includes",
       },
-      { Header: "Added", accessor: "col5", className: "contactAdded" },
-      { Header: "ID", accessor: "id", className: "contactId" },
+      {
+        Header: "Added",
+        accessor: "col5",
+        className: "contactAdded",
+        disableFilters: true,
+      },
+      {
+        Header: "ID",
+        accessor: "id",
+        className: "contactId",
+        disableFilters: true,
+      },
     ],
     [contacts]
   );
@@ -67,6 +86,7 @@ function Contacts({ contacts, companies }) {
           hiddenColumns: ["id"],
         },
       },
+      useFilters,
       useSortBy
     );
   const handleClick = (header, contactId, companyName) => {
@@ -109,49 +129,39 @@ function Contacts({ contacts, companies }) {
                         className: column.className,
                       })
                     )}
-                    style={{
-                      color: "rgb(39, 76, 119)",
-                      fontWeight: "bold",
-                      cursor: "pointer",
-                      fontSize: "1.2rem",
-                      padding: "1rem",
-                    }}
                   >
                     <div className="thContainer">
                       {column.render("Header")}
                       <span>
                         {column.isSorted ? (
                           column.isSortedDesc ? (
-                            <i
-                              style={{
-                                color: "rgb(39, 76, 119)",
-                                fontSize: ".9rem",
-                                paddingLeft: ".2rem",
-                              }}
-                              className="fas fa-arrow-alt-circle-up"
-                            ></i>
+                            <i className="fas fa-arrow-alt-circle-up sorted"></i>
                           ) : (
-                            <i
-                              style={{
-                                color: "rgb(39, 76, 119)",
-                                fontSize: ".9rem",
-                                paddingLeft: ".2rem",
-                              }}
-                              className="fas fa-arrow-alt-circle-down"
-                            ></i>
+                            <i className="fas fa-arrow-alt-circle-down sorted"></i>
                           )
                         ) : (
-                          <i
-                            style={{
-                              color: "rgb(135, 156, 179)",
-                              fontSize: ".9rem",
-                              paddingLeft: ".2rem",
-                              opacity: ".3",
-                            }}
-                            className="fas fa-arrow-alt-circle-down"
-                          ></i>
+                          <i className="fas fa-arrow-alt-circle-down unSorted"></i>
                         )}
                       </span>
+                    </div>
+                  </th>
+                ))}
+              </tr>
+            ))}
+            {headerGroups.map((headerGroup) => (
+              <tr
+                {...headerGroup.getHeaderGroupProps()}
+                className={"filtersRow"}
+              >
+                {headerGroup.headers.map((column) => (
+                  <th
+                    key={column.id}
+                    {...column.getHeaderProps({
+                      className: column.className,
+                    })}
+                  >
+                    <div className="filterContainer">
+                      {column.canFilter ? column.render("Filter") : null}
                     </div>
                   </th>
                 ))}
@@ -169,19 +179,6 @@ function Contacts({ contacts, companies }) {
                         {...cell.getCellProps({
                           className: cell.column.className,
                         })}
-                        style={
-                          cell.column.Header == "Name" ||
-                          cell.column.Header == "Company"
-                            ? {
-                                padding: "1rem",
-                                //border: "solid 1px rgb(135, 156, 179)",
-                                cursor: "pointer",
-                              }
-                            : {
-                                padding: "1rem",
-                                //border: "solid 1px rgb(135, 156, 179)",
-                              }
-                        }
                         onClick={() => {
                           handleClick(
                             cell.column.Header,

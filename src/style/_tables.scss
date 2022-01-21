@@ -1,5 +1,15 @@
 .table {
   width: 100%;
+  th {
+    color: $clr-secondary;
+    font-weight: 600;
+    cursor: pointer;
+    font-size: 1.2rem;
+    padding: $tableSpacing calc($tableSpacing/2);
+  }
+  td {
+    padding: $tableSpacing calc($tableSpacing/2);
+  }
   .thContainer {
     display: grid;
     grid-template-columns: auto min-content;
@@ -13,13 +23,15 @@
       }
     }
   }
+  .filtersRow th {
+    padding: 0;
+  }
   /* COMPANY SETTINGS */
+  td.companyName {
+    cursor: pointer;
+  }
   .companyName {
     font-weight: bold;
-  }
-  .companyType {
-    font-size: 0.8rem;
-    color: $clr-secondary-low;
   }
   @media screen and (max-width: 700px) {
     .companyVat {
@@ -37,6 +49,10 @@
     }
   }
   /* CONTACT SETTINGS */
+  td.contactName,
+  td.contactContactcompany {
+    cursor: pointer;
+  }
   .contactName {
     font-weight: bold;
   }
@@ -61,20 +77,25 @@
     }
   }
   /* INVOICE SETTINGS */
+  td.invoiceReference,
+  td.invoiceCompany,
+  td.invoiceContact {
+    cursor: pointer;
+  }
   .invoiceReference {
     font-weight: bold;
   }
-  @media screen and (max-width: 900px) {
+  @media screen and (max-width: 1000px) {
     .invoiceContact {
       display: none;
     }
   }
-  @media screen and (max-width: 760px) {
+  @media screen and (max-width: 790px) {
     .invoiceReceived {
       display: none;
     }
   }
-  @media screen and (max-width: 650px) {
+  @media screen and (max-width: 660px) {
     .invoiceCompany {
       display: none;
     }
@@ -91,5 +112,15 @@
   }
   td:first-child {
     width: 0rem;
+  }
+  .fas.fa-arrow-alt-circle-down,
+  .fas.fa-arrow-alt-circle-up {
+    font-size: 1rem;
+    &.unSorted {
+      color: $clr-secondary-low;
+    }
+    &.sorted {
+      color: $clr-secondary;
+    }
   }
 }

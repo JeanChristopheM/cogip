@@ -17,6 +17,8 @@ import Contact from "./components/contacts/Contact.jsx";
 import Invoices from "./components/invoices/Invoices.jsx";
 import Invoice from "./components/invoices/Invoice.jsx";
 import FourOfour from "./components/FourOfour.jsx";
+import Reports from "./components/reports/Reports.jsx";
+import Settings from "./components/settings/Settings.jsx";
 
 /* Forms for adding data */
 import ContactAdd from "./components/contacts/ContactAdd.jsx";
@@ -28,7 +30,7 @@ function App() {
   const [checkedAuth, setCheckedAuth] = useState(false);
   const [isAuth, setAuth] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
-  const [displayMenu, setDisplayMenu] = useState(false);
+  const [isMenuActive, setIsMenuActive] = useState("inactive");
   const [companies, setCompanies] = useState([]);
   const [invoices, setInvoices] = useState([]);
   const [contacts, setContacts] = useState([]);
@@ -82,15 +84,13 @@ function App() {
   /* Mobile Menu related functions */
   const closeMenu = (e) => {
     if (!e.target.classList.contains("mobileMenu__list")) {
-      setDisplayMenu(false);
-      document.body.style.overflow = "unset";
+      setIsMenuActive("inactive");
     }
   };
   const openMenu = (e) => {
-    setDisplayMenu(true);
+    setIsMenuActive("active");
     e.stopPropagation();
     document.addEventListener("click", closeMenu);
-    document.body.style.overflow = "hidden";
   };
 
   /* Logout function */
@@ -98,7 +98,7 @@ function App() {
     localStorage.removeItem("cogipAuth");
     sessionStorage.removeItem("cogipAuth");
     setAuth(null);
-    setDisplayMenu(false);
+    setIsMenuActive("inactive");
     navigate("/");
   };
 
@@ -113,6 +113,7 @@ function App() {
 
   TODO
   FIX TABLE OF INVOICE ON LARGE SCREENS
+  
   */
 
   return (
@@ -218,6 +219,8 @@ function App() {
                       <CompanyAdd setIsLoaded={setIsLoaded} isAuth={isAuth} />
                     }
                   />
+                  <Route path="/reports" element={<Reports />} />
+                  <Route path="/settings" element={<Settings />} />
                   <Route path="*" element={<FourOfour />} />
                 </Routes>
               ) : (
@@ -235,7 +238,7 @@ function App() {
       ) : (
         <main>"Verifying Authentification"</main>
       )}
-      {displayMenu && <MobileMenu onLogout={logout} />}
+      <MobileMenu onLogout={logout} displayStatus={isMenuActive} />
       <Footer />
     </>
   );

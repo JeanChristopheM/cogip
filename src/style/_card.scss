@@ -3,11 +3,13 @@
   box-shadow: 0 4px 8px 2px $clr-secondary;
   padding: 1rem;
   border-radius: 1rem;
-  margin: 1rem 1rem;
   @media screen and (max-width: 400px) {
     margin: 1rem 0rem;
   }
 }
 .card + .card {
   margin-top: 2rem;
+  @media screen and (min-width: 900px) {
+    margin-top: 0;
+  }
 }

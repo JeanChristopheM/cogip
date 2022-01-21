@@ -1,12 +1,12 @@
 import { useNavigate } from "react-router-dom";
 
-function MobileMenu({ onLogout }) {
+function MobileMenu({ onLogout, displayStatus }) {
   let navigate = useNavigate();
   return (
-    <div id="mobileMenu">
-      <ul className={"mobileMenu__list card"}>
+    <div id="mobileMenu" className={displayStatus}>
+      <ul className={"mobileMenu__list"}>
         <li className={"mobileMenu__list__item"} onClick={() => navigate("")}>
-          Home
+          Dashboard
         </li>
         <li style={{ cursor: "initial", pointerEvents: "none" }}>___</li>
         <li
@@ -27,12 +27,23 @@ function MobileMenu({ onLogout }) {
         >
           Companies
         </li>
+        <li
+          className={"mobileMenu__list__item"}
+          onClick={() => navigate("/reports")}
+        >
+          Reports
+        </li>
         <li style={{ cursor: "initial", pointerEvents: "none" }}>___</li>
+        <li
+          className="mobileMenu__list__item"
+          onClick={() => {
+            navigate("/settings");
+          }}
+        >
+          Settings
+        </li>
         <li className={"mobileMenu__list__item"} onClick={onLogout}>
           Log out
-        </li>
-        <li id="menuCross">
-          <i className="fas fa-times"></i>
         </li>
       </ul>
     </div>

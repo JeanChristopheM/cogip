@@ -1,6 +1,8 @@
 import { useMemo } from "react";
 import { useNavigate } from "react-router-dom";
-import { useTable, useSortBy } from "react-table";
+import { useTable, useSortBy, useFilters } from "react-table";
+import SelectFilter from "../reusables/SelectFilter";
+import { dateFormatter } from "../../logic/dateFormatter";
 
 function Companies({ companies }) {
   const navigate = useNavigate();
@@ -11,22 +13,19 @@ function Companies({ companies }) {
   /* SETTING UP TABLE */
   const data = useMemo(() => {
     let results = [];
-    for (let entry of companies) {
+    for (let company of companies) {
       let obj = {
         icon:
-          entry.status == "Supplier" ? (
+          company.status == "Supplier" ? (
             <i className="fas fa-parachute-box"></i>
           ) : (
             <i className="fas fa-shopping-basket"></i>
           ),
-        col1: entry.name,
-        col2: entry.status,
-        col3: entry.vat,
-        col4: `${entry.added.slice(8, 10)}-${entry.added.slice(
-          5,
-          7
-        )}-${entry.added.slice(0, 4)}`,
-        id: entry.id,
+        col1: company.name,
+        col2: company.status,
+        col3: company.vat,
+        col4: dateFormatter(company.added),
+        id: company.id,
       };
       results.push(obj);
     }
@@ -39,16 +38,39 @@ function Companies({ companies }) {
         accessor: "icon",
         className: "companyIcon",
         disableSortBy: true,
+        disableFilters: true,
       },
       {
         Header: "Name",
         accessor: "col1",
         className: "companyName",
+        disableFilters: true,
       },
-      { Header: "Status", accessor: "col2", className: "companyType" },
-      { Header: "VAT", accessor: "col3", className: "companyVat" },
-      { Header: "Added", accessor: "col4", className: "companyAdded" },
-      { Header: "ID", accessor: "id", className: "companyId" },
+      {
+        Header: "Status",
+        accessor: "col2",
+        className: "companyType",
+        Filter: SelectFilter,
+        filter: "includes",
+      },
+      {
+        Header: "VAT",
+        accessor: "col3",
+        className: "companyVat",
+        disableFilters: true,
+      },
+      {
+        Header: "Added",
+        accessor: "col4",
+        className: "companyAdded",
+        disableFilters: true,
+      },
+      {
+        Header: "ID",
+        accessor: "id",
+        className: "companyId",
+        disableFilters: true,
+      },
     ],
     [companies]
   );
@@ -62,6 +84,7 @@ function Companies({ companies }) {
           hiddenColumns: ["id"],
         },
       },
+      useFilters,
       useSortBy
     );
 
@@ -91,49 +114,39 @@ function Companies({ companies }) {
                         className: column.className,
                       })
                     )}
-                    style={{
-                      color: "rgb(39, 76, 119)",
-                      fontWeight: "bold",
-                      cursor: "pointer",
-                      fontSize: "1.2rem",
-                      padding: "1rem",
-                    }}
                   >
                     <div className="thContainer">
                       {column.render("Header")}
                       <span>
                         {column.isSorted ? (
                           column.isSortedDesc ? (
-                            <i
-                              style={{
-                                color: "rgb(39, 76, 119)",
-                                fontSize: ".9rem",
-                                paddingLeft: ".2rem",
-                              }}
-                              className="fas fa-arrow-alt-circle-up"
-                            ></i>
+                            <i className="fas fa-arrow-alt-circle-up sorted"></i>
                           ) : (
-                            <i
-                              style={{
-                                color: "rgb(39, 76, 119)",
-                                fontSize: ".9rem",
-                                paddingLeft: ".2rem",
-                              }}
-                              className="fas fa-arrow-alt-circle-down"
-                            ></i>
+                            <i className="fas fa-arrow-alt-circle-down sorted"></i>
                           )
                         ) : (
-                          <i
-                            style={{
-                              color: "rgb(135, 156, 179)",
-                              fontSize: ".9rem",
-                              paddingLeft: ".2rem",
-                              opacity: ".3",
-                            }}
-                            className="fas fa-arrow-alt-circle-down"
-                          ></i>
+                          <i className="fas fa-arrow-alt-circle-down unSorted"></i>
                         )}
                       </span>
+                    </div>
+                  </th>
+                ))}
+              </tr>
+            ))}
+            {headerGroups.map((headerGroup) => (
+              <tr
+                {...headerGroup.getHeaderGroupProps()}
+                className={"filtersRow"}
+              >
+                {headerGroup.headers.map((column) => (
+                  <th
+                    key={column.id}
+                    {...column.getHeaderProps({
+                      className: column.className,
+                    })}
+                  >
+                    <div className="filterContainer">
+                      {column.canFilter ? column.render("Filter") : null}
                     </div>
                   </th>
                 ))}
@@ -151,18 +164,6 @@ function Companies({ companies }) {
                         {...cell.getCellProps({
                           className: cell.column.className,
                         })}
-                        style={
-                          cell.column.Header == "Name"
-                            ? {
-                                padding: "1rem",
-                                //border: "solid 1px rgb(135, 156, 179)",
-                                cursor: "pointer",
-                              }
-                            : {
-                                padding: "1rem",
-                                //border: "solid 1px rgb(135, 156, 179)",
-                              }
-                        }
                         onClick={
                           cell.column.Header == "Name"
                             ? () => {

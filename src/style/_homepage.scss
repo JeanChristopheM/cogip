@@ -1,98 +1,106 @@
+.homepage {
+  @media screen and (min-width: 900px) {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+  }
+}
+
 .invoices,
 .companies,
 .contacts {
-    h2 {
-        margin-bottom: 1rem;
-        display: flex;
-        justify-content: space-between;
-        i {
-            cursor: pointer;
-            padding: 0.2rem;
-        }
-    }
+  h2 {
+    margin-bottom: 1rem;
+    display: flex;
+    justify-content: space-between;
     i {
-        font-size: 1.5rem;
+      cursor: pointer;
+      padding: 0.2rem;
     }
-    li:not(first-child) {
-        margin-top: 1rem;
+  }
+  i {
+    font-size: 1.5rem;
+  }
+  li:not(first-child) {
+    margin-top: 1rem;
+  }
+  li {
+    display: grid;
+    grid-template-columns: max-content 1fr 1fr;
+    grid-template-rows: repeat(2, min-content);
+    gap: 0.5rem;
+    align-items: center;
+    .svg {
+      grid-area: svg;
+      padding-inline: 0.5rem;
     }
-    li {
-        display: grid;
-        grid-template-columns: max-content 1fr 1fr;
-        grid-template-rows: repeat(2, min-content);
-        gap: 0.5rem;
-        align-items: center;
-        .svg {
-            grid-area: svg;
-            padding-inline: 0.5rem;
-        }
-    }
+  }
 }
 .invoices {
-    .invoiceLi {
-        grid-template-areas:
-            "svg invoiceName invoiceNumber"
-            "svg invoiceType invoiceDate";
-        .invoiceName {
-            grid-area: invoiceName;
-            font-weight: 600;
-            cursor: pointer;
-        }
-        .invoiceType {
-            grid-area: invoiceType;
-        }
-        .invoiceType,
-        .invoiceDate {
-            font-size: 0.8rem;
-            color: $clr-secondary-low;
-        }
-        .invoiceNumber,
-        .invoiceDate {
-            text-align: right;
-        }
-        .invoiceNumber {
-            grid-area: invoiceNumber;
-            cursor: pointer;
-        }
-        .invoiceDate {
-            grid-area: invoiceDate;
-        }
+  .invoiceLi {
+    grid-template-areas:
+      "svg invoiceName invoiceNumber"
+      "svg invoiceType invoiceDate";
+    .invoiceName {
+      grid-area: invoiceName;
+      font-weight: 600;
+      cursor: pointer;
     }
+    .invoiceType {
+      grid-area: invoiceType;
+    }
+    .invoiceType,
+    .invoiceDate {
+      font-size: 0.8rem;
+      color: $clr-secondary-low;
+    }
+    .invoiceNumber,
+    .invoiceDate {
+      text-align: right;
+    }
+    .invoiceNumber {
+      grid-area: invoiceNumber;
+      cursor: pointer;
+    }
+    .invoiceDate {
+      grid-area: invoiceDate;
+    }
+  }
 }
 .contacts {
-    li {
-        grid-template-areas:
-            "svg contactName contactCompany"
-            "svg contactMail empty";
-        .contactName {
-            grid-area: contactName;
-            font-weight: 600;
-        }
-        .contactMail {
-            grid-area: contactMail;
-            font-size: 0.8rem;
-            color: $clr-secondary-low;
-        }
-        .contactCompany {
-            grid-area: contactCompany;
-            text-align: right;
-        }
+  li {
+    grid-template-areas:
+      "svg contactName contactCompany"
+      "svg contactMail empty";
+    .contactName {
+      grid-area: contactName;
+      font-weight: 600;
     }
+    .contactMail {
+      grid-area: contactMail;
+      font-size: 0.8rem;
+      color: $clr-secondary-low;
+    }
+    .contactCompany {
+      grid-area: contactCompany;
+      text-align: right;
+    }
+  }
 }
 .companies {
-    li {
-        grid-template-areas:
-            "svg companyName companyType"
-            "svg empty empty";
-        .companyName {
-            grid-area: companyName;
-            font-weight: 600;
-        }
-        .companyType {
-            grid-area: companyType;
-            font-size: 0.8rem;
-            color: $clr-secondary-low;
-            text-align: right;
-        }
+  li {
+    grid-template-areas:
+      "svg companyName companyType"
+      "svg empty empty";
+    .companyName {
+      grid-area: companyName;
+      font-weight: 600;
     }
+    .companyType {
+      grid-area: companyType;
+      font-size: 0.8rem;
+      color: $clr-secondary-low;
+      text-align: right;
+    }
+  }
 }

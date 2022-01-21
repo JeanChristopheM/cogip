@@ -8,7 +8,8 @@
     color: $clr-secondary-low;
   }
   &__container {
-    max-width: calc(900px - 4rem);
+    max-width: $limiter;
+    padding-inline: 1rem;
     margin: 0 auto;
     @media screen and (min-width: 900px) {
       display: flex;
@@ -24,7 +25,7 @@
     padding: 0.6rem;
     #burger {
       font-size: 2rem;
-      padding: 0.5rem;
+      padding: 0.5rem 0.6;
       cursor: pointer;
     }
     h1 {
@@ -39,7 +40,6 @@
       display: block;
       #burger {
         display: none;
-        border: 1px solid red;
         width: 100px;
       }
       h1 {
@@ -55,10 +55,8 @@
     flex: 1 1 0;
     nav {
       display: flex;
-      justify-content: space-between;
-      align-items: baseline;
+      align-items: center;
       font-weight: 600;
-      padding-inline: 2rem;
       a {
         cursor: pointer;
         padding: 1rem;
@@ -80,11 +78,13 @@
           transition: opacity $animationSpeed ease-in-out,
             transform $animationSpeed ease-in-out,
             border-bottom $animationSpeed ease-in-out;
+          pointer-events: none;
         }
         &.active {
           &::after {
             opacity: 1;
             transform: translate(-50%, 0);
+            pointer-events: none;
           }
         }
         @media (hover: hover) {
@@ -95,11 +95,30 @@
           }
         }
       }
+      #logoutLink {
+        margin-left: auto;
+      }
+      #settingsIcon {
+        @media (hover: hover) {
+          &:hover > .settingsIcon {
+            animation: 1s linear infinite forwards spinIt;
+          }
+        }
+      }
+      .settingsIcon {
+        transform: scale(1.5);
+      }
     }
     @media screen and (min-width: 900px) {
       display: block;
     }
   }
-  @media screen and (min-width: 900px) {
+}
+@keyframes spinIt {
+  from {
+    transform: scale(1.5) rotate(0);
+  }
+  to {
+    transform: scale(1.5) rotate(180deg);
   }
 }

@@ -40,7 +40,7 @@ const Header = ({ openMenu, onLogout, isAuth }) => {
         <div className="header__bottom">
           <nav>
             <Link to="" className={selected === "/" ? "active" : null}>
-              HOME
+              DASHBOARD
             </Link>
             <Link
               to="/invoices"
@@ -72,10 +72,21 @@ const Header = ({ openMenu, onLogout, isAuth }) => {
             >
               COMPANIES
             </Link>
+            <Link
+              to="/reports"
+              className={selected === "/reports" ? "active" : null}
+            >
+              REPORTS
+            </Link>
             {isAuth ? (
-              <Link to="" onClick={onLogout} id="logoutLink">
-                LOGOUT
-              </Link>
+              <>
+                <Link to="" onClick={onLogout} id="logoutLink">
+                  LOGOUT
+                </Link>
+                <Link to="/settings" id="settingsIcon">
+                  <i className="fas fa-cog settingsIcon"></i>
+                </Link>
+              </>
             ) : null}
           </nav>
         </div>

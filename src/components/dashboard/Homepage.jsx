@@ -33,7 +33,7 @@ function Homepage({ companies, invoices, contacts, setPage, setInvoiceId }) {
             }}
             style={{ cursor: "pointer" }}
           >
-            Invoices
+            Last 5 invoices
           </span>
           <button
             type="button"
@@ -74,7 +74,7 @@ function Homepage({ companies, invoices, contacts, setPage, setInvoiceId }) {
             }}
             style={{ cursor: "pointer" }}
           >
-            Contacts
+            Last 5 contacts
           </span>
           <button
             type="button"
@@ -113,7 +113,7 @@ function Homepage({ companies, invoices, contacts, setPage, setInvoiceId }) {
             }}
             style={{ cursor: "pointer" }}
           >
-            Companies
+            Last 5 companies
           </span>
           <button
             type="button"

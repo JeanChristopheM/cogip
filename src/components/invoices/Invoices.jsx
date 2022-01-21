@@ -2,8 +2,9 @@ import { useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { useTable, useSortBy, useFilters } from "react-table";
 import SelectFilter from "../reusables/SelectFilter";
+import { dateFormatter } from "../../logic/dateFormatter";
 
-function Invoices({ invoices, contacts, companies, setInvoiceId }) {
+function Invoices({ invoices, contacts, companies }) {
   const navigate = useNavigate();
   const handleAdd = (e) => {
     navigate(`/${e.target.id}`);
@@ -21,10 +22,7 @@ function Invoices({ invoices, contacts, companies, setInvoiceId }) {
         col2: `${entry.amount}€`,
         col3: company.name,
         col4: `${contact.firstname} ${contact.lastname}`,
-        col5: `${entry.received.slice(8, 10)}-${entry.received.slice(
-          5,
-          7
-        )}-${entry.received.slice(0, 4)}`,
+        col5: dateFormatter(entry.received),
         col6: entry.paid ? "Paid" : "To be paid",
         id: entry.id,
       };
@@ -150,47 +148,18 @@ function Invoices({ invoices, contacts, companies, setInvoiceId }) {
                         className: column.className,
                       })
                     )}
-                    style={{
-                      color: "rgb(39, 76, 119)",
-                      fontWeight: "bold",
-                      cursor: "pointer",
-                      fontSize: "1.2rem",
-                      padding: "1rem",
-                    }}
                   >
                     <div className="thContainer">
                       {column.render("Header")}
                       <span>
                         {column.isSorted ? (
                           column.isSortedDesc ? (
-                            <i
-                              style={{
-                                color: "rgb(39, 76, 119)",
-                                fontSize: ".9rem",
-                                paddingLeft: ".2rem",
-                              }}
-                              className="fas fa-arrow-alt-circle-up"
-                            ></i>
+                            <i className="fas fa-arrow-alt-circle-up sorted"></i>
                           ) : (
-                            <i
-                              style={{
-                                color: "rgb(39, 76, 119)",
-                                fontSize: ".9rem",
-                                paddingLeft: ".2rem",
-                              }}
-                              className="fas fa-arrow-alt-circle-down"
-                            ></i>
+                            <i className="fas fa-arrow-alt-circle-down sorted"></i>
                           )
                         ) : (
-                          <i
-                            style={{
-                              color: "rgb(135, 156, 179)",
-                              fontSize: ".9rem",
-                              paddingLeft: ".2rem",
-                              opacity: ".3",
-                            }}
-                            className="fas fa-arrow-alt-circle-down"
-                          ></i>
+                          <i className="fas fa-arrow-alt-circle-down unSorted"></i>
                         )}
                       </span>
                     </div>
@@ -199,7 +168,10 @@ function Invoices({ invoices, contacts, companies, setInvoiceId }) {
               </tr>
             ))}
             {headerGroups.map((headerGroup) => (
-              <tr {...headerGroup.getHeaderGroupProps()}>
+              <tr
+                {...headerGroup.getHeaderGroupProps()}
+                className={"filtersRow"}
+              >
                 {headerGroup.headers.map((column) => (
                   <th
                     key={column.id}
@@ -226,20 +198,6 @@ function Invoices({ invoices, contacts, companies, setInvoiceId }) {
                         {...cell.getCellProps({
                           className: cell.column.className,
                         })}
-                        style={
-                          cell.column.Header == "Contact" ||
-                          cell.column.Header == "Company" ||
-                          cell.column.Header == "Reference"
-                            ? {
-                                padding: "1rem",
-                                //border: "solid 1px rgb(135, 156, 179)",
-                                cursor: "pointer",
-                              }
-                            : {
-                                padding: "1rem",
-                                //border: "solid 1px rgb(135, 156, 179)",
-                              }
-                        }
                         onClick={() => {
                           handleClick(
                             cell.column.Header,
