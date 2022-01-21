@@ -1,4 +1,9 @@
+import SettingsMenu from "./SettingsMenu.jsx";
 const Settings = () => {
-  return <main>This is the settings page</main>;
+  return (
+    <main>
+      <SettingsMenu />
+    </main>
+  );
 };
 export default Settings;
