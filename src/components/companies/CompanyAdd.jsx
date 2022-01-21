@@ -1,6 +1,6 @@
 import { useState } from "react";
-import handleRequests from "../logic/handleRequests";
-import { companyVerify } from "../logic/formValidation";
+import handleRequests from "../../logic/handleRequests";
+import { companyVerify } from "../../logic/formValidation";
 
 // toaster
 import { ToastContainer, toast } from "react-toastify";

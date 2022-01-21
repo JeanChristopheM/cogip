@@ -1,8 +1,8 @@
 import React from "react";
-import CompanyLi from "./CompanyLi.jsx";
-import ContactLi from "./ContactLi.jsx";
-import InvoiceLi from "./InvoiceLi.jsx";
-import Chart from "./Chart.jsx";
+import CompanyLi from "../reusables/CompanyLi.jsx";
+import ContactLi from "../reusables/ContactLi.jsx";
+import InvoiceLi from "../reusables/InvoiceLi.jsx";
+import Chart from "../reusables/Chart.jsx";
 
 import { useNavigate } from "react-router-dom";
 

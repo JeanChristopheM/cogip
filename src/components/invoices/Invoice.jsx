@@ -1,10 +1,10 @@
 import { useState, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import InvoiceControls from "./InvoiceControls.jsx";
-import CompanySelector from "./CompanySelector.jsx";
-import ContactSelector from "./ContactSelector.jsx";
-import handleRequests from "../logic/handleRequests";
-import { invoiceVerify } from "../logic/formValidation.js";
+import CompanySelector from "../reusables/CompanySelector.jsx";
+import ContactSelector from "../reusables/ContactSelector.jsx";
+import handleRequests from "../../logic/handleRequests";
+import { invoiceVerify } from "../../logic/formValidation.js";
 
 // toaster
 import { ToastContainer, toast } from "react-toastify";

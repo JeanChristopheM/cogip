@@ -1,9 +1,9 @@
 import { useState } from "react";
-import handleRequests from "../logic/handleRequests";
-import { invoiceVerify } from "../logic/formValidation";
+import handleRequests from "../../logic/handleRequests";
+import { invoiceVerify } from "../../logic/formValidation";
 
-import CompanySelector from "./CompanySelector";
-import ContactSelector from "./ContactSelector";
+import CompanySelector from "../reusables/CompanySelector";
+import ContactSelector from "../reusables/ContactSelector";
 
 // toaster
 import { ToastContainer, toast } from "react-toastify";

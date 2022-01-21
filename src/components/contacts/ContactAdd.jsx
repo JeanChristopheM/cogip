@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { contactVerify } from "../logic/formValidation";
-import handleRequests from "../logic/handleRequests";
-import CompanySelector from "./CompanySelector";
+import { contactVerify } from "../../logic/formValidation";
+import handleRequests from "../../logic/handleRequests";
+import CompanySelector from "../reusables/CompanySelector";
 
 // toaster
 import { ToastContainer, toast } from "react-toastify";

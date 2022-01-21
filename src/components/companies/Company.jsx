@@ -1,7 +1,7 @@
 import { useState, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { companyVerify } from "../logic/formValidation.js";
-import handleRequests from "../logic/handleRequests";
+import { companyVerify } from "../../logic/formValidation.js";
+import handleRequests from "../../logic/handleRequests";
 import CompanyControls from "./CompanyControls.jsx";
 
 // toaster

@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
-import Logo from "./Logo.jsx";
+import Logo from "./reusables/Logo.jsx";
 
 const Header = ({ openMenu, onLogout, isAuth }) => {
   const location = useLocation();

@@ -5,23 +5,23 @@ import { Routes, Route, useNavigate, useLocation } from "react-router-dom";
 /* Components */
 import Header from "./components/Header.jsx";
 import Footer from "./components/Footer.jsx";
-import ScrollToTop from "./components/ScrollToTop.jsx";
+import ScrollToTop from "./components/reusables/ScrollToTop.jsx";
 /* Page Contents */
 import Login from "./components/Login.jsx";
-import Homepage from "./components/Homepage.jsx";
-import MobileMenu from "./components/MobileMenu.jsx";
-import Companies from "./components/Companies.jsx";
-import Company from "./components/Company.jsx";
-import Contacts from "./components/Contacts.jsx";
-import Contact from "./components/Contact.jsx";
-import Invoices from "./components/Invoices.jsx";
-import Invoice from "./components/Invoice.jsx";
+import Homepage from "./components/dashboard/Homepage.jsx";
+import MobileMenu from "./components/reusables/MobileMenu.jsx";
+import Companies from "./components/companies/Companies.jsx";
+import Company from "./components/companies/Company.jsx";
+import Contacts from "./components/contacts/Contacts.jsx";
+import Contact from "./components/contacts/Contact.jsx";
+import Invoices from "./components/invoices/Invoices.jsx";
+import Invoice from "./components/invoices/Invoice.jsx";
 import FourOfour from "./components/FourOfour.jsx";
 
 /* Forms for adding data */
-import ContactAdd from "./components/ContactAdd.jsx";
-import CompanyAdd from "./components/CompanyAdd.jsx";
-import InvoiceAdd from "./components/InvoiceAdd.jsx";
+import ContactAdd from "./components/contacts/ContactAdd.jsx";
+import CompanyAdd from "./components/companies/CompanyAdd.jsx";
+import InvoiceAdd from "./components/invoices/InvoiceAdd.jsx";
 
 function App() {
   const navigate = useNavigate();

@@ -1,7 +1,7 @@
 import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import handleRequests from "../logic/handleRequests.js";
-import Logo from "./Logo.jsx";
+import Logo from "./reusables/Logo.jsx";
 
 // toaster
 import { ToastContainer, toast } from "react-toastify";

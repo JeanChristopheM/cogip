@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { useTable, useSortBy, useFilters } from "react-table";
-import SelectFilter from "./SelectFilter";
+import SelectFilter from "../reusables/SelectFilter";
 
 function Invoices({ invoices, contacts, companies, setInvoiceId }) {
   const navigate = useNavigate();
