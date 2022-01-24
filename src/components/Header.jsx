@@ -8,7 +8,7 @@ const Header = ({ openMenu, onLogout, isAuth }) => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    setSelected(location.pathname);
+    setSelected("/cogip/" + location.pathname);
   }, [location]);
 
   return (
