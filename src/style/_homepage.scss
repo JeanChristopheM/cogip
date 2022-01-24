@@ -52,7 +52,7 @@
     .invoiceType,
     .invoiceDate {
       font-size: 0.8rem;
-      color: $clr-secondary-low;
+      color: var(--clr-text-low);
     }
     .invoiceNumber,
     .invoiceDate {
@@ -79,7 +79,7 @@
     .contactMail {
       grid-area: contactMail;
       font-size: 0.8rem;
-      color: $clr-secondary-low;
+      color: var(--clr-text-low);
     }
     .contactCompany {
       grid-area: contactCompany;
@@ -99,7 +99,7 @@
     .companyType {
       grid-area: companyType;
       font-size: 0.8rem;
-      color: $clr-secondary-low;
+      color: var(--clr-text-low);
       text-align: right;
     }
   }

@@ -15,15 +15,14 @@
   height: 80px;
 }
 .lds-dual-ring:after {
-  $clr-spinner: $clr-secondary;
   content: " ";
   display: block;
   width: 64px;
   height: 64px;
   margin: 8px;
   border-radius: 50%;
-  border: 6px solid $clr-spinner;
-  border-color: $clr-spinner transparent $clr-spinner transparent;
+  border: 6px solid var(--clr-spinner);
+  border-color: var(--clr-spinner) transparent var(--clr-spinner) transparent;
   animation: lds-dual-ring 1.2s linear infinite;
 }
 @keyframes lds-dual-ring {

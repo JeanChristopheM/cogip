@@ -83,7 +83,15 @@ const Header = ({ openMenu, onLogout, isAuth }) => {
                 <Link to="" onClick={onLogout} id="logoutLink">
                   LOGOUT
                 </Link>
-                <Link to="/settings" id="settingsIcon">
+                <Link
+                  to="/settings"
+                  id="settingsIcon"
+                  className={
+                    selected === "/settings" || selected === "/invoiceAdd"
+                      ? "active"
+                      : null
+                  }
+                >
                   <i className="fas fa-cog settingsIcon"></i>
                 </Link>
               </>

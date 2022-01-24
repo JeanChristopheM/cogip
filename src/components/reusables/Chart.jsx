@@ -15,13 +15,18 @@ const Chart = ({ invoices }) => {
       return tally;
     }, 0);
   }
+  const primaryColor =
+    document.documentElement.style.getPropertyValue("--clr-text") || "#274c77";
+  const secondaryColor =
+    document.documentElement.style.getPropertyValue("--clr-text-low") ||
+    "#879cb3";
   const data = {
     labels: ["Paid", "Unpaid"],
     datasets: [
       {
         label: "My First Dataset",
         data: [paid, unpaid],
-        backgroundColor: ["rgb(39, 76, 119)", "rgb(135, 156, 179)"],
+        backgroundColor: [primaryColor, secondaryColor],
         hoverOffset: 4,
       },
     ],

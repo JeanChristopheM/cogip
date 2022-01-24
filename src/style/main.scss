@@ -9,10 +9,10 @@
 
 .footer {
   margin-top: 3rem;
-  background: $clr-primary-low;
+  background: var(--clr-background-low);
   padding-block: 1rem;
   text-align: center;
-  border-top: 1px solid $clr-secondary-low;
+  border-top: 1px solid var(--clr-text-low);
   a {
     text-decoration: underline;
     cursor: pointer;
@@ -23,7 +23,7 @@
   justify-content: center;
   position: relative;
   #svg {
-    fill: $clr-secondary;
+    fill: var(--clr-text);
     width: 100%;
     height: 100%;
     object-fit: contain;
@@ -40,44 +40,90 @@
 @import "filters";
 @import "fetching";
 @import "toast";
+@import "settings";
 
 .settingsSubmenu {
-  //box-shadow: inset 0px 0px 5px $clr-secondary;
+  //box-shadow: inset 0px 0px 5px var(--clr-text;
   border-radius: 0.5rem;
   padding: 0.5rem 1rem;
   width: max-content;
   overflow: hidden;
   margin: 0 auto;
+  box-shadow: inset 0px 0px 5px var(--clr-shade);
+  margin-bottom: 2rem;
   ul {
     display: flex;
     gap: 2rem;
     align-items: center;
     border-radius: 0.5rem;
+    position: relative;
     li {
       padding: 0.5rem 1rem;
-      width: 6rem;
       cursor: pointer;
       position: relative;
-      &::after {
-        position: absolute;
-        content: "";
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        border-radius: 0.5rem;
-        box-shadow: 0px 0px 50px $clr-secondary-half;
-        transform: translateY(-300%);
-        border: 1px solid $clr-secondary;
-        opacity: 0.2;
-        transition: transform 0.2s ease-in-out, opacity 0.2s ease-in-out;
-      }
     }
-    li.active {
-      &::after {
-        opacity: 1;
-        transform: translateY(0);
-      }
+    .background {
+      position: absolute;
+      border-radius: 0.5rem;
+      box-shadow: 0px 0px 5px var(--clr-shade);
+      transform: translateY(-300%);
+      border: 1px solid var(--clr-text);
+      opacity: 1;
+      width: 10%;
+      height: 100%;
+      content: "";
+      top: 0;
+      left: 0;
+      transition: width 0.2s ease-in-out, transform 0.2s ease-in-out;
+      z-index: -1;
     }
   }
+}
+:root {
+  --animate-duration: 1s;
+  --animate-delay: 1s;
+  --animate-repeat: 1;
+}
+@keyframes fadeInDownBig {
+  0% {
+    opacity: 0;
+    -webkit-transform: translate3d(0, -200%, 0);
+    transform: translate3d(0, -200%, 0);
+  }
+  to {
+    opacity: 1;
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+  }
+}
+@keyframes fadeInDownBigReverse {
+  0% {
+    opacity: 1;
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+  }
+  to {
+    opacity: 0;
+    -webkit-transform: translate3d(0, -200%, 0);
+    transform: translate3d(0, -200%, 0);
+  }
+}
+.appear {
+  animation: 1s fadeInDownBig;
+}
+.begone {
+  animation: 1s fadeInDownBigReverse;
+}
+@keyframes blinkRed {
+  0% {
+    border-color: initial;
+    box-shadow: inset 0px 0px 4px transparent;
+  }
+  to {
+    border-color: red;
+    box-shadow: inset 0px 0px 4px red;
+  }
+}
+.blinkInputEmpty {
+  animation: 0.3s infinite blinkRed;
 }

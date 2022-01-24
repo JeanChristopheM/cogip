@@ -2,6 +2,7 @@
 import { useState, useEffect, useLayoutEffect } from "react";
 import handleRequests from "./logic/handleRequests";
 import { Routes, Route, useNavigate, useLocation } from "react-router-dom";
+import { switchTheme } from "./logic/theme";
 /* Components */
 import Header from "./components/Header.jsx";
 import Footer from "./components/Footer.jsx";
@@ -58,12 +59,17 @@ function App() {
       }
     }
   };
-  /* If cookie, set the authentification to cache and redirect to homepage */
+  /* Initial Effects */
   useLayoutEffect(() => {
+    /* If cookie, set the authentification to cache and redirect to homepage */
     if (sessionStorage.getItem("cogipAuth")) {
       setAuth(JSON.parse(sessionStorage.getItem("cogipAuth")));
     } else if (localStorage.getItem("cogipAuth")) {
       setAuth(JSON.parse(localStorage.getItem("cogipAuth")));
+    }
+    /* Checking if theme stored in local storage and applying if needed */
+    if (localStorage.getItem("cogipTheme")) {
+      switchTheme(JSON.parse(localStorage.getItem("cogipTheme")));
     }
     setCheckedAuth(true);
   }, []);

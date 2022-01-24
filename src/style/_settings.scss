@@ -1,0 +1,96 @@
+.themeContainer {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  @media screen and (min-width: 900px) {
+    flex-wrap: nowrap;
+  }
+  .themeCard {
+    border: 1px solid var(--clr-text);
+    border-radius: 0.5rem;
+    flex: 1 0 100%;
+    padding: 1rem;
+    position: relative;
+    @media screen and (min-width: 500px) {
+      flex: 1 1 45%;
+    }
+    @media screen and (min-width: 900px) {
+      flex: 1 1 25%;
+    }
+    &__colors {
+      min-height: 120px;
+      border-radius: 0.5rem;
+      border: 1px solid var(--clr-text-low);
+      margin-top: 0.7rem;
+    }
+    .primary {
+      width: 80%;
+      min-height: 80px;
+      border-radius: 0.5rem;
+      margin: 1rem auto 0 auto;
+      padding: 0.3rem;
+    }
+    &#original {
+      .themeCard__colors {
+        background: #e7ecef;
+        .primary {
+          background: #f8f8fb;
+          box-shadow: 0px 5px 5px #274c77;
+          color: #274c77;
+          p#lighterText {
+            color: #879cb3;
+          }
+        }
+      }
+    }
+    &#dark {
+      .themeCard__colors {
+        background: #111218;
+        .primary {
+          background: #191b24;
+          box-shadow: 0px 5px 5px #3b3f54;
+          color: #e7ecef;
+          p#lighterText {
+            color: #f8f8fb79;
+          }
+        }
+      }
+    }
+    &#salmon {
+      .themeCard__colors {
+        background: #e3655b;
+        .primary {
+          background: #e77b73;
+          box-shadow: 0px 5px 5px #21221b;
+          color: #20221b;
+          p#lighterText {
+            color: #414436;
+          }
+        }
+      }
+    }
+    &#forest {
+      .themeCard__colors {
+        background: #463935;
+        .primary {
+          background: #314b30;
+          box-shadow: 0px 5px 5px #272220;
+          color: #e5dedc;
+          p#lighterText {
+            color: #e5dedca3;
+          }
+        }
+      }
+    }
+    & > * {
+      pointer-events: none;
+    }
+  }
+  h3 {
+    font-weight: 600;
+    margin-bottom: 0.3rem;
+  }
+}
+.settings__themes--title {
+  margin-bottom: 1rem;
+}

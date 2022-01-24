@@ -1,10 +1,13 @@
-$clr-primary: #e7ecef;
-$clr-primary-low: #f8f8fb;
-$clr-secondary: #274c77;
-$clr-secondary-half: #516f91;
-$clr-secondary-low: #879cb3;
-
-$size: 0.6rem;
-$animationSpeed: 0.15s;
-$limiter: 1200px;
-$tableSpacing: 0.8rem;
+:root {
+  --clr-background: #e7ecef;
+  --clr-background-low: #f8f8fb;
+  --clr-text: #274c77;
+  --clr-text-half: #516f91;
+  --clr-text-low: #879cb3;
+  --clr-shade: #274c77;
+  --clr-spinner: #274c77;
+  --size: 0.6rem;
+  --animationSpeed: 0.15s;
+  --limiter: 1200px;
+  --tableSpacing: 0.8rem;
+}

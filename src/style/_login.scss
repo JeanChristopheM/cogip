@@ -1,34 +1,37 @@
 .login {
-    img {
-        mix-blend-mode: darken;
-        max-width: 60%;
-        z-index: -1;
+  img {
+    mix-blend-mode: darken;
+    max-width: 60%;
+    z-index: -1;
+  }
+  figure {
+    display: grid;
+    justify-content: center;
+    justify-items: center;
+    align-items: center;
+  }
+  .loginForm {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    .loginInput {
+      flex-basis: 100%;
     }
-    figure {
-        display: grid;
-        justify-content: center;
-        justify-items: center;
-        align-items: center;
+    .loginInput:first-of-type {
+      margin-top: 2rem;
     }
-    .loginForm {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 1rem;
-        .loginInput {
-            flex-basis: 100%;
-        }
-        .loginInput:first-of-type {
-            margin-top: 2rem;
-        }
-        button {
-            margin: 0 auto;
-        }
+    button {
+      margin: 0 auto;
     }
-    .rememberMe {
-        flex-basis: 100%;
-        display: flex;
-        justify-content: center;
-        margin-bottom: 1rem;
-        cursor: pointer;
-    }
+  }
+  .rememberMe {
+    flex-basis: 100%;
+    display: flex;
+    justify-content: center;
+    padding-block: 1rem;
+    cursor: pointer;
+  }
+  .svgContainer {
+    margin-bottom: 1rem;
+  }
 }

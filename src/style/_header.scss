@@ -1,14 +1,14 @@
 .header {
   position: fixed;
   width: 100%;
-  background: $clr-primary-low;
-  box-shadow: 0 4px 8px 2px $clr-secondary;
+  background: var(--clr-background-low);
+  box-shadow: 0 4px 8px 2px var(--clr-shade);
   z-index: 9;
   #logoutLink {
-    color: $clr-secondary-low;
+    color: var(--clr-text-low);
   }
   &__container {
-    max-width: $limiter;
+    max-width: var(--limiter);
     padding-inline: 1rem;
     margin: 0 auto;
     @media screen and (min-width: 900px) {
@@ -67,17 +67,17 @@
           content: "";
           bottom: 0;
           left: 50%;
-          transform: translate(-50%, $size);
+          transform: translate(-50%, var(--size));
           width: 1px;
           height: 1px;
-          border-bottom: $size solid $clr-secondary;
-          border-top: $size solid transparent;
-          border-left: $size solid transparent;
-          border-right: $size solid transparent;
+          border-bottom: var(--size) solid var(--clr-text);
+          border-top: var(--size) solid transparent;
+          border-left: var(--size) solid transparent;
+          border-right: var(--size) solid transparent;
           opacity: 0;
-          transition: opacity $animationSpeed ease-in-out,
-            transform $animationSpeed ease-in-out,
-            border-bottom $animationSpeed ease-in-out;
+          transition: opacity var(--animationSpeed) ease-in-out,
+            transform var(--animationSpeed) ease-in-out,
+            border-bottom var(--animationSpeed) ease-in-out;
           pointer-events: none;
         }
         &.active {
@@ -90,7 +90,7 @@
         @media (hover: hover) {
           &:not(.active):hover::after {
             opacity: 1;
-            border-bottom: $size solid $clr-secondary-low;
+            border-bottom: var(--size) solid var(--clr-text-low);
             transform: translate(-50%, 0);
           }
         }

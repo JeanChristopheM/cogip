@@ -144,11 +144,9 @@ function Homepage({ companies, invoices, contacts, setPage, setInvoiceId }) {
           {invoices.length > 0 ? (
             <Chart invoices={invoices} />
           ) : (
-            <li>
-              <div className="spinner-centerer">
-                <div className="lds-dual-ring"></div>
-              </div>
-            </li>
+            <div className="spinner-centerer">
+              <div className="lds-dual-ring"></div>
+            </div>
           )}
         </div>
       </section>

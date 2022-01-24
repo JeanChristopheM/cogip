@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import handleRequests from "../logic/handleRequests.js";
 import Logo from "./reusables/Logo.jsx";
@@ -14,10 +14,25 @@ function Login({ setAuth, isAuth, location }) {
   const pwdInput = useRef(null);
   const rememberInput = useRef(null);
   const navigate = useNavigate();
-
+  const [isShowing, setIsShowing] = useState("");
+  useEffect(() => {
+    setIsShowing("appear");
+  }, []);
   const onAuthClick = async (e) => {
     e.preventDefault();
     setIsFetching(true);
+    const exitIfEmpty = (input) => {
+      if (!input.value) {
+        setIsFetching(false);
+        input.classList.add("blinkInputEmpty");
+        setTimeout(() => {
+          input.classList.remove("blinkInputEmpty");
+        }, 500);
+        return true;
+      }
+    };
+    if (exitIfEmpty(usernameInput.current) || exitIfEmpty(pwdInput.current))
+      return;
     const username = usernameInput.current.value;
     const pwd = pwdInput.current.value;
     const data = { userName: username, password: pwd };
@@ -40,12 +55,15 @@ function Login({ setAuth, isAuth, location }) {
         localStorage.setItem("cogipAuth", JSON.stringify(dataPackage));
       }
       sessionStorage.setItem("cogipAuth", JSON.stringify(dataPackage));
-      setAuth(dataPackage);
-      navigate(location.pathname);
+      setIsShowing("begone");
+      setTimeout(() => {
+        setAuth(dataPackage);
+        navigate(location.pathname);
+      }, 1000);
     }
   };
   return (
-    <main className="login">
+    <main className={`login ${isShowing}`}>
       <Logo handleClick={null} handleStyle={{ height: "10rem" }} />
       <form className="loginForm card">
         <h2>Login</h2>
@@ -54,6 +72,7 @@ function Login({ setAuth, isAuth, location }) {
           type="text"
           placeholder="Username :"
           className="loginInput"
+          autoFocus
         />
         <input
           ref={pwdInput}
@@ -61,15 +80,15 @@ function Login({ setAuth, isAuth, location }) {
           placeholder="Password :"
           className="loginInput"
         />
-        <div className="rememberMe">
+        <label htmlFor="rememberCheck" className="rememberMe">
           <input
             name="rememberCheck"
             id="rememberCheck"
             type="checkbox"
             ref={rememberInput}
           />
-          <label htmlFor="rememberCheck">Remember me</label>
-        </div>
+          Remember me
+        </label>
         <button id="auth-button" onClick={onAuthClick}>
           Confirm
         </button>

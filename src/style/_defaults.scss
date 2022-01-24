@@ -2,8 +2,8 @@ html {
   height: 100%;
 }
 body {
-  background-color: $clr-primary;
-  color: $clr-secondary;
+  background-color: var(--clr-background);
+  color: var(--clr-text);
   font-family: "Lato", sans-serif;
   font-size: 16px;
   height: 100%;
@@ -17,7 +17,7 @@ h2 {
   font-weight: 900;
 }
 main {
-  max-width: $limiter;
+  max-width: var(--limiter);
   padding: 1rem;
   width: 100%;
   margin-top: 4.4rem;
@@ -30,29 +30,29 @@ main {
   padding: 0.5rem;
   border-radius: 1000vh;
   border: 2px solid;
-  border-color: $clr-secondary;
+  border-color: var(--clr-text);
   font-size: 1.2rem;
   text-indent: 0.5rem;
 }
 button {
-  background-color: $clr-secondary;
-  color: $clr-primary-low;
+  background-color: var(--clr-text);
+  color: var(--clr-background-low);
   padding: 0.5rem 2rem;
   border-radius: 1000vh;
   font-size: 1.5rem;
   cursor: pointer;
   transition: color 0.2s, background-color 0.2s;
-  border: 2px solid $clr-secondary;
+  border: 2px solid var(--clr-text);
   @media (hover: hover) {
     &:hover {
-      background-color: $clr-primary;
-      color: $clr-secondary;
-      border: 2px solid $clr-secondary;
+      background-color: var(--clr-background);
+      color: var(--clr-text);
+      border: 2px solid var(--clr-text);
     }
   }
 }
 select {
-  border: 1px dashed $clr-secondary-low;
+  border: 1px dashed var(--clr-text-low);
   border-radius: 5px;
   padding: 0.5rem;
   cursor: pointer;
@@ -60,7 +60,7 @@ select {
 input[type="text"]:not(.loginInput),
 input[type="date"],
 input[type="number"] {
-  border: 1px dashed $clr-secondary-low;
+  border: 1px dashed var(--clr-text-low);
   border-radius: 5px;
   padding: 0.5rem;
 }
@@ -82,7 +82,7 @@ input[type="number"] {
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: $clr-secondary-low;
+    background-color: var(--clr-text-low);
     -webkit-transition: 0.4s;
     transition: 0.4s;
     border-radius: 1rem;
@@ -93,20 +93,20 @@ input[type="number"] {
       height: 100%;
       top: 0;
       left: 0;
-      background-color: $clr-primary;
+      background-color: var(--clr-background);
       -webkit-transition: 0.4s;
       transition: 0.4s;
       border-radius: 1rem;
-      border: 4px solid $clr-secondary-low;
+      border: 4px solid var(--clr-text-low);
     }
   }
   input:checked + .slider {
-    background-color: $clr-secondary;
+    background-color: var(--clr-text);
     content: "";
   }
   input:checked + .slider:before {
     transform: translateX(3rem);
-    border: 4px solid $clr-secondary;
+    border: 4px solid var(--clr-text);
   }
 }
 #canvasContainer {

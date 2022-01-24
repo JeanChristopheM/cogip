@@ -1,6 +1,6 @@
 .card {
-  background: $clr-primary-low;
-  box-shadow: 0 4px 8px 2px $clr-secondary;
+  background: var(--clr-background-low);
+  box-shadow: 0 4px 8px 2px var(--clr-shade);
   padding: 1rem;
   border-radius: 1rem;
   @media screen and (max-width: 400px) {

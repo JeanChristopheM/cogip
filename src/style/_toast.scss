@@ -1,13 +1,13 @@
 .Toastify__toast-body {
-  color: $clr-secondary;
+  color: var(--clr-text);
   font-family: "Lato", sans-serif;
   font-weight: 600;
 }
 html .Toastify__toast {
-  background: $clr-primary-low;
-  box-shadow: 0px 5px 10px 2px $clr-secondary,
-    0px 5px 20px 4px $clr-secondary-low;
+  background: var(--clr-background-low);
+  box-shadow: 0px 5px 10px 2px var(--clr-shade),
+    0px 5px 20px 4px var(--clr-shade);
 }
 html .Toastify__progress-bar {
-  background: $clr-secondary-low;
+  background: var(--clr-text-low);
 }
