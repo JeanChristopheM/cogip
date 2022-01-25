@@ -226,7 +226,10 @@ function App() {
                     }
                   />
                   <Route path="/reports" element={<Reports />} />
-                  <Route path="/settings" element={<Settings />} />
+                  <Route
+                    path="/settings"
+                    element={<Settings isAuth={isAuth} />}
+                  />
                   <Route path="*" element={<FourOfour />} />
                 </Routes>
               ) : (
