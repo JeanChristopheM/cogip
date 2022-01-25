@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import InvoiceControls from "./InvoiceControls.jsx";
 import CompanySelector from "../reusables/CompanySelector.jsx";
@@ -16,11 +16,15 @@ function Invoice({ invoices, companies, contacts, setIsLoaded, isAuth }) {
   let params = useParams();
   const navigate = useNavigate();
   const invoice = invoices.find((el) => el.id == params.invoiceId);
-  const company = companies.find((el) => el.id == invoice.company);
-  const contact = contacts.find((el) => el.id == invoice.contact);
-  let year = invoice.received.slice(0, 4);
-  let month = invoice.received.slice(5, 7);
-  let day = invoice.received.slice(8, 10);
+  const company = invoice
+    ? companies.find((el) => el.id == invoice.company)
+    : null;
+  const contact = invoice
+    ? contacts.find((el) => el.id == invoice.contact)
+    : null;
+  let year = invoice ? invoice.received.slice(0, 4) : null;
+  let month = invoice ? invoice.received.slice(5, 7) : null;
+  let day = invoice ? invoice.received.slice(8, 10) : null;
 
   const [isModifying, setIsModifying] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
@@ -28,6 +32,9 @@ function Invoice({ invoices, companies, contacts, setIsLoaded, isAuth }) {
   const [selectedContact, setSelectedContact] = useState(contact);
   const [isFetching, setIsFetching] = useState(false);
 
+  useEffect(() => {
+    if (!invoice) navigate("/invoices");
+  }, [invoices]);
   const handleContactChange = (value) => {
     setSelectedContact(
       contacts.find((el) => `${el.firstname} ${el.lastname}` == value)
@@ -66,13 +73,13 @@ function Invoice({ invoices, companies, contacts, setIsLoaded, isAuth }) {
       if (status === 200) {
         setTimeout(() => {
           toast.success(message, {
-            position: toast.POSITION.TOP_CENTER,
+            position: toast.POSITION.BOTTOM_RIGHT,
           });
         }, 250);
       } else {
         setTimeout(() => {
           toast.error(message, {
-            position: toast.POSITION.TOP_CENTER,
+            position: toast.POSITION.BOTTOM_RIGHT,
           });
         }, 250);
       }
@@ -83,17 +90,33 @@ function Invoice({ invoices, companies, contacts, setIsLoaded, isAuth }) {
         for (let issue of issues) {
           if (issue !== "ok") {
             toast.error(check[issue], {
-              position: toast.POSITION.TOP_CENTER,
+              position: toast.POSITION.BOTTOM_RIGHT,
             });
           }
         }
       }, 250);
     }
   };
-
+  const handleDelete = async () => {
+    setIsFetching(true);
+    const { status, message } = await handleRequests(
+      "DELETE",
+      `https://csharpproject.somee.com/api/Invoice/${invoice.id}`,
+      isAuth.jwt
+    );
+    setIsFetching(false);
+    if (status !== 200) {
+      toast.error("There was an error deleting this invoice", {
+        position: toast.POSITION.BOTTOM_RIGHT,
+      });
+    }
+    sessionStorage.setItem("cogipToast", "Success !");
+    setIsDeleting(false);
+    setIsLoaded(false);
+  };
   return (
     <main>
-      {isFetching || !loaded ? (
+      {isFetching || !loaded || !invoice ? (
         <div className="fetching">
           <div className="lds-dual-ring"></div>
         </div>
@@ -216,6 +239,7 @@ function Invoice({ invoices, companies, contacts, setIsLoaded, isAuth }) {
               originalContact={contact}
               setSelectedContact={setSelectedContact}
               handleModif={handleModif}
+              handleDelete={handleDelete}
             />
           ) : (
             ""

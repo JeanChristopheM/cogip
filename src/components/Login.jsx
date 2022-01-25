@@ -47,7 +47,7 @@ function Login({ setAuth, isAuth, location }) {
     if (status !== 200) {
       setTimeout(() => {
         toast.error(message, {
-          position: toast.POSITION.TOP_CENTER,
+          position: toast.POSITION.BOTTOM_RIGHT,
         });
       }, 250);
     } else {

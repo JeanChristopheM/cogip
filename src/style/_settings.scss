@@ -162,11 +162,10 @@
     }
     &.placeholder {
       gap: 0.2rem;
-
       & > span:not(.options, .imageContainer) {
         background: grey;
         color: transparent;
-        animation: 1s infinite alternate shine;
+        animation: 0.5s infinite alternate shine;
       }
       .imageContainer {
         padding: 0.5rem;
@@ -179,6 +178,19 @@
         aspect-ratio: 1;
         border-radius: 50%;
         position: relative;
+        animation: 0.5s infinite alternate shine;
+      }
+      .name {
+        width: 50%;
+      }
+      .username {
+        width: 35%;
+      }
+      .email {
+        width: 60%;
+      }
+      .userType {
+        width: 30%;
       }
     }
   }

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useLocalState } from "../../logic/hooks";
 import { themes, switchTheme } from "../../logic/theme";
+
 const ThemeSettings = () => {
   const [currentTheme, setCurrentTheme] = useLocalState(
     "cogipTheme",

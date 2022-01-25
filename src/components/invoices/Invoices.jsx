@@ -1,10 +1,19 @@
-import { useMemo } from "react";
+import { useMemo, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useTable, useSortBy, useFilters } from "react-table";
 import SelectFilter from "../reusables/SelectFilter";
 import { dateFormatter } from "../../logic/dateFormatter";
+import { ToastContainer, toast } from "react-toastify";
 
 function Invoices({ invoices, contacts, companies }) {
+  useEffect(() => {
+    const message = sessionStorage.getItem("cogipToast");
+    if (!message) return;
+    toast.success(message, {
+      position: toast.POSITION.BOTTOM_RIGHT,
+    });
+    sessionStorage.removeItem("cogipToast");
+  }, []);
   const navigate = useNavigate();
   const handleAdd = (e) => {
     navigate(`/${e.target.id}`);
@@ -217,6 +226,7 @@ function Invoices({ invoices, contacts, companies }) {
           </tbody>
         </table>
       </section>
+      <ToastContainer />
     </main>
   );
 }

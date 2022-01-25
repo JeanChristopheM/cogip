@@ -4,10 +4,8 @@ function CompanyControls({
   setIsModifying,
   setIsDeleting,
   handleModif,
+  handleDelete,
 }) {
-  const handleDelete = () => {
-    console.log("deleted");
-  };
   if (isModifying) {
     return (
       <div className={"companyControls"}>

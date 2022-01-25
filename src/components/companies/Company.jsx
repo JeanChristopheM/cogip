@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { companyVerify } from "../../logic/formValidation.js";
 import handleRequests from "../../logic/handleRequests";
@@ -11,14 +11,16 @@ import "react-toastify/dist/ReactToastify.css";
 
 function Company({ companies, contacts, setIsLoaded, isAuth }) {
   const loaded = companies.length > 0 ? true : false;
-  let params = useParams();
+  const params = useParams();
   const navigate = useNavigate();
-  let company = companies.find((el) => el.id == params.companyId);
-
+  const company = companies.find((el) => el.id == params.companyId);
   const [isModifying, setIsModifying] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
   const [isFetching, setIsFetching] = useState(false);
 
+  useEffect(() => {
+    if (!company) navigate("/companies");
+  }, [companies]);
   const nameRef = useRef();
   const vatRef = useRef();
   const statusRef = useRef();
@@ -43,13 +45,13 @@ function Company({ companies, contacts, setIsLoaded, isAuth }) {
       if (status === 200) {
         setTimeout(() => {
           toast.success(message, {
-            position: toast.POSITION.TOP_CENTER,
+            position: toast.POSITION.BOTTOM_RIGHT,
           });
         }, 250);
       } else {
         setTimeout(() => {
           toast.error(message, {
-            position: toast.POSITION.TOP_CENTER,
+            position: toast.POSITION.BOTTOM_RIGHT,
           });
         }, 250);
       }
@@ -60,17 +62,34 @@ function Company({ companies, contacts, setIsLoaded, isAuth }) {
         for (let issue of issues) {
           if (issue !== "ok") {
             toast.error(check[issue], {
-              position: toast.POSITION.TOP_CENTER,
+              position: toast.POSITION.BOTTOM_RIGHT,
             });
           }
         }
       }, 250);
     }
   };
+  const handleDelete = async () => {
+    setIsFetching(true);
+    const { status, message } = await handleRequests(
+      "DELETE",
+      `https://csharpproject.somee.com/api/Company/${company.id}`,
+      isAuth.jwt
+    );
+    setIsFetching(false);
+    if (status !== 200) {
+      toast.error("There was an error deleting this company", {
+        position: toast.POSITION.BOTTOM_RIGHT,
+      });
+    }
+    sessionStorage.setItem("cogipToast", "Success !");
+    setIsDeleting(false);
+    setIsLoaded(false);
+  };
 
   return (
     <main>
-      {isFetching || !loaded ? (
+      {isFetching || !loaded || !company ? (
         <div className="fetching">
           <div className="lds-dual-ring"></div>
         </div>
@@ -143,6 +162,8 @@ function Company({ companies, contacts, setIsLoaded, isAuth }) {
               setIsDeleting={setIsDeleting}
               setIsModifying={setIsModifying}
               handleModif={handleModif}
+              handleDelete={handleDelete}
+              company={company}
             />
           ) : (
             ""

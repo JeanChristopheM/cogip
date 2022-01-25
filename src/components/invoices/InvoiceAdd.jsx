@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import handleRequests from "../../logic/handleRequests";
 import { invoiceVerify } from "../../logic/formValidation";
 
@@ -14,7 +14,15 @@ function InvoiceAdd({ contacts, companies, setIsLoaded, isAuth }) {
   const [selectedCompany, setSelectedCompany] = useState("");
   const [selectedContact, setSelectedContact] = useState("");
   const [isFetching, setIsFetching] = useState(false);
-
+  useEffect(() => {
+    const message = sessionStorage.getItem("cogipToast");
+    if (!message) return;
+    const messageArray = message.split(",");
+    toast[messageArray[0]](messageArray[1], {
+      position: toast.POSITION.BOTTOM_RIGHT,
+    });
+    sessionStorage.removeItem("cogipToast");
+  }, [isFetching]);
   const handleCompanyChange = (value) => {
     setSelectedCompany(value);
   };
@@ -49,19 +57,9 @@ function InvoiceAdd({ contacts, companies, setIsLoaded, isAuth }) {
       );
       setIsFetching(false);
       setIsLoaded(false);
-      if (status === 200) {
-        setTimeout(() => {
-          toast.success(message, {
-            position: toast.POSITION.TOP_CENTER,
-          });
-        }, 250);
-      } else {
-        setTimeout(() => {
-          toast.error(message, {
-            position: toast.POSITION.TOP_CENTER,
-          });
-        }, 250);
-      }
+      if (status === 200)
+        sessionStorage.setItem("cogipToast", "success,Success !");
+      else sessionStorage.setItem("cogipToast", `error,${message}`);
     } else {
       setIsFetching(false);
       /* Handling Errors */
@@ -70,7 +68,7 @@ function InvoiceAdd({ contacts, companies, setIsLoaded, isAuth }) {
         for (let issue of issues) {
           if (issue !== "ok") {
             toast.error(check[issue], {
-              position: toast.POSITION.TOP_CENTER,
+              position: toast.POSITION.BOTTOM_RIGHT,
             });
           }
         }

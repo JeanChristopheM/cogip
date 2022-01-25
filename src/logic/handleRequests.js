@@ -8,12 +8,11 @@ const handleRequests = async (method, src, token, data = null) => {
   };
   if (data) options.body = JSON.stringify(data);
 
-  let status;
   let message;
   let dataPackage;
   /* Fetching */
   const response = await fetch(src, options);
-  status = response.status;
+  const status = response.status;
   if (status === 200 && method === "GET") {
     // SUCCESS AT GETTING DATA
     message = "Success !";

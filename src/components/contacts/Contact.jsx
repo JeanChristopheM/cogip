@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import ContactControls from "./ContactControls.jsx";
 import CompanySelector from "../reusables/CompanySelector.jsx";
@@ -15,12 +15,18 @@ function Contact({ contacts, companies, setIsLoaded, isAuth }) {
   const params = useParams();
   const navigate = useNavigate();
   const contact = contacts.find((el) => el.id == params.contactId);
-  const company = companies.find((el) => el.id == contact.contactcompany);
+  const company = contact
+    ? companies.find((el) => el.id == contact.contactcompany)
+    : null;
 
   const [selectedCompany, setSelectedCompany] = useState(company);
   const [isModifying, setIsModifying] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
   const [isFetching, setIsFetching] = useState(false);
+
+  useEffect(() => {
+    if (!contact) navigate("/contacts");
+  }, [contacts]);
 
   const firstnameRef = useRef();
   const lastnameRef = useRef();
@@ -51,13 +57,13 @@ function Contact({ contacts, companies, setIsLoaded, isAuth }) {
       if (status === 200) {
         setTimeout(() => {
           toast.success(message, {
-            position: toast.POSITION.TOP_CENTER,
+            position: toast.POSITION.BOTTOM_RIGHT,
           });
         }, 250);
       } else {
         setTimeout(() => {
           toast.error(message, {
-            position: toast.POSITION.TOP_CENTER,
+            position: toast.POSITION.BOTTOM_RIGHT,
           });
         }, 250);
       }
@@ -68,17 +74,33 @@ function Contact({ contacts, companies, setIsLoaded, isAuth }) {
         for (let issue of issues) {
           if (issue !== "ok") {
             toast.error(check[issue], {
-              position: toast.POSITION.TOP_CENTER,
+              position: toast.POSITION.BOTTOM_RIGHT,
             });
           }
         }
       }, 250);
     }
   };
-
+  const handleDelete = async () => {
+    setIsFetching(true);
+    const { status, message } = await handleRequests(
+      "DELETE",
+      `https://csharpproject.somee.com/api/Contact/${contact.id}`,
+      isAuth.jwt
+    );
+    setIsFetching(false);
+    if (status !== 200) {
+      toast.error("There was an error deleting this contact", {
+        position: toast.POSITION.BOTTOM_RIGHT,
+      });
+    }
+    sessionStorage.setItem("cogipToast", "Success !");
+    setIsDeleting(false);
+    setIsLoaded(false);
+  };
   return (
     <main>
-      {isFetching || !loaded ? (
+      {isFetching || !loaded || !contact ? (
         <div className="fetching">
           <div className="lds-dual-ring"></div>
         </div>
@@ -159,6 +181,7 @@ function Contact({ contacts, companies, setIsLoaded, isAuth }) {
               isDeleting={isDeleting}
               setIsDeleting={setIsDeleting}
               handleModif={handleModif}
+              handleDelete={handleDelete}
             />
           ) : (
             ""

@@ -26,6 +26,9 @@ import ContactAdd from "./components/contacts/ContactAdd.jsx";
 import CompanyAdd from "./components/companies/CompanyAdd.jsx";
 import InvoiceAdd from "./components/invoices/InvoiceAdd.jsx";
 
+/* Toast Style */
+import "react-toastify/dist/ReactToastify.css";
+
 function App() {
   const navigate = useNavigate();
   const [checkedAuth, setCheckedAuth] = useState(false);

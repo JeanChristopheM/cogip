@@ -1,5 +1,4 @@
 function InvoiceControls({
-  invoice,
   isModifying,
   setIsModifying,
   setSelectedCompany,
@@ -9,10 +8,8 @@ function InvoiceControls({
   originalContact,
   setSelectedContact,
   handleModif,
+  handleDelete,
 }) {
-  const handleDelete = () => {
-    console.log("deleted");
-  };
   if (isModifying) {
     return (
       <div className={"invoiceControls"}>

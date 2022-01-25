@@ -1,9 +1,9 @@
 import React from "react";
-import CompanyLi from "../reusables/CompanyLi.jsx";
-import ContactLi from "../reusables/ContactLi.jsx";
-import InvoiceLi from "../reusables/InvoiceLi.jsx";
-import Chart from "../reusables/Chart.jsx";
 
+import Chart from "../reusables/Chart.jsx";
+import LastFiveInvoices from "./LastFiveInvoices.jsx";
+import LastFiveContacts from "./LastFiveContacts.jsx";
+import LastFiveCompanies from "./LastFiveCompanies.jsx";
 import { useNavigate } from "react-router-dom";
 
 function Homepage({ companies, invoices, contacts, setPage, setInvoiceId }) {
@@ -25,119 +25,25 @@ function Homepage({ companies, invoices, contacts, setPage, setInvoiceId }) {
 
   return (
     <main className="homepage">
-      <section className="invoices card">
-        <h2>
-          <span
-            onClick={() => {
-              navigate("/invoices");
-            }}
-            style={{ cursor: "pointer" }}
-          >
-            Last 5 invoices
-          </span>
-          <button
-            type="button"
-            id="invoiceAdd"
-            onClick={handleAdd}
-            style={{ padding: "0 .5rem" }}
-          >
-            +
-          </button>
-        </h2>
-        <ul>
-          {invoices.length > 0 ? (
-            invoices.slice(0, 5).map((entry) => {
-              return (
-                <InvoiceLi
-                  invoice={entry}
-                  key={entry.id}
-                  companies={companies}
-                  setPage={setPage}
-                  setInvoiceId={setInvoiceId}
-                />
-              );
-            })
-          ) : (
-            <li>
-              <div className="spinner-centerer">
-                <div className="lds-dual-ring"></div>
-              </div>
-            </li>
-          )}
-        </ul>
-      </section>
-      <section className="contacts card">
-        <h2>
-          <span
-            onClick={() => {
-              navigate("/contacts");
-            }}
-            style={{ cursor: "pointer" }}
-          >
-            Last 5 contacts
-          </span>
-          <button
-            type="button"
-            id="contactAdd"
-            onClick={handleAdd}
-            style={{ padding: "0 .5rem" }}
-          >
-            +
-          </button>
-        </h2>
-        <ul>
-          {contacts.length > 0 ? (
-            contacts.slice(0, 5).map((entry) => {
-              return (
-                <ContactLi
-                  contact={entry}
-                  key={entry.id}
-                  companies={companies}
-                />
-              );
-            })
-          ) : (
-            <li>
-              <div className="spinner-centerer">
-                <div className="lds-dual-ring"></div>
-              </div>
-            </li>
-          )}
-        </ul>
-      </section>
-      <section className="companies card">
-        <h2>
-          <span
-            onClick={() => {
-              navigate("/companies");
-            }}
-            style={{ cursor: "pointer" }}
-          >
-            Last 5 companies
-          </span>
-          <button
-            type="button"
-            id="companyAdd"
-            onClick={handleAdd}
-            style={{ padding: "0 .5rem" }}
-          >
-            +
-          </button>
-        </h2>
-        <ul>
-          {companies.length > 0 ? (
-            companies.slice(0, 5).map((entry) => {
-              return <CompanyLi company={entry} key={entry.id} />;
-            })
-          ) : (
-            <li>
-              <div className="spinner-centerer">
-                <div className="lds-dual-ring"></div>
-              </div>
-            </li>
-          )}
-        </ul>
-      </section>
+      <LastFiveInvoices
+        handleAdd={handleAdd}
+        navigate={navigate}
+        invoices={invoices}
+        companies={companies}
+        setPage={setPage}
+        setInvoiceId={setInvoiceId}
+      />
+      <LastFiveContacts
+        handleAdd={handleAdd}
+        navigate={navigate}
+        contacts={contacts}
+        companies={companies}
+      />
+      <LastFiveCompanies
+        handleAdd={handleAdd}
+        navigate={navigate}
+        companies={companies}
+      />
       <section className="chart card">
         <h2>Payement Status</h2>
         <div style={{ position: "relative" }} id="canvasContainer">

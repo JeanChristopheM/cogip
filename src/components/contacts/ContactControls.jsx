@@ -1,13 +1,11 @@
-function CompanyControls({
+function ContactControls({
   isModifying,
   isDeleting,
   setIsModifying,
   setIsDeleting,
   handleModif,
+  handleDelete,
 }) {
-  const handleDelete = () => {
-    console.log("deleted");
-  };
   if (isModifying) {
     return (
       <div className={"contactControls"}>
@@ -64,4 +62,4 @@ function CompanyControls({
   );
 }
 
-export default CompanyControls;
+export default ContactControls;
