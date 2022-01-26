@@ -1,5 +1,5 @@
 /* Functions */
-import { useState, useEffect, useLayoutEffect } from "react";
+import React, { useState, useEffect, useLayoutEffect, Suspense } from "react";
 import handleRequests from "./logic/handleRequests";
 import { Routes, Route, useNavigate, useLocation } from "react-router-dom";
 import { switchTheme } from "./logic/theme";
@@ -8,9 +8,16 @@ import Header from "./components/Header.jsx";
 import Footer from "./components/Footer.jsx";
 import ScrollToTop from "./components/reusables/ScrollToTop.jsx";
 /* Page Contents */
-import Login from "./components/Login.jsx";
-import Homepage from "./components/dashboard/Homepage.jsx";
-import MobileMenu from "./components/reusables/MobileMenu.jsx";
+//import Login from "./components/Login.jsx";
+const Login = React.lazy(() => import("./components/Login.jsx"));
+//import Homepage from "./components/dashboard/Homepage.jsx";
+const Homepage = React.lazy(() =>
+  import("./components/dashboard/Homepage.jsx")
+);
+//import MobileMenu from "./components/reusables/MobileMenu.jsx";
+const MobileMenu = React.lazy(() =>
+  import("./components/reusables/MobileMenu.jsx")
+);
 import Companies from "./components/companies/Companies.jsx";
 import Company from "./components/companies/Company.jsx";
 import Contacts from "./components/contacts/Contacts.jsx";
@@ -41,6 +48,9 @@ function App() {
 
   const location = useLocation();
 
+  const suspense = (element) => {
+    return <Suspense fallback={<main>Loading...</main>}>{element}</Suspense>;
+  };
   /* Loading data function */
   const loadData = async () => {
     const srcs = [
@@ -137,14 +147,14 @@ function App() {
                 <Routes>
                   <Route
                     path=""
-                    element={
+                    element={suspense(
                       <Homepage
                         isAuth={isAuth}
                         companies={companies}
                         contacts={contacts}
                         invoices={invoices}
                       />
-                    }
+                    )}
                   />
                   <Route
                     path="/companies"
@@ -249,7 +259,7 @@ function App() {
               )}
             </>
           ) : (
-            <Login setAuth={setAuth} location={location} />
+            suspense(<Login setAuth={setAuth} location={location} />)
           )}
         </>
       ) : (
