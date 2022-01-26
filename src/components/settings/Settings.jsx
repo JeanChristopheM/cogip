@@ -12,7 +12,7 @@ const Settings = ({ isAuth }) => {
   ];
   return (
     <main>
-      <SettingsMenu setSelectedPage={setSelectedPage} />
+      <SettingsMenu setSelectedPage={setSelectedPage} isAuth={isAuth} />
       {choices[selectedPage]}
     </main>
   );

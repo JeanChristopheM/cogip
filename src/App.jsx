@@ -228,7 +228,12 @@ function App() {
                       <CompanyAdd setIsLoaded={setIsLoaded} isAuth={isAuth} />
                     }
                   />
-                  <Route path="/reports" element={<Reports />} />
+                  <Route
+                    path="/reports"
+                    element={
+                      <Reports invoices={invoices} companies={companies} />
+                    }
+                  />
                   <Route
                     path="/settings"
                     element={<Settings isAuth={isAuth} />}
