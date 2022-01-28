@@ -7,11 +7,11 @@ const Chart = ({ invoices }) => {
   let paid, unpaid;
   if (invoices.length > 0) {
     paid = invoices.reduce((tally, invoice) => {
-      if (invoice.paid == true) return tally + 1;
+      if (invoice.paidStatus) return tally + 1;
       return tally;
     }, 0);
     unpaid = invoices.reduce((tally, invoice) => {
-      if (invoice.paid == false) return tally + 1;
+      if (!invoice.paidStatus) return tally + 1;
       return tally;
     }, 0);
   }

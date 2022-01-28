@@ -33,7 +33,14 @@ function Contacts({ contacts, companies }) {
             ? "None"
             : contact.companies.length === 1
             ? companies.find((el) => el.id == contact.companies[0]).name
-            : "Multiple",
+            : companies
+                .filter((el) => {
+                  if (contact.companies.includes(el.id)) return el;
+                })
+                .reduce((acc, current) => {
+                  return (acc += current.name + ", ");
+                }, "")
+                .slice(0, -2),
         col5: dateFormatter(contact.added),
         id: contact.id,
       };
@@ -109,6 +116,7 @@ function Contacts({ contacts, companies }) {
         navigate(`/contact/${contactId}`);
         break;
       case "Company":
+        if (companyName.includes(",")) return;
         navigate(
           `/company/${companies.find((el) => el.name == companyName).id}`
         );

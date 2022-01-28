@@ -16,9 +16,9 @@ function Contact({ contacts, companies, setIsLoaded, isAuth }) {
   const navigate = useNavigate();
   const contact = contacts.find((el) => el.id == params.contactId);
   const company = contact
-    ? companies.find((el) => el.id == contact.contactcompany)
+    ? companies.find((el) => el.id == contact.companies[0])
     : null;
-
+  //console.log(company);
   const [selectedCompany, setSelectedCompany] = useState(company);
   const [isModifying, setIsModifying] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
@@ -132,7 +132,7 @@ function Contact({ contacts, companies, setIsLoaded, isAuth }) {
             ) : (
               <span id="contactLastname">{contact.lastname}</span>
             )}
-            <span>Company : </span>
+            <span>Companies : </span>
             {isModifying ? (
               <CompanySelector
                 currentCompany={company}
@@ -141,14 +141,22 @@ function Contact({ contacts, companies, setIsLoaded, isAuth }) {
                 handleCompanyChange={handleCompanyChange}
               />
             ) : (
-              <span
-                id="contactCompany"
-                onClick={() => {
-                  navigate(`/company/${company.id}`);
-                }}
-                style={{ cursor: "pointer" }}
-              >
-                {company.name}
+              <span>
+                {companies.map((el) => {
+                  if (contact.companies.includes(el.id))
+                    return (
+                      <p
+                        id="contactCompany"
+                        onClick={() => {
+                          navigate(`/company/${el.id}`);
+                        }}
+                        style={{ cursor: "pointer" }}
+                        key={el.id}
+                      >
+                        {el.name}
+                      </p>
+                    );
+                })}
               </span>
             )}
             <span>Email : </span>

@@ -7,7 +7,10 @@ const SelectFilter = ({
   const options = useMemo(() => {
     const options = new Set();
     preFilteredRows.forEach((row) => {
-      options.add(row.values[id]);
+      if (row.values[id].includes(",")) {
+        const values = row.values[id].split(",");
+        for (let value of values) options.add(value);
+      } else options.add(row.values[id]);
     });
     return [...options.values()];
   }, [id, preFilteredRows]);

@@ -53,6 +53,13 @@
   td.contactContactcompany {
     cursor: pointer;
   }
+  td.contactContactcompany {
+    max-width: 60px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    padding-right: 4rem;
+  }
   .contactName {
     font-weight: bold;
   }

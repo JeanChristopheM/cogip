@@ -32,7 +32,7 @@ function Invoices({ invoices, contacts, companies }) {
         col3: company.name,
         col4: `${contact.firstname} ${contact.lastname}`,
         col5: dateFormatter(entry.received),
-        col6: entry.paid ? "Paid" : "To be paid",
+        col6: entry.paidStatus ? "Paid" : "To be paid",
         id: entry.id,
       };
       results.push(obj);

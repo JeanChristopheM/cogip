@@ -141,7 +141,7 @@ function Company({ companies, contacts, setIsLoaded, isAuth }) {
             <span>Contacts : </span>
             <ul>
               {contacts.map((el) => {
-                if (el.contactcompany == company.id) {
+                if (el.companies.includes(company.id)) {
                   return (
                     <li
                       key={el.id}
