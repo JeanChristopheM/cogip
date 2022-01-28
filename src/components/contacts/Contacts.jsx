@@ -28,7 +28,12 @@ function Contacts({ contacts, companies }) {
         col1: `${contact.firstname} ${contact.lastname}`,
         col2: contact.email,
         col3: contact.phonenumber,
-        col4: companies.find((el) => el.id == contact.contactcompany).name,
+        col4:
+          contact.companies.length === 0
+            ? "None"
+            : contact.companies.length === 1
+            ? companies.find((el) => el.id == contact.companies[0]).name
+            : "Multiple",
         col5: dateFormatter(contact.added),
         id: contact.id,
       };

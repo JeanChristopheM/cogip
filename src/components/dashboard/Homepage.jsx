@@ -44,6 +44,7 @@ function Homepage({ companies, invoices, contacts, setPage, setInvoiceId }) {
         navigate={navigate}
         companies={companies}
       />
+
       <section className="chart card">
         <h2>Payement Status</h2>
         <div style={{ position: "relative" }} id="canvasContainer">

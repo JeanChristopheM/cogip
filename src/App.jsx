@@ -7,31 +7,35 @@ import { switchTheme } from "./logic/theme";
 import Header from "./components/Header.jsx";
 import Footer from "./components/Footer.jsx";
 import ScrollToTop from "./components/reusables/ScrollToTop.jsx";
+import MobileMenu from "./components/reusables/MobileMenu.jsx";
 /* Page Contents */
-//import Login from "./components/Login.jsx";
+
 const Login = React.lazy(() => import("./components/Login.jsx"));
-//import Homepage from "./components/dashboard/Homepage.jsx";
 const Homepage = React.lazy(() =>
   import("./components/dashboard/Homepage.jsx")
 );
-//import MobileMenu from "./components/reusables/MobileMenu.jsx";
-const MobileMenu = React.lazy(() =>
-  import("./components/reusables/MobileMenu.jsx")
+const Companies = React.lazy(() =>
+  import("./components/companies/Companies.jsx")
 );
-import Companies from "./components/companies/Companies.jsx";
-import Company from "./components/companies/Company.jsx";
-import Contacts from "./components/contacts/Contacts.jsx";
-import Contact from "./components/contacts/Contact.jsx";
-import Invoices from "./components/invoices/Invoices.jsx";
-import Invoice from "./components/invoices/Invoice.jsx";
-import FourOfour from "./components/FourOfour.jsx";
-import Reports from "./components/reports/Reports.jsx";
-import Settings from "./components/settings/Settings.jsx";
+const Company = React.lazy(() => import("./components/companies/Company.jsx"));
+const Contacts = React.lazy(() => import("./components/contacts/Contacts.jsx"));
+const Contact = React.lazy(() => import("./components/contacts/Contact.jsx"));
+const Invoices = React.lazy(() => import("./components/invoices/Invoices.jsx"));
+const Invoice = React.lazy(() => import("./components/invoices/Invoice.jsx"));
+const FourOfour = React.lazy(() => import("./components/FourOfour.jsx"));
+const Reports = React.lazy(() => import("./components/reports/Reports.jsx"));
+const Settings = React.lazy(() => import("./components/settings/Settings.jsx"));
 
 /* Forms for adding data */
-import ContactAdd from "./components/contacts/ContactAdd.jsx";
-import CompanyAdd from "./components/companies/CompanyAdd.jsx";
-import InvoiceAdd from "./components/invoices/InvoiceAdd.jsx";
+const ContactAdd = React.lazy(() =>
+  import("./components/contacts/ContactAdd.jsx")
+);
+const CompanyAdd = React.lazy(() =>
+  import("./components/companies/CompanyAdd.jsx")
+);
+const InvoiceAdd = React.lazy(() =>
+  import("./components/invoices/InvoiceAdd.jsx")
+);
 
 /* Toast Style */
 import "react-toastify/dist/ReactToastify.css";
@@ -54,9 +58,9 @@ function App() {
   /* Loading data function */
   const loadData = async () => {
     const srcs = [
-      "https://csharpproject.somee.com/api/company",
-      "https://csharpproject.somee.com/api/invoice",
-      "https://csharpproject.somee.com/api/contact",
+      "https://csharpproject.somee.com/api/Company",
+      "https://csharpproject.somee.com/api/Invoice",
+      "https://csharpproject.somee.com/api/Contact",
     ];
     const fn = [setCompanies, setInvoices, setContacts];
     for (let x = 0; x < 3; x++) {
@@ -65,12 +69,72 @@ function App() {
         srcs[x],
         isAuth.jwt
       );
+      console.log(dataPackage);
       if (status === 200) {
         fn[x](dataPackage);
       } else {
         alert("There was an error getting the data");
       }
     }
+    /* setCompanies([
+      {
+        id: "1",
+        name: "becode",
+        vat: "123",
+        status: "Client",
+        added: "2020-02-03T00:00:00",
+        contact: "1",
+      },
+    ]);
+    setContacts([
+      {
+        id: "1",
+        firstname: "jc",
+        lastname: "m",
+        email: "jc@jc.com",
+        phonenumber: "123",
+        added: "2020-02-03T00:00:00",
+        contactcompany: "1",
+      },
+    ]);
+    setInvoices([
+      {
+        id: "1",
+        reference: "123",
+        amount: 123,
+        company: "1",
+        contact: "1",
+        received: "2022-02-03T00:00:00",
+        paid: true,
+      },
+      {
+        id: "2",
+        reference: "123",
+        amount: 123,
+        company: "1",
+        contact: "1",
+        received: "2022-03-03T00:00:00",
+        paid: true,
+      },
+      {
+        id: "3",
+        reference: "123",
+        amount: 123,
+        company: "1",
+        contact: "1",
+        received: "2022-04-03T00:00:00",
+        paid: true,
+      },
+      {
+        id: "4",
+        reference: "123",
+        amount: 123,
+        company: "1",
+        contact: "1",
+        received: "2022-04-03T00:00:00",
+        paid: true,
+      },
+    ]); */
   };
   /* Initial Effects */
   useLayoutEffect(() => {
@@ -121,20 +185,6 @@ function App() {
     navigate("/");
   };
 
-  // COME BACK HERE JC
-  /*
-
-  Journal financier
-
-  Listing des factures sur la page company/:companyId
-
-  Solde par company, par date, bilans, ...
-
-  TODO
-  FIX TABLE OF INVOICE ON LARGE SCREENS
-  
-  */
-
   return (
     <>
       <Header openMenu={openMenu} onLogout={logout} isAuth={isAuth} />
@@ -158,11 +208,11 @@ function App() {
                   />
                   <Route
                     path="/companies"
-                    element={<Companies companies={companies} />}
+                    element={suspense(<Companies companies={companies} />)}
                   />
                   <Route
                     path="/company/:companyId"
-                    element={
+                    element={suspense(
                       <Company
                         companies={companies}
                         setIsLoaded={setIsLoaded}
@@ -170,21 +220,21 @@ function App() {
                         contacts={contacts}
                         isAuth={isAuth}
                       />
-                    }
+                    )}
                   />
                   <Route
                     path="/invoices"
-                    element={
+                    element={suspense(
                       <Invoices
                         invoices={invoices}
                         contacts={contacts}
                         companies={companies}
                       />
-                    }
+                    )}
                   />
                   <Route
                     path="/invoice/:invoiceId"
-                    element={
+                    element={suspense(
                       <Invoice
                         invoices={invoices}
                         companies={companies}
@@ -192,63 +242,63 @@ function App() {
                         setIsLoaded={setIsLoaded}
                         isAuth={isAuth}
                       />
-                    }
+                    )}
                   />
                   <Route
                     path="/contacts"
-                    element={
+                    element={suspense(
                       <Contacts contacts={contacts} companies={companies} />
-                    }
+                    )}
                   />
                   <Route
                     path="/contact/:contactId"
-                    element={
+                    element={suspense(
                       <Contact
                         contacts={contacts}
                         companies={companies}
                         setIsLoaded={setIsLoaded}
                         isAuth={isAuth}
                       />
-                    }
+                    )}
                   />
                   <Route
                     path="/contactAdd"
-                    element={
+                    element={suspense(
                       <ContactAdd
                         companies={companies}
                         setIsLoaded={setIsLoaded}
                         isAuth={isAuth}
                       />
-                    }
+                    )}
                   />
                   <Route
                     path="/invoiceAdd"
-                    element={
+                    element={suspense(
                       <InvoiceAdd
                         companies={companies}
                         contacts={contacts}
                         setIsLoaded={setIsLoaded}
                         isAuth={isAuth}
                       />
-                    }
+                    )}
                   />
                   <Route
                     path="/companyAdd"
-                    element={
+                    element={suspense(
                       <CompanyAdd setIsLoaded={setIsLoaded} isAuth={isAuth} />
-                    }
+                    )}
                   />
                   <Route
                     path="/reports"
-                    element={
+                    element={suspense(
                       <Reports invoices={invoices} companies={companies} />
-                    }
+                    )}
                   />
                   <Route
                     path="/settings"
-                    element={<Settings isAuth={isAuth} />}
+                    element={suspense(<Settings isAuth={isAuth} />)}
                   />
-                  <Route path="*" element={<FourOfour />} />
+                  <Route path="*" element={suspense(<FourOfour />)} />
                 </Routes>
               ) : (
                 <main>

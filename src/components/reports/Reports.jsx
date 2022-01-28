@@ -1,3 +1,5 @@
+import YearChart from "../reusables/YearChart.jsx";
+
 const Reports = ({ invoices, companies }) => {
   const allTransactionsEqual = invoices.reduce((acc, currentValue) => {
     const companyStatus = companies.find(
@@ -25,16 +27,38 @@ const Reports = ({ invoices, companies }) => {
     }, {});
     return answer;
   };
-  console.log(sortInvoicesPerYear(invoices));
   return (
     <main>
       <div className="card">
         <h2>Financial report</h2>
         <br />
-        <p>Current balance : {findBalance(invoices)}€</p>
         <section>
-          <h3>This year :</h3>
-          <p>{sortInvoicesPerYear(invoices).Date.now()}</p>
+          <br />
+          <h3>Balance :</h3>
+          <p>Current balance : {findBalance(invoices)}€</p>
+          {Object.keys(sortInvoicesPerYear(invoices))
+            .sort((a, b) => b - a)
+            .map((key) => {
+              return (
+                <p key={key}>
+                  {key} : {findBalance(sortInvoicesPerYear(invoices)[key])}€
+                </p>
+              );
+            })}
+        </section>
+        <section>
+          <br />
+          <h3>Invoices that need to be paid : </h3>
+          {invoices.filter((el) => !el.paid).length}
+        </section>
+        <section>
+          <br />
+          <h3>Year chart</h3>
+          <YearChart
+            invoices={invoices}
+            companies={companies}
+            findBalance={findBalance}
+          />
         </section>
       </div>
     </main>
