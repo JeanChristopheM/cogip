@@ -38,8 +38,13 @@
       display: none;
     }
   }
-  @media screen and (max-width: 500px) {
+  @media screen and (max-width: 550px) {
     .companyAdded {
+      display: none;
+    }
+  }
+  @media screen and (max-width: 450px) {
+    .companyZIP {
       display: none;
     }
   }
@@ -107,12 +112,12 @@
       display: none;
     }
   }
-  @media screen and (max-width: 500px) {
-    .invoicePaid {
+  @media screen and (max-width: 525px) {
+    .invoicePaidStatus {
       display: none;
     }
   }
-  @media screen and (max-width: 400px) {
+  @media screen and (max-width: 450px) {
     .invoiceAmount {
       display: none;
     }

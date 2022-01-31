@@ -34,6 +34,8 @@ function Companies({ companies }) {
         col2: company.status,
         col3: company.vat,
         col4: dateFormatter(company.added),
+        col5: company.country,
+        col6: company.zip.toString(),
         id: company.id,
       };
       results.push(obj);
@@ -73,6 +75,20 @@ function Companies({ companies }) {
         accessor: "col4",
         className: "companyAdded",
         disableFilters: true,
+      },
+      {
+        Header: "Country",
+        accessor: "col5",
+        className: "companyCountry",
+        Filter: SelectFilter,
+        filter: "includes",
+      },
+      {
+        Header: "ZIP",
+        accessor: "col6",
+        className: "companyZIP",
+        Filter: SelectFilter,
+        filter: "includes",
       },
       {
         Header: "ID",
@@ -177,7 +193,7 @@ function Companies({ companies }) {
                           cell.column.Header == "Name"
                             ? () => {
                                 navigate(
-                                  `/company/${cell.row.allCells[5].value}`
+                                  `/company/${cell.row.allCells[7].value}`
                                 );
                               }
                             : () => {}

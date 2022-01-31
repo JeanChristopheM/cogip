@@ -1,50 +1,7 @@
 import handleRequests from "../../logic/handleRequests";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
-const fakeUsersEndpoint = (method, src, token, data = null) => {
-  let status = 200;
-  let message = "Success";
-  let dataPackage = [
-    {
-      id: 1,
-      firstname: "JC",
-      lastname: "Molhant",
-      username: "JeanCM",
-      email: "jc@jc.com",
-      role: "Admin",
-    },
-    {
-      id: 2,
-      firstname: "Baptiste",
-      lastname: "Geron",
-      username: "BapG",
-      email: "bap@baptiste.com",
-      role: "Admin",
-    },
-    {
-      id: 3,
-      firstname: "Nicolas",
-      lastname: "Jamar",
-      username: "MrJamar",
-      email: "n.jamar@becode.org",
-      role: "User",
-    },
-    {
-      id: 4,
-      firstname: "Tanya",
-      lastname: "Leenders",
-      username: "TanyaL",
-      email: "t.leenders@becode.org",
-      role: "User",
-    },
-  ];
-  return new Promise((resolve, reject) => {
-    setTimeout(() => {
-      resolve({ status, message, dataPackage });
-      reject("Bad request ?");
-    }, 2000);
-  });
-};
 const UserPlaceholder = () => {
   return (
     <div className="userCard placeholder">
@@ -60,15 +17,16 @@ const UserPlaceholder = () => {
   );
 };
 const UsersSettings = ({ isAuth }) => {
+  const navigate = useNavigate();
   const [users, setUsers] = useState([]);
   const amountOfPlaceholders = [1, 2, 3, 4, 5];
   useEffect(() => {
     getUsers();
   }, []);
   const getUsers = async () => {
-    const data = await fakeUsersEndpoint(
+    const data = await handleRequests(
       "GET",
-      "https://csharpproject.somee/users",
+      "https://csharpproject.somee.com/api/Auth/users",
       isAuth.jwt
     );
     setUsers(data.dataPackage);
@@ -76,10 +34,23 @@ const UsersSettings = ({ isAuth }) => {
   const handleOptionsClick = (e) => {
     console.log(e.target.parentNode.id);
   };
+  const handleAdd = () => {
+    navigate("/userAdd");
+  };
   return (
     <div className="settings__users">
       <div className="users card">
-        <h2 className="settings__users--title">Users</h2>
+        <h2 className="settings__users--title">
+          Users
+          <button
+            type="button"
+            id="userAdd"
+            onClick={handleAdd}
+            style={{ padding: "0 .5rem" }}
+          >
+            +
+          </button>
+        </h2>
         <div className="usersContainer">
           {users.length === 0
             ? amountOfPlaceholders.map((placeholder) => (
@@ -99,17 +70,17 @@ const UsersSettings = ({ isAuth }) => {
                         style={{ backgroundColor: colors(index) }}
                       >
                         <span className="img--text">
-                          {user.firstname.slice(0, 1).toUpperCase()}
-                          {user.lastname.slice(0, 1).toUpperCase()}
+                          {/* user.firstname.slice(0, 1).toUpperCase() */ "F"}
+                          {/* user.lastname.slice(0, 1).toUpperCase() */ "L"}
                         </span>
                       </div>
                     </figure>
                     <span className="name">
-                      {user.firstname} {user.lastname}
+                      {"Firstname"} {"Lastname"}
                     </span>
-                    <span className="username">@{user.username}</span>
+                    <span className="username">@{user.userName}</span>
                     <span className="email">{user.email}</span>
-                    <span className="userType">{user.role}</span>
+                    <span className="userType">{user.userType}</span>
                     <i
                       className="fas fa-ellipsis-v options"
                       onClick={handleOptionsClick}

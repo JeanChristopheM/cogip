@@ -7,7 +7,7 @@ const Settings = ({ isAuth }) => {
   const [selectedPage, setSelectedPage] = useState(0);
   const choices = [
     <UsersSettings isAuth={isAuth} />,
-    <AccountSettings />,
+    <AccountSettings isAuth={isAuth} />,
     <ThemeSettings />,
   ];
   return (

@@ -29,10 +29,12 @@ function Invoices({ invoices, contacts, companies }) {
         icon: <i className={`fas fa-arrow-${arrow}`}></i>,
         col1: entry.reference,
         col2: `${entry.amount}€`,
-        col3: company.name,
-        col4: `${contact.firstname} ${contact.lastname}`,
-        col5: dateFormatter(entry.received),
-        col6: entry.paidStatus ? "Paid" : "To be paid",
+        col3: `${entry.paid}€`,
+        col4: `${entry.due}€`,
+        col5: company.name,
+        col6: `${contact.firstname} ${contact.lastname}`,
+        col7: dateFormatter(entry.received),
+        col8: entry.paidStatus ? "Paid" : "To be paid",
         id: entry.id,
       };
       results.push(obj);
@@ -61,29 +63,41 @@ function Invoices({ invoices, contacts, companies }) {
         disableFilters: true,
       },
       {
-        Header: "Company",
+        Header: "Paid",
         accessor: "col3",
+        className: "invoicePaid",
+        disableFilters: true,
+      },
+      {
+        Header: "Due",
+        accessor: "col4",
+        className: "invoiceDue",
+        disableFilters: true,
+      },
+      {
+        Header: "Company",
+        accessor: "col5",
         className: "invoiceCompany",
         Filter: SelectFilter,
         filter: "includes",
       },
       {
         Header: "Contact",
-        accessor: "col4",
+        accessor: "col6",
         className: "invoiceContact",
         Filter: SelectFilter,
         filter: "includes",
       },
       {
         Header: "Received",
-        accessor: "col5",
+        accessor: "col7",
         className: "invoiceReceived",
         disableFilters: true,
       },
       {
         Header: "Status",
-        accessor: "col6",
-        className: "invoicePaid",
+        accessor: "col8",
+        className: "invoicePaidStatus",
         Filter: SelectFilter,
         filter: "includes",
       },
@@ -210,9 +224,9 @@ function Invoices({ invoices, contacts, companies }) {
                         onClick={() => {
                           handleClick(
                             cell.column.Header,
-                            cell.row.allCells[4].value,
-                            cell.row.allCells[3].value,
-                            cell.row.allCells[7].value
+                            cell.row.allCells[6].value,
+                            cell.row.allCells[5].value,
+                            cell.row.allCells[9].value
                           );
                         }}
                       >

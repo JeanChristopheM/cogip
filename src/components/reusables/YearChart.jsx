@@ -55,10 +55,10 @@ const YearChart = ({ invoices, companies, findBalance }) => {
     });
   let actualData = [];
 
-  for (i = 0; i < summedUp.length; i++) {
+  for (let i = 0; i < summedUp.length; i++) {
     let storage = 0;
 
-    for (j = i; j >= 0; j--) {
+    for (let j = i; j >= 0; j--) {
       storage += summedUp[j];
     }
     actualData.push(storage);
