@@ -1,4 +1,3 @@
-.invoiceGrid,
 .companyGrid,
 .contactGrid {
   display: grid;
@@ -9,6 +8,124 @@
   }
   & > *:nth-child(even) {
     text-align: right;
+  }
+}
+.invoiceGrid {
+  margin-top: 2rem;
+  position: relative;
+  h2 {
+    margin-bottom: 2rem;
+  }
+  #invoiceReference {
+    font-weight: 600;
+  }
+  .labels {
+    color: var(--clr-text-low);
+  }
+  &__section {
+    padding-block: 0.5rem;
+    &--ref {
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      & > * {
+        flex: 1 0 100%;
+      }
+      @media screen and (min-width: 400px) {
+        gap: 2rem;
+        flex-wrap: nowrap;
+        & > * {
+          flex: unset;
+        }
+      }
+      @media screen and (min-width: 750px) {
+        max-width: 60%;
+      }
+    }
+    &--payment {
+      h3 {
+        font-size: 1.5rem;
+        text-decoration: underline;
+        text-decoration-color: var(--clr-text-low);
+        text-align: center;
+        padding-block: 1rem;
+      }
+      .total {
+        padding-bottom: 1rem;
+        &__value {
+          font-size: 2rem;
+          font-weight: 900;
+        }
+      }
+    }
+    &--relations {
+      h3 {
+        font-size: 1.5rem;
+        text-decoration: underline;
+        text-decoration-color: var(--clr-text-low);
+        text-align: center;
+        padding-block: 1rem;
+      }
+      .company {
+        padding-bottom: 1rem;
+        &__value {
+          font-size: 2rem;
+          font-weight: 900;
+        }
+      }
+    }
+  }
+  input {
+    max-width: 100%;
+  }
+  .decoration {
+    display: none;
+    width: 35%;
+    position: absolute;
+    right: 0;
+    top: 0;
+    height: 100%;
+    @media (min-width: 750px) {
+      display: block;
+    }
+    svg {
+      height: 100%;
+      width: 100%;
+      object-fit: contain;
+      #plant,
+      #shirtMain,
+      #shirtSleeve {
+        fill: var(--clr-text);
+      }
+
+      #circle,
+      #line {
+        fill: var(--clr-text-low);
+      }
+    }
+  }
+  .lowerBlock {
+    padding-top: 1rem;
+    margin: 0 auto;
+    @media screen and (min-width: 500px) {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      & > * {
+        flex: 0 1 calc(50% - 2rem);
+        max-width: 50%;
+        & > * {
+          max-width: 90%;
+        }
+      }
+      h3 {
+        text-align: unset;
+      }
+    }
+    @media screen and (min-width: 750px) {
+      max-width: 60%;
+      margin: unset;
+    }
   }
 }
 .invoiceControls,

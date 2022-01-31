@@ -64,7 +64,7 @@ function App() {
       "https://csharpproject.somee.com/api/Contact",
     ];
     const fn = [setCompanies, setInvoices, setContacts];
-    for (let x = 0; x < 3; x++) {
+    for (let x = 0; x < fn.length; x++) {
       const { status, message, dataPackage } = await handleRequests(
         "GET",
         srcs[x],

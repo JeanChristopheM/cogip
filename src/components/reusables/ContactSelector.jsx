@@ -18,7 +18,7 @@ function ContactSelector({
       {contacts.map((contact) => {
         if (selectedCompany == "") {
           return;
-        } else if (selectedCompany.id == contact.contactcompany) {
+        } else if (selectedCompany.contacts.includes(contact.id)) {
           return (
             <option
               value={`${contact.firstname} ${contact.lastname}`}
