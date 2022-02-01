@@ -4,6 +4,7 @@ import ContactControls from "./ContactControls.jsx";
 import CompanySelector from "../reusables/CompanySelector.jsx";
 import handleRequests from "../../logic/handleRequests";
 import { contactVerify } from "../../logic/formValidation";
+import ContactIllustration from "../reusables/ContactIllustration.jsx";
 
 // toaster
 import { ToastContainer, toast } from "react-toastify";
@@ -18,7 +19,6 @@ function Contact({ contacts, companies, setIsLoaded, isAuth }) {
   const company = contact
     ? companies.find((el) => el.id == contact.companies[0])
     : null;
-  //console.log(company);
   const [selectedCompany, setSelectedCompany] = useState(company);
   const [isModifying, setIsModifying] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
@@ -39,11 +39,12 @@ function Contact({ contacts, companies, setIsLoaded, isAuth }) {
     const formData = {
       firstname: firstnameRef.current.value,
       lastname: lastnameRef.current.value,
-      contactcompany: selectedCompany.id.toString(),
+      companies: selectedCompany.id.toString(),
       email: emailRef.current.value,
       phonenumber: phonenumberRef.current.value,
     };
-    let check = contactVerify(formData);
+    console.log(formData);
+    /* let check = contactVerify(formData);
     setIsFetching(true);
     if (check.ok) {
       const { status, message, dataPackage } = await handleRequests(
@@ -79,7 +80,7 @@ function Contact({ contacts, companies, setIsLoaded, isAuth }) {
           }
         }
       }, 250);
-    }
+    } */
   };
   const handleDelete = async () => {
     setIsFetching(true);
@@ -106,82 +107,129 @@ function Contact({ contacts, companies, setIsLoaded, isAuth }) {
         </div>
       ) : (
         <div className="card">
-          <h2>
-            {contact.firstname} {contact.lastname}
-          </h2>
-          <div className="contactGrid">
-            <span>Firstname : </span>
-            {isModifying ? (
-              <input
-                type="text"
-                name="contactFirstname"
-                defaultValue={contact.firstname}
-                ref={firstnameRef}
-              />
-            ) : (
-              <span id="contactFirstname">{contact.firstname}</span>
-            )}
-            <span>Lastname : </span>
-            {isModifying ? (
-              <input
-                type="text"
-                name="contactLastname"
-                defaultValue={contact.lastname}
-                ref={lastnameRef}
-              />
-            ) : (
-              <span id="contactLastname">{contact.lastname}</span>
-            )}
-            <span>Companies : </span>
-            {isModifying ? (
-              <CompanySelector
-                currentCompany={company}
-                companies={companies}
-                name={"contactCompany"}
-                handleCompanyChange={handleCompanyChange}
-              />
-            ) : (
-              <span>
-                {companies.map((el) => {
-                  if (contact.companies.includes(el.id))
-                    return (
-                      <p
-                        id="contactCompany"
-                        onClick={() => {
-                          navigate(`/company/${el.id}`);
-                        }}
-                        style={{ cursor: "pointer" }}
-                        key={el.id}
-                      >
-                        {el.name}
-                      </p>
-                    );
-                })}
-              </span>
-            )}
-            <span>Email : </span>
-            {isModifying ? (
-              <input
-                type="text"
-                name="contactEmail"
-                defaultValue={contact.email}
-                ref={emailRef}
-              />
-            ) : (
-              <span id="contactEmail">{contact.email}</span>
-            )}
-            <span>Phone number : </span>
-            {isModifying ? (
-              <input
-                type="text"
-                name="contactPhonenumber"
-                defaultValue={contact.phonenumber}
-                ref={phonenumberRef}
-              />
-            ) : (
-              <span id="contactPhonenumber">{contact.phonenumber}</span>
-            )}
-          </div>
+          <h2>Details :</h2>
+          {isModifying ? (
+            <form className="contactGrid">
+              <section className="contactGrid__section">
+                <h3>Contact</h3>
+                <div className="contactGrid__section--child infos">
+                  <label for="contactFirstname" className="labels">
+                    Firstname :{" "}
+                  </label>
+                  <input
+                    type="text"
+                    id="contactFirstname"
+                    name="contactFirstname"
+                    defaultValue={contact.firstname}
+                    ref={firstnameRef}
+                  />
+                </div>
+                <div className="contactGrid__section--child infos">
+                  <label for="contactLastname" className="labels">
+                    Lastname :{" "}
+                  </label>
+                  <input
+                    type="text"
+                    id="contactLastname"
+                    name="contactLastname"
+                    defaultValue={contact.lastname}
+                    ref={lastnameRef}
+                  />
+                </div>
+                <div className="contactGrid__section--child infos">
+                  <label for="contactEmail" className="labels">
+                    Email :{" "}
+                  </label>
+                  <input
+                    type="text"
+                    id="contactEmail"
+                    name="contactEmail"
+                    defaultValue={contact.email}
+                    ref={emailRef}
+                  />
+                </div>
+                <div className="contactGrid__section--child infos">
+                  <label for="contactPhonenumber" className="labels">
+                    Phone number :{" "}
+                  </label>
+                  <input
+                    type="text"
+                    id="contactPhonenumber"
+                    name="contactPhonenumber"
+                    defaultValue={contact.phonenumber}
+                    ref={phonenumberRef}
+                  />
+                </div>
+              </section>
+
+              <section className="contactGrid__section">
+                <h3>From</h3>
+                <CompanySelector
+                  currentCompany={company}
+                  companies={companies}
+                  name={"contactCompany"}
+                  handleCompanyChange={handleCompanyChange}
+                />
+              </section>
+              <section className="decoration">
+                <ContactIllustration />
+              </section>
+            </form>
+          ) : (
+            <div className="contactGrid">
+              <section className="contactGrid__section">
+                <h3>Contact</h3>
+                <div className="contactGrid__section--child infos">
+                  <span className="labels">Firstname : </span>
+                  <span id="contactFirstname" className="bigger">
+                    {contact.firstname}
+                  </span>
+                </div>
+                <div className="contactGrid__section--child infos">
+                  <span className="labels">Lastname : </span>
+                  <span id="contactLastname" className="bigger">
+                    {contact.lastname}
+                  </span>
+                </div>
+                <div className="contactGrid__section--child infos">
+                  <span className="labels">Email : </span>
+                  <span id="contactEmail">{contact.email}</span>
+                </div>
+                <div className="contactGrid__section--child infos">
+                  <span className="labels">Phone number : </span>
+                  <span id="contactPhonenumber">{contact.phonenumber}</span>
+                </div>
+              </section>
+              <section className="contactGrid__section">
+                <h3>From</h3>
+                <div className="contactGrid__section--child">
+                  <div className="companyContainer">
+                    {companies.map((el) => {
+                      if (contact.companies.includes(el.id))
+                        return (
+                          <div className="companyCard" key={el.id}>
+                            <p
+                              id="contactCompany"
+                              onClick={() => {
+                                navigate(`/company/${el.id}`);
+                              }}
+                              style={{ cursor: "pointer" }}
+                              key={el.id}
+                            >
+                              {el.name}
+                            </p>
+                          </div>
+                        );
+                    })}
+                  </div>
+                </div>
+              </section>
+              <section className="decoration">
+                <ContactIllustration />
+              </section>
+            </div>
+          )}
+
           {isAuth.role == "Admin" ? (
             <ContactControls
               isModifying={isModifying}
