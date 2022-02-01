@@ -1,12 +1,69 @@
 .companyGrid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  margin-top: 1rem;
-  & > * {
-    margin-top: 0.3rem;
+  position: relative;
+  isolation: isolate;
+  &__section {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    &--child {
+      &.name {
+        grid-column: span 2;
+        justify-self: center;
+        display: grid;
+        justify-items: center;
+        span:last-child {
+          font-size: 2rem;
+          font-weight: 600;
+        }
+      }
+    }
+    @media screen and (min-width: 750px) {
+      max-width: 60%;
+    }
+    h3 {
+      font-size: 1.5rem;
+      text-align: center;
+      grid-column: span 2;
+    }
+    .labels {
+      color: var(--clr-text-low);
+    }
   }
-  & > *:nth-child(even) {
-    text-align: right;
+  .decoration {
+    display: none;
+    width: 30%;
+    position: absolute;
+    right: 0;
+    top: 0;
+    height: 100%;
+    z-index: -1;
+    opacity: 10%;
+    @media (min-width: 550px) {
+      display: block;
+    }
+    @media (min-width: 750px) {
+      opacity: 1;
+      width: 50%;
+    }
+
+    svg {
+      height: 100%;
+      width: 100%;
+      object-fit: contain;
+      #plant,
+      #shirtMain,
+      #shirtSleeve,
+      .paperContent {
+        fill: var(--clr-text);
+      }
+      .paperBack {
+        fill: var(--clr-text-low);
+      }
+
+      #circle,
+      #line {
+        fill: var(--clr-text-low);
+      }
+    }
   }
 }
 .contactGrid {
@@ -52,7 +109,7 @@
   }
   .decoration {
     display: none;
-    width: 60%;
+    width: 30%;
     position: absolute;
     right: 0;
     top: 0;
@@ -64,6 +121,7 @@
     }
     @media (min-width: 750px) {
       opacity: 1;
+      width: 50%;
     }
 
     svg {

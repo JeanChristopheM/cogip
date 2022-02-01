@@ -3,6 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { companyVerify } from "../../logic/formValidation.js";
 import handleRequests from "../../logic/handleRequests";
 import CompanyControls from "./CompanyControls.jsx";
+import CompanyIllustration from "../reusables/CompanyIllustration.jsx";
 
 // toaster
 import { ToastContainer, toast } from "react-toastify";
@@ -31,7 +32,8 @@ function Company({ companies, contacts, setIsLoaded, isAuth }) {
       vat: vatRef.current.value,
       status: statusRef.current.value,
     };
-    let check = companyVerify(formData);
+    console.log(formData);
+    /* let check = companyVerify(formData);
     setIsFetching(true);
     if (check.ok) {
       const { status, message, dataPackage } = await handleRequests(
@@ -67,7 +69,7 @@ function Company({ companies, contacts, setIsLoaded, isAuth }) {
           }
         }
       }, 250);
-    }
+    } */
   };
   const handleDelete = async () => {
     setIsFetching(true);
@@ -95,65 +97,110 @@ function Company({ companies, contacts, setIsLoaded, isAuth }) {
         </div>
       ) : (
         <div className="card">
-          <h2>Details about {company.name}</h2>
+          <h2>Details :</h2>
           <div className="companyGrid">
-            <span>Name : </span>
             {isModifying ? (
-              <input
-                type="text"
-                name="companyName"
-                defaultValue={company.name}
-                ref={nameRef}
-                required
-              />
+              <>
+                <div className="companyGrid__section--child">
+                  <span>Name : </span>
+                  <input
+                    type="text"
+                    name="companyName"
+                    defaultValue={company.name}
+                    ref={nameRef}
+                    required
+                  />
+                </div>
+                <div className="companyGrid__section--child">
+                  <span>VAT : </span>
+                  <input
+                    type="text"
+                    name="companyVat"
+                    defaultValue={company.vat}
+                    ref={vatRef}
+                    required
+                  />
+                </div>
+                <div className="companyGrid__section--child">
+                  <span>Status : </span>
+                  <select
+                    name="companyStatus"
+                    ref={statusRef}
+                    defaultValue={company.status}
+                    required
+                  >
+                    <option value="">Select a status</option>
+                    <option value="Supplier">Supplier</option>
+                    <option value="Client">Client</option>
+                  </select>
+                </div>
+                <div className="companyGrid__section--child">
+                  <span>Contacts : </span>
+                  <ul>
+                    {contacts.map((el) => {
+                      if (el.companies.includes(company.id)) {
+                        return (
+                          <li
+                            key={el.id}
+                            onClick={() => {
+                              navigate(`/contact/${el.id}`);
+                            }}
+                            style={{ cursor: "pointer" }}
+                          >{`${el.firstname} ${el.lastname}`}</li>
+                        );
+                      }
+                    })}
+                  </ul>
+                </div>
+              </>
             ) : (
-              <span id="companyName">{company.name}</span>
+              <>
+                <section className="companyGrid__section">
+                  <div className="companyGrid__section--child name">
+                    <span className="labels">Name : </span>
+                    <span id="companyName">{company.name}</span>
+                  </div>
+                  <div className="companyGrid__section--child">
+                    <span className="labels">VAT : </span>
+                    <span id="companyVat">{company.vat}</span>
+                  </div>
+                  <div className="companyGrid__section--child">
+                    <span className="labels">Status : </span>
+                    <span id="companyStatus">{company.status}</span>
+                  </div>
+                </section>
+                <section className="companyGrid__section">
+                  <h3>Where</h3>
+                  <div className="companyGrid__section--child">
+                    <span>Country : </span>
+                    <span>{company.country}</span>
+                  </div>
+                </section>
+                <section className="companyGrid__section">
+                  <div className="companyGrid__section--child">
+                    <span>Contacts : </span>
+                    <ul>
+                      {contacts.map((el) => {
+                        if (el.companies.includes(company.id)) {
+                          return (
+                            <li
+                              key={el.id}
+                              onClick={() => {
+                                navigate(`/contact/${el.id}`);
+                              }}
+                              style={{ cursor: "pointer" }}
+                            >{`${el.firstname} ${el.lastname}`}</li>
+                          );
+                        }
+                      })}
+                    </ul>
+                  </div>
+                </section>
+                <section className="decoration">
+                  <CompanyIllustration />
+                </section>
+              </>
             )}
-            <span>VAT : </span>
-            {isModifying ? (
-              <input
-                type="text"
-                name="companyVat"
-                defaultValue={company.vat}
-                ref={vatRef}
-                required
-              />
-            ) : (
-              <span id="companyVat">{company.vat}</span>
-            )}
-            <span>Status : </span>
-            {isModifying ? (
-              <select
-                name="companyStatus"
-                ref={statusRef}
-                defaultValue={company.status}
-                required
-              >
-                <option value="">Select a status</option>
-                <option value="Supplier">Supplier</option>
-                <option value="Client">Client</option>
-              </select>
-            ) : (
-              <span id="companyStatus">{company.status}</span>
-            )}
-            <span>___</span>
-            <span>___</span>
-            <span>Contacts : </span>
-            <ul>
-              {contacts.map((el) => {
-                if (el.companies.includes(company.id)) {
-                  return (
-                    <li
-                      key={el.id}
-                      onClick={() => {
-                        navigate(`/contact/${el.id}`);
-                      }}
-                      style={{ cursor: "pointer" }}
-                    >{`${el.firstname} ${el.lastname}`}</li>
-                  );
-                }
-              })}
-            </ul>
           </div>
           {isAuth.role == "Admin" ? (
             <CompanyControls
