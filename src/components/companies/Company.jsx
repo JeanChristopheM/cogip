@@ -25,12 +25,23 @@ function Company({ companies, contacts, setIsLoaded, isAuth }) {
   const nameRef = useRef();
   const vatRef = useRef();
   const statusRef = useRef();
+  const streetnumberRef = useRef();
+  const streetRef = useRef();
+  const townRef = useRef();
+  const countryRef = useRef();
+  const zipRef = useRef();
 
   const handleModif = async () => {
     const formData = {
       name: nameRef.current.value,
       vat: vatRef.current.value,
       status: statusRef.current.value,
+      streetnumber: streetnumberRef.current.value,
+      street: streetRef.current.value,
+      town: townRef.current.value,
+      country: countryRef.current.value,
+      zip: zipRef.current.value,
+      contacts: [],
     };
     console.log(formData);
     /* let check = companyVerify(formData);
@@ -101,57 +112,127 @@ function Company({ companies, contacts, setIsLoaded, isAuth }) {
           <div className="companyGrid">
             {isModifying ? (
               <>
-                <div className="companyGrid__section--child">
-                  <span>Name : </span>
-                  <input
-                    type="text"
-                    name="companyName"
-                    defaultValue={company.name}
-                    ref={nameRef}
-                    required
-                  />
-                </div>
-                <div className="companyGrid__section--child">
-                  <span>VAT : </span>
-                  <input
-                    type="text"
-                    name="companyVat"
-                    defaultValue={company.vat}
-                    ref={vatRef}
-                    required
-                  />
-                </div>
-                <div className="companyGrid__section--child">
-                  <span>Status : </span>
-                  <select
-                    name="companyStatus"
-                    ref={statusRef}
-                    defaultValue={company.status}
-                    required
-                  >
-                    <option value="">Select a status</option>
-                    <option value="Supplier">Supplier</option>
-                    <option value="Client">Client</option>
-                  </select>
-                </div>
-                <div className="companyGrid__section--child">
-                  <span>Contacts : </span>
-                  <ul>
-                    {contacts.map((el) => {
-                      if (el.companies.includes(company.id)) {
-                        return (
-                          <li
-                            key={el.id}
-                            onClick={() => {
-                              navigate(`/contact/${el.id}`);
-                            }}
-                            style={{ cursor: "pointer" }}
-                          >{`${el.firstname} ${el.lastname}`}</li>
-                        );
-                      }
-                    })}
-                  </ul>
-                </div>
+                <section className="companyGrid__section">
+                  <div className="companyGrid__section--child name">
+                    <span className="labels">Name : </span>
+                    <input
+                      type="text"
+                      name="companyName"
+                      defaultValue={company.name}
+                      ref={nameRef}
+                      required
+                    />
+                  </div>
+                  <div className="companyGrid__section--child">
+                    <span className="labels">VAT : </span>
+                    <input
+                      type="text"
+                      name="companyVat"
+                      defaultValue={company.vat}
+                      ref={vatRef}
+                      required
+                    />
+                  </div>
+                  <div className="companyGrid__section--child">
+                    <span className="labels">Status : </span>
+                    <select
+                      name="companyStatus"
+                      ref={statusRef}
+                      defaultValue={company.status}
+                      required
+                    >
+                      <option value="">Select a status</option>
+                      <option value="Supplier">Supplier</option>
+                      <option value="Client">Client</option>
+                    </select>
+                  </div>
+                </section>
+                <section className="companyGrid__section adress">
+                  <h3>Where</h3>
+                  <div className="companyGrid__section--child adress">
+                    <label htmlFor="streetnumber" className="labels">
+                      Street Number :{" "}
+                    </label>
+                    <input
+                      type="text"
+                      id="streetnumber"
+                      name="streetnumber"
+                      ref={streetnumberRef}
+                      defaultValue={company.streetnumber}
+                    />
+                  </div>
+                  <div className="companyGrid__section--child adress">
+                    <label htmlFor="street" className="labels">
+                      Street :{" "}
+                    </label>
+                    <input
+                      type="text"
+                      id="street"
+                      name="street"
+                      ref={streetRef}
+                      defaultValue={company.street}
+                    />
+                  </div>
+                  <div className="companyGrid__section--child adress">
+                    <label htmlFor="town" className="labels">
+                      Town :{" "}
+                    </label>
+                    <input
+                      type="text"
+                      id="town"
+                      name="town"
+                      ref={townRef}
+                      defaultValue={company.town}
+                    />
+                  </div>
+                  <div className="companyGrid__section--child adress">
+                    <label htmlFor="zip" className="labels">
+                      Zip Code :{" "}
+                    </label>
+                    <input
+                      type="text"
+                      id="zip"
+                      name="zip"
+                      ref={zipRef}
+                      defaultValue={company.zip}
+                    />
+                  </div>
+                  <div className="companyGrid__section--child adress">
+                    <label htmlFor="country" className="labels">
+                      Country :{" "}
+                    </label>
+                    <input
+                      type="text"
+                      id="country"
+                      name="country"
+                      ref={countryRef}
+                      defaultValue={company.country}
+                    />
+                  </div>
+                </section>
+                <section className="companyGrid__section">
+                  <h3>Contacts</h3>
+                  <div className="companyGrid__section--child">
+                    <ul>
+                      {contacts.map((el) => {
+                        if (el.companies.includes(company.id)) {
+                          return (
+                            <li
+                              key={el.id}
+                              onClick={() => {
+                                navigate(`/contact/${el.id}`);
+                              }}
+                              style={{ cursor: "pointer" }}
+                            >{`${el.firstname} ${el.lastname}`}</li>
+                          );
+                        }
+                      })}
+                    </ul>
+                  </div>
+                </section>
+                <section className="decoration">
+                  <CompanyIllustration />
+                </section>
               </>
             ) : (
               <>
@@ -169,16 +250,32 @@ function Company({ companies, contacts, setIsLoaded, isAuth }) {
                     <span id="companyStatus">{company.status}</span>
                   </div>
                 </section>
-                <section className="companyGrid__section">
+                <section className="companyGrid__section adress">
                   <h3>Where</h3>
                   <div className="companyGrid__section--child">
-                    <span>Country : </span>
+                    <span className="labels">Number : </span>
+                    <span>{company.streetnumber}</span>
+                  </div>
+                  <div className="companyGrid__section--child">
+                    <span className="labels">Street : </span>
+                    <span>{company.street}</span>
+                  </div>
+                  <div className="companyGrid__section--child">
+                    <span className="labels">Town : </span>
+                    <span>{company.town}</span>
+                  </div>
+                  <div className="companyGrid__section--child">
+                    <span className="labels">Zip Code : </span>
+                    <span>{company.zip}</span>
+                  </div>
+                  <div className="companyGrid__section--child">
+                    <span className="labels">Country : </span>
                     <span>{company.country}</span>
                   </div>
                 </section>
                 <section className="companyGrid__section">
+                  <h3>Contacts</h3>
                   <div className="companyGrid__section--child">
-                    <span>Contacts : </span>
                     <ul>
                       {contacts.map((el) => {
                         if (el.companies.includes(company.id)) {

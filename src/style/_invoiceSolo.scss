@@ -4,16 +4,29 @@
   &__section {
     display: grid;
     grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    &.adress {
+      & > *:not(h3) {
+        grid-column: span 2;
+        @media screen and (min-width: 550px) {
+          grid-column: auto;
+        }
+      }
+    }
     &--child {
       &.name {
         grid-column: span 2;
         justify-self: center;
         display: grid;
         justify-items: center;
+        padding-block: 1rem;
         span:last-child {
           font-size: 2rem;
           font-weight: 600;
         }
+      }
+      &.adress {
+        display: grid;
       }
     }
     @media screen and (min-width: 750px) {
@@ -23,6 +36,8 @@
       font-size: 1.5rem;
       text-align: center;
       grid-column: span 2;
+      text-decoration: underline;
+      padding-block: 1rem;
     }
     .labels {
       color: var(--clr-text-low);
@@ -42,7 +57,7 @@
     }
     @media (min-width: 750px) {
       opacity: 1;
-      width: 50%;
+      width: 40%;
     }
 
     svg {
