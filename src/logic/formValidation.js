@@ -3,9 +3,8 @@ const invoiceVerify = (dataToVerify) => {
   if (!dataToVerify.reference) response.reference = "Please enter a reference";
   if (!dataToVerify.company) response.company = "Please select a company";
   if (!dataToVerify.amount) response.amount = "Please enter an amount";
-  if (!dataToVerify.contact) response.contact = "Please select a contact";
   if (!dataToVerify.received) response.received = "Please select a date";
-  if (dataToVerify.paid !== false && dataToVerify.paid !== true)
+  if (dataToVerify.paidStatus !== false && dataToVerify.paidStatus !== true)
     response.paid = "Please select a paid status";
   response.ok = Object.keys(response).length > 0 ? false : true;
   return response;

@@ -86,11 +86,7 @@ const Header = ({ openMenu, onLogout, isAuth }) => {
                 <Link
                   to="/settings"
                   id="settingsIcon"
-                  className={
-                    selected === "/settings" || selected === "/invoiceAdd"
-                      ? "active"
-                      : null
-                  }
+                  className={selected === "/settings" ? "active" : null}
                 >
                   <i className="fas fa-cog settingsIcon"></i>
                 </Link>

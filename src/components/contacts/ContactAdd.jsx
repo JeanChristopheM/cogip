@@ -6,6 +6,7 @@ import CompanySelector from "../reusables/CompanySelector";
 // toaster
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import ContactIllustration from "../reusables/ContactIllustration";
 // end toaster
 
 function ContactAdd({ companies, setIsLoaded, isAuth }) {
@@ -64,7 +65,7 @@ function ContactAdd({ companies, setIsLoaded, isAuth }) {
 
   return (
     <main>
-      <div className="card">
+      <div className="contactAdd card">
         <h2>Fill up the form</h2>
         <form className="contactForm" onSubmit={handleSubmit}>
           <ul>
@@ -116,6 +117,9 @@ function ContactAdd({ companies, setIsLoaded, isAuth }) {
           </ul>
           <button>Submit</button>
         </form>
+        <div className="formIllu">
+          <ContactIllustration />
+        </div>
         <ToastContainer />
       </div>
       {isFetching ? (

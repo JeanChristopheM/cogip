@@ -50,6 +50,7 @@ function App() {
   const [companies, setCompanies] = useState([]);
   const [invoices, setInvoices] = useState([]);
   const [contacts, setContacts] = useState([]);
+  const [categories, setCategories] = useState([]);
 
   const location = useLocation();
 
@@ -62,8 +63,9 @@ function App() {
       "https://csharpproject.somee.com/api/Company",
       "https://csharpproject.somee.com/api/Invoice",
       "https://csharpproject.somee.com/api/Contact",
+      "https://csharpproject.somee.com/api/InvoiceCategory",
     ];
-    const fn = [setCompanies, setInvoices, setContacts];
+    const fn = [setCompanies, setInvoices, setContacts, setCategories];
     for (let x = 0; x < fn.length; x++) {
       const { status, message, dataPackage } = await handleRequests(
         "GET",
@@ -280,6 +282,7 @@ function App() {
                         contacts={contacts}
                         setIsLoaded={setIsLoaded}
                         isAuth={isAuth}
+                        categories={categories}
                       />
                     )}
                   />

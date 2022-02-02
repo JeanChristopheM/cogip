@@ -5,6 +5,7 @@ import { companyVerify } from "../../logic/formValidation";
 // toaster
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import CompanyIllustration from "../reusables/CompanyIllustration";
 // end toaster
 
 function CompanyAdd({ setIsLoaded, isAuth }) {
@@ -55,7 +56,7 @@ function CompanyAdd({ setIsLoaded, isAuth }) {
   };
   return (
     <main>
-      <div className="card">
+      <div className="companyAdd card">
         <h2>Fill up the form</h2>
         <form className="companyForm" onSubmit={handleSubmit}>
           <ul>
@@ -88,6 +89,9 @@ function CompanyAdd({ setIsLoaded, isAuth }) {
           </ul>
           <button>Submit</button>
         </form>
+        <div className="formIllu">
+          <CompanyIllustration />
+        </div>
         <ToastContainer />
       </div>
       {isFetching ? (

@@ -4,13 +4,13 @@ import { invoiceVerify } from "../../logic/formValidation";
 
 import CompanySelector from "../reusables/CompanySelector";
 import ContactSelector from "../reusables/ContactSelector";
-
+import InvoiceIllustration from "../reusables/InvoiceIllustration.jsx";
 // toaster
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 // end toaster
 
-function InvoiceAdd({ contacts, companies, setIsLoaded, isAuth }) {
+function InvoiceAdd({ contacts, companies, categories, setIsLoaded, isAuth }) {
   const [selectedCompany, setSelectedCompany] = useState("");
   const [selectedContact, setSelectedContact] = useState("");
   const [isFetching, setIsFetching] = useState(false);
@@ -33,21 +33,25 @@ function InvoiceAdd({ contacts, companies, setIsLoaded, isAuth }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsFetching(true);
-    const contact = contacts.find(
-      (el) => `${el.firstname} ${el.lastname}` == selectedContact
-    );
     /* Instantiate object with form data */
     const formData = {
       reference: e.target.reference.value,
-      amount: e.target.amount.value,
-      company: selectedCompany.id.toString(),
-      contact: contact.id.toString(),
+      amount: parseInt(e.target.amount.value),
+      company: selectedCompany ? selectedCompany.id : null,
+      contact: selectedContact ? selectedContact.id : null,
       received: e.target.date.value,
-      paid: e.target.paid.checked,
+      dueDate: e.target.dueDate.value,
+      paidStatus: e.target.paid.checked,
+      category: parseInt(e.target.category.value),
+      due: e.target.paid.checked ? 0 : parseInt(e.target.amount.value),
+      paid: e.target.paid.checked ? parseInt(e.target.amount.value) : 0,
     };
-    /* Data verification */
+    setIsFetching(false);
+    console.log(formData);
+
+    // Data verification
     let check = invoiceVerify(formData);
-    /* Posting data if OK */
+    // Posting data if OK
     if (check.ok) {
       const { status, message, dataPackage } = await handleRequests(
         "POST",
@@ -62,7 +66,7 @@ function InvoiceAdd({ contacts, companies, setIsLoaded, isAuth }) {
       else sessionStorage.setItem("cogipToast", `error,${message}`);
     } else {
       setIsFetching(false);
-      /* Handling Errors */
+      // Handling Errors
       const issues = Object.keys(check);
       setTimeout(() => {
         for (let issue of issues) {
@@ -78,7 +82,7 @@ function InvoiceAdd({ contacts, companies, setIsLoaded, isAuth }) {
 
   return (
     <main>
-      <div className="card">
+      <div className="invoiceAdd card">
         <h2>Fill up the form</h2>
         <form className="invoiceForm" onSubmit={handleSubmit}>
           <ul>
@@ -116,8 +120,25 @@ function InvoiceAdd({ contacts, companies, setIsLoaded, isAuth }) {
               <input type="date" name="date" required />
             </li>
             <li>
+              <span>Due date : </span>
+              <input type="date" name="dueDate" required />
+            </li>
+            <li>
               <span>Amount : </span>
               <input type="number" name="amount" required />
+            </li>
+            <li>
+              <span>Category : </span>
+              <select name="category" id="category">
+                <option value="">Select a category</option>
+                {categories
+                  ? categories.map((category) => (
+                      <option key={category.id} value={category.id}>
+                        {category.category}
+                      </option>
+                    ))
+                  : null}
+              </select>
             </li>
             <li>
               <span>Paid status : </span>
@@ -134,6 +155,9 @@ function InvoiceAdd({ contacts, companies, setIsLoaded, isAuth }) {
           </ul>
           <button>Submit</button>
         </form>
+        <div className="formIllu">
+          <InvoiceIllustration />
+        </div>
         <ToastContainer />
       </div>
       {isFetching ? (

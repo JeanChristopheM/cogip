@@ -7,7 +7,12 @@ function ContactSelector({
   return (
     <select
       onChange={(e) => {
-        handleContactChange(e.target.value);
+        handleContactChange(
+          contacts.find(
+            (contact) =>
+              `${contact.firstname} ${contact.lastname}` === e.target.value
+          )
+        );
       }}
       defaultValue={`${currentContact.firstname} ${currentContact.lastname}`}
       required
