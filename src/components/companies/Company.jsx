@@ -143,7 +143,7 @@ function Company({ companies, contacts, setIsLoaded, isAuth }) {
                     >
                       <option value="">Select a status</option>
                       <option value="Supplier">Supplier</option>
-                      <option value="Client">Client</option>
+                      <option value="Customer">Customer</option>
                     </select>
                   </div>
                 </section>

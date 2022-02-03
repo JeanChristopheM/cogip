@@ -85,74 +85,80 @@ function InvoiceAdd({ contacts, companies, categories, setIsLoaded, isAuth }) {
       <div className="invoiceAdd card">
         <h2>Fill up the form</h2>
         <form className="invoiceForm" onSubmit={handleSubmit}>
-          <ul>
-            <li>
-              <span>Reference : </span>
-              <input
-                type="text"
-                name="reference"
-                minLength="3"
-                maxLength="45"
-                required
-              />
-            </li>
-            <li>
-              <span>Company : </span>
-              <CompanySelector
-                companies={companies}
-                handleCompanyChange={handleCompanyChange}
-                currentCompany={{ name: "" }}
-              />
-            </li>
-            <li>
-              <span>Contact : </span>
-              <ContactSelector
-                contacts={contacts}
-                companies={companies}
-                selectedCompany={selectedCompany}
-                handleContactChange={handleContactChange}
-                currentContact={{ name: "" }}
-                name={"company"}
-              />
-            </li>
-            <li>
-              <span>Date of reception : </span>
-              <input type="date" name="date" required />
-            </li>
-            <li>
-              <span>Due date : </span>
-              <input type="date" name="dueDate" required />
-            </li>
-            <li>
-              <span>Amount : </span>
-              <input type="number" name="amount" required />
-            </li>
-            <li>
-              <span>Category : </span>
-              <select name="category" id="category">
-                <option value="">Select a category</option>
-                {categories
-                  ? categories.map((category) => (
-                      <option key={category.id} value={category.id}>
-                        {category.category}
-                      </option>
-                    ))
-                  : null}
-              </select>
-            </li>
-            <li>
-              <span>Paid status : </span>
-              <label htmlFor="paid" className="switchToggle">
+          <div className="formContent">
+            <fieldset>
+              <legend>Invoice details</legend>
+              <div>
+                <label htmlFor="reference">Reference : </label>
                 <input
-                  type="checkbox"
-                  name="paid"
-                  id="paid"
-                  className="switchCheck"
+                  type="text"
+                  name="reference"
+                  minLength="3"
+                  maxLength="45"
+                  required
                 />
-                <span className="slider"></span>
-              </label>
-            </li>
-          </ul>
+              </div>
+              <div>
+                <label htmlFor="date">Date of reception : </label>
+                <input type="date" name="date" required />
+              </div>
+              <div>
+                <label htmlFor="company">Company : </label>
+                <CompanySelector
+                  companies={companies}
+                  handleCompanyChange={handleCompanyChange}
+                  currentCompany={{ name: "" }}
+                />
+              </div>
+              <div>
+                <label htmlFor="contact">Contact : </label>
+                <ContactSelector
+                  contacts={contacts}
+                  companies={companies}
+                  selectedCompany={selectedCompany}
+                  handleContactChange={handleContactChange}
+                  currentContact={{ name: "" }}
+                  name={"company"}
+                />
+              </div>
+              <div>
+                <label htmlFor="category">Category : </label>
+                <select name="category" id="category">
+                  <option value="">Select a category</option>
+                  {categories
+                    ? categories.map((category) => (
+                        <option key={category.id} value={category.id}>
+                          {category.category}
+                        </option>
+                      ))
+                    : null}
+                </select>
+              </div>
+            </fieldset>
+            <fieldset>
+              <legend>Payement</legend>
+              <div>
+                <label htmlFor="amount">Amount : </label>
+                <input type="number" name="amount" required />
+              </div>
+              <div>
+                <label htmlFor="dueDate">Due date : </label>
+                <input type="date" name="dueDate" required />
+              </div>
+              <div>
+                <span>Paid status : </span>
+                <label htmlFor="paid" className="switchToggle">
+                  <input
+                    type="checkbox"
+                    name="paid"
+                    id="paid"
+                    className="switchCheck"
+                  />
+                  <span className="slider"></span>
+                </label>
+              </div>
+            </fieldset>
+          </div>
           <button>Submit</button>
         </form>
         <div className="formIllu">

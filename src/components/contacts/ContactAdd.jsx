@@ -10,7 +10,7 @@ import ContactIllustration from "../reusables/ContactIllustration";
 // end toaster
 
 function ContactAdd({ companies, setIsLoaded, isAuth }) {
-  const [selectedCompany, setSelectedCompany] = useState("");
+  const [selectorAmount, setSelectorAmount] = useState(1);
   const [isFetching, setIsFetching] = useState(false);
   useEffect(() => {
     const message = sessionStorage.getItem("cogipToast");
@@ -24,13 +24,25 @@ function ContactAdd({ companies, setIsLoaded, isAuth }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsFetching(true);
+    const getCompaniesArray = (nodeList) => {
+      let compArr = [];
+      for (let node of nodeList) {
+        compArr.push(
+          companies.find((company) =>
+            company.name == node.value ? true : false
+          ).id
+        );
+      }
+      return [...new Set([...compArr])];
+    };
     const formData = {
       firstname: e.target.firstname.value,
       lastname: e.target.lastname.value,
-      contactcompany: selectedCompany.id.toString(),
+      companies: getCompaniesArray(e.target.company),
       email: e.target.email.value,
       phonenumber: e.target.phonenumber.value,
     };
+    console.log(formData);
     let check = contactVerify(formData);
     if (check.ok) {
       const { status, message, dataPackage } = await handleRequests(
@@ -60,61 +72,104 @@ function ContactAdd({ companies, setIsLoaded, isAuth }) {
   };
 
   const handleCompanyChange = (value) => {
-    setSelectedCompany(value);
+    return;
   };
-
+  const handleAddCompSelector = () => {
+    setSelectorAmount((amount) => amount + 1);
+  };
+  const handleRemoveCompSelector = () => {
+    setSelectorAmount((amount) => (amount > 1 ? amount - 1 : amount));
+  };
+  const renderSelector = (amount) => {
+    let selectorArray = [];
+    for (x = 0; x < amount; x++) {
+      selectorArray.push(
+        <div>
+          <label>Company Selector : </label>
+          <CompanySelector
+            companies={companies}
+            currentCompany={""}
+            handleCompanyChange={handleCompanyChange}
+            name={"company"}
+            key={x}
+          />
+        </div>
+      );
+    }
+    return selectorArray;
+  };
   return (
     <main>
       <div className="contactAdd card">
         <h2>Fill up the form</h2>
         <form className="contactForm" onSubmit={handleSubmit}>
-          <ul>
-            <li>
-              <span>Firstname : </span>
-              <input
-                name="firstname"
-                type="text"
-                placeholder="Ex : Johnny"
-                required
-              />
-            </li>
-            <li>
-              <span>Lastname : </span>
-              <input
-                name="lastname"
-                type="text"
-                placeholder="Ex : Begood"
-                required
-              />
-            </li>
-            <li>
-              <span>Company : </span>
-              <CompanySelector
-                companies={companies}
-                currentCompany={""}
-                handleCompanyChange={handleCompanyChange}
-                name={"company"}
-              />
-            </li>
-            <li>
-              <span>Email : </span>
-              <input
-                name="email"
-                type="text"
-                placeholder="Ex : johnny.begood@yahoo.fr"
-                required
-              />
-            </li>
-            <li>
-              <span>Phone number : </span>
-              <input
-                name="phonenumber"
-                type="text"
-                placeholder="Ex : 0487272320"
-                required
-              />
-            </li>
-          </ul>
+          <div className="formContent">
+            <fieldset>
+              <legend>Contact</legend>
+              <div>
+                <label htmlFor="firstname">Firstname : </label>
+                <input
+                  name="firstname"
+                  id="firstname"
+                  type="text"
+                  placeholder="Ex : Johnny"
+                  required
+                />
+              </div>
+              <div>
+                <label htmlFor="lastname">Lastname : </label>
+                <input
+                  name="lastname"
+                  id="lastname"
+                  type="text"
+                  placeholder="Ex : Begood"
+                  required
+                />
+              </div>
+              <div>
+                <label htmlFor="email">Email : </label>
+                <input
+                  name="email"
+                  id="email"
+                  type="text"
+                  placeholder="Ex : johnny.begood@yahoo.fr"
+                  required
+                />
+              </div>
+              <div>
+                <label htmlFor="phonenumber">Phone number : </label>
+                <input
+                  name="phonenumber"
+                  id="phonenumber"
+                  type="text"
+                  placeholder="Ex : 0487272320"
+                  required
+                />
+              </div>
+            </fieldset>
+            <fieldset>
+              <legend>
+                From
+                <button
+                  type="button"
+                  id="addCompanySelector"
+                  onClick={handleAddCompSelector}
+                  style={{ padding: "0 .5rem" }}
+                >
+                  +
+                </button>
+                <button
+                  type="button"
+                  id="removeCompanySelector"
+                  onClick={handleRemoveCompSelector}
+                  style={{ padding: "0 .5rem" }}
+                >
+                  -
+                </button>
+              </legend>
+              {renderSelector(selectorAmount)}
+            </fieldset>
+          </div>
           <button>Submit</button>
         </form>
         <div className="formIllu">

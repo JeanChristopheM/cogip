@@ -23,9 +23,15 @@ function CompanyAdd({ setIsLoaded, isAuth }) {
     e.preventDefault();
     setIsFetching(true);
     const formData = {
+      country: e.target.country.value,
       name: e.target.name.value,
-      vat: e.target.vat.value,
       status: e.target.status.value,
+      street: e.target.street.value,
+      streetnumber: e.target.streetnumber.value,
+      town: e.target.town.value,
+      vat: e.target.vat.value,
+      zip: e.target.zip.value,
+      contacts: [],
     };
     let check = companyVerify(formData);
     if (check.ok) {
@@ -35,11 +41,13 @@ function CompanyAdd({ setIsLoaded, isAuth }) {
         isAuth.jwt,
         formData
       );
-      setIsFetching(false);
-      setIsLoaded(false);
       if (status === 200)
         sessionStorage.setItem("cogipToast", "success,Success !");
       else sessionStorage.setItem("cogipToast", `error,${message}`);
+      setTimeout(() => {
+        setIsLoaded(false);
+        setIsFetching(false);
+      }, 1000);
     } else {
       setIsFetching(false);
       const issues = Object.keys(check);
@@ -59,34 +67,65 @@ function CompanyAdd({ setIsLoaded, isAuth }) {
       <div className="companyAdd card">
         <h2>Fill up the form</h2>
         <form className="companyForm" onSubmit={handleSubmit}>
-          <ul>
-            <li>
-              <span>Name : </span>
-              <input
-                name="name"
-                type="text"
-                placeholder="Ex : BeCode"
-                required
-              />
-            </li>
-            <li>
-              <span>VAT : </span>
-              <input
-                name="vat"
-                type="text"
-                placeholder="Ex : 1235431658"
-                required
-              />
-            </li>
-            <li>
-              <span>Status : </span>
-              <select name="status" required>
-                <option value="">Select a status</option>
-                <option value="Supplier">Supplier</option>
-                <option value="Client">Client</option>
-              </select>
-            </li>
-          </ul>
+          <div className="formContent">
+            <fieldset>
+              <legend>Company details</legend>
+              <div>
+                <label htmlFor="name">Name : </label>
+                <input
+                  name="name"
+                  type="text"
+                  placeholder="Ex : BeCode"
+                  required
+                />
+              </div>
+              <div>
+                <label htmlFor="vat">VAT : </label>
+                <input
+                  name="vat"
+                  type="text"
+                  placeholder="Ex : 1235431658"
+                  required
+                />
+              </div>
+              <div>
+                <label htmlFor="status">Status : </label>
+                <select name="status" required>
+                  <option value="">Select a status</option>
+                  <option value="Supplier">Supplier</option>
+                  <option value="Customer">Customer</option>
+                </select>
+              </div>
+            </fieldset>
+            <fieldset>
+              <legend>Address</legend>
+              <div>
+                <label htmlFor="streetnumber">Streetnumber : </label>
+                <input
+                  type="text"
+                  name="streetnumber"
+                  id="streetnumber"
+                  required
+                />
+              </div>
+              <div>
+                <label htmlFor="street">Street : </label>
+                <input type="text" name="street" id="street" required />
+              </div>
+              <div>
+                <label htmlFor="town">Town : </label>
+                <input type="text" name="town" id="town" required />
+              </div>
+              <div>
+                <label htmlFor="country">Country : </label>
+                <input type="text" name="country" id="country" required />
+              </div>
+              <div>
+                <label htmlFor="zip">Zip : </label>
+                <input type="text" name="zip" id="zip" />
+              </div>
+            </fieldset>
+          </div>
           <button>Submit</button>
         </form>
         <div className="formIllu">

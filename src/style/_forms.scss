@@ -7,20 +7,43 @@
 .contactForm,
 .companyForm,
 .userForm {
-  ul {
+  .formContent {
     margin-top: 3rem;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 2rem;
     width: 100%;
     @media screen and (min-width: 750px) {
       width: 60%;
     }
   }
-  li {
+  fieldset {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    legend {
+      text-align: center;
+      font-size: 1.5rem;
+      text-decoration: underline;
+      font-weight: 600;
+      margin-bottom: 1rem;
+      position: relative;
+      #addCompanySelector {
+        position: absolute;
+        top: -100%;
+        right: -3rem;
+      }
+      #removeCompanySelector {
+        position: absolute;
+        top: -100%;
+        right: -5.5rem;
+      }
+    }
+    & + fieldset {
+      margin-top: 1.5rem;
+    }
+  }
+  div {
     flex: 1 1 calc(50% - 2rem);
     display: grid;
-    & > *:last-child {
+    & > *:last-child:not(:nth-of-type(even)) {
       text-align: right;
     }
     option {

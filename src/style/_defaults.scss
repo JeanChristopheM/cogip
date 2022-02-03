@@ -42,7 +42,8 @@ button {
   background-color: var(--clr-text);
   color: var(--clr-background-low);
   padding: 0.5rem 2rem;
-  border-radius: 1000vh;
+  border-radius: 2000vh;
+  min-width: 2rem;
   font-size: 1.5rem;
   cursor: pointer;
   transition: color 0.2s, background-color 0.2s;
