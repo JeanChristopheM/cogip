@@ -23,7 +23,9 @@ function Invoices({ invoices, contacts, companies }) {
     let results = [];
     for (let entry of invoices) {
       const company = companies.find((el) => el.id == entry.company);
-      const contact = contacts.find((el) => el.id == entry.contact);
+      const contact = contacts.find((el) => el.id == entry.contact)
+        ? contacts.find((el) => el.id == entry.contact)
+        : null;
       let arrow = company.status === "Client" ? "down" : "up";
       let obj = {
         icon: <i className={`fas fa-arrow-${arrow}`}></i>,
@@ -32,7 +34,7 @@ function Invoices({ invoices, contacts, companies }) {
         col3: `${entry.paid}€`,
         col4: `${entry.due}€`,
         col5: company.name,
-        col6: `${contact.firstname} ${contact.lastname}`,
+        col6: contact ? `${contact.firstname} ${contact.lastname}` : "None",
         col7: dateFormatter(entry.received),
         col8: entry.paidStatus ? "Paid" : "To be paid",
         id: entry.id,
@@ -126,13 +128,14 @@ function Invoices({ invoices, contacts, companies }) {
   const handleClick = (header, contactName, companyName, invoiceId) => {
     switch (header) {
       case "Contact":
-        navigate(
-          `/contact/${
-            contacts.find(
-              (el) => `${el.firstname} ${el.lastname}` == contactName
-            ).id
-          }`
-        );
+        if (contactName !== "None")
+          navigate(
+            `/contact/${
+              contacts.find(
+                (el) => `${el.firstname} ${el.lastname}` == contactName
+              ).id
+            }`
+          );
         break;
       case "Company":
         navigate(

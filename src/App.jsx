@@ -3,6 +3,7 @@ import React, { useState, useEffect, useLayoutEffect, Suspense } from "react";
 import handleRequests from "./logic/handleRequests";
 import { Routes, Route, useNavigate, useLocation } from "react-router-dom";
 import { switchTheme } from "./logic/theme";
+import checkAuth from "./logic/checkAuth";
 /* Components */
 import Header from "./components/Header.jsx";
 import Footer from "./components/Footer.jsx";
@@ -55,7 +56,19 @@ function App() {
   const location = useLocation();
 
   const suspense = (element) => {
-    return <Suspense fallback={<main>Loading...</main>}>{element}</Suspense>;
+    return (
+      <Suspense
+        fallback={
+          <main>
+            <div className="fetching">
+              <div className="lds-dual-ring"></div>
+            </div>
+          </main>
+        }
+      >
+        {element}
+      </Suspense>
+    );
   };
   /* Loading data function */
   const loadData = async () => {
@@ -79,79 +92,11 @@ function App() {
         alert("There was an error getting the data");
       }
     }
-    /* setCompanies([
-      {
-        id: "1",
-        name: "becode",
-        vat: "123",
-        status: "Client",
-        added: "2020-02-03T00:00:00",
-        contact: "1",
-      },
-    ]);
-    setContacts([
-      {
-        id: "1",
-        firstname: "jc",
-        lastname: "m",
-        email: "jc@jc.com",
-        phonenumber: "123",
-        added: "2020-02-03T00:00:00",
-        contactcompany: "1",
-      },
-    ]);
-    setInvoices([
-      {
-        id: "1",
-        reference: "123",
-        amount: 123,
-        company: "1",
-        contact: "1",
-        received: "2022-02-03T00:00:00",
-        paid: true,
-      },
-      {
-        id: "2",
-        reference: "123",
-        amount: 123,
-        company: "1",
-        contact: "1",
-        received: "2022-03-03T00:00:00",
-        paid: true,
-      },
-      {
-        id: "3",
-        reference: "123",
-        amount: 123,
-        company: "1",
-        contact: "1",
-        received: "2022-04-03T00:00:00",
-        paid: true,
-      },
-      {
-        id: "4",
-        reference: "123",
-        amount: 123,
-        company: "1",
-        contact: "1",
-        received: "2022-04-03T00:00:00",
-        paid: true,
-      },
-    ]); */
   };
   /* Initial Effects */
   useLayoutEffect(() => {
     /* If cookie, set the authentification to cache and redirect to homepage */
-    if (sessionStorage.getItem("cogipAuth")) {
-      setAuth(JSON.parse(sessionStorage.getItem("cogipAuth")));
-    } else if (localStorage.getItem("cogipAuth")) {
-      setAuth(JSON.parse(localStorage.getItem("cogipAuth")));
-    }
-    /* Checking if theme stored in local storage and applying if needed */
-    if (localStorage.getItem("cogipTheme")) {
-      switchTheme(JSON.parse(localStorage.getItem("cogipTheme")));
-    }
-    setCheckedAuth(true);
+    checkAuth(setAuth, switchTheme, setCheckedAuth);
   }, []);
   /* If we logged in -> Load the data */
   useLayoutEffect(() => {
@@ -321,7 +266,11 @@ function App() {
           )}
         </>
       ) : (
-        <main>"Verifying Authentification"</main>
+        <main>
+          <div className="fetching dark">
+            <div className="lds-dual-ring"></div>
+          </div>
+        </main>
       )}
       <MobileMenu onLogout={logout} displayStatus={isMenuActive} />
       <Footer />

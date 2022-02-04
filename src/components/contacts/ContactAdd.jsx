@@ -82,7 +82,7 @@ function ContactAdd({ companies, setIsLoaded, isAuth }) {
   };
   const renderSelector = (amount) => {
     let selectorArray = [];
-    for (x = 0; x < amount; x++) {
+    for (let x = 0; x < amount; x++) {
       selectorArray.push(
         <div>
           <label>Company Selector : </label>

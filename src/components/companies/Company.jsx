@@ -99,7 +99,6 @@ function Company({ companies, contacts, setIsLoaded, isAuth }) {
     setIsDeleting(false);
     setIsLoaded(false);
   };
-
   return (
     <main>
       {isFetching || !loaded || !company ? (
@@ -213,21 +212,25 @@ function Company({ companies, contacts, setIsLoaded, isAuth }) {
                 <section className="companyGrid__section">
                   <h3>Contacts</h3>
                   <div className="companyGrid__section--child">
-                    <ul>
-                      {contacts.map((el) => {
-                        if (el.companies.includes(company.id)) {
-                          return (
-                            <li
-                              key={el.id}
-                              onClick={() => {
-                                navigate(`/contact/${el.id}`);
-                              }}
-                              style={{ cursor: "pointer" }}
-                            >{`${el.firstname} ${el.lastname}`}</li>
-                          );
-                        }
-                      })}
-                    </ul>
+                    {company.contacts.length > 0 ? (
+                      <ul>
+                        {contacts.map((el) => {
+                          if (el.companies.includes(company.id)) {
+                            return (
+                              <li
+                                key={el.id}
+                                onClick={() => {
+                                  navigate(`/contact/${el.id}`);
+                                }}
+                                style={{ cursor: "pointer" }}
+                              >{`${el.firstname} ${el.lastname}`}</li>
+                            );
+                          }
+                        })}
+                      </ul>
+                    ) : (
+                      <span>None</span>
+                    )}
                   </div>
                 </section>
                 <section className="decoration">
@@ -276,21 +279,25 @@ function Company({ companies, contacts, setIsLoaded, isAuth }) {
                 <section className="companyGrid__section">
                   <h3>Contacts</h3>
                   <div className="companyGrid__section--child">
-                    <ul>
-                      {contacts.map((el) => {
-                        if (el.companies.includes(company.id)) {
-                          return (
-                            <li
-                              key={el.id}
-                              onClick={() => {
-                                navigate(`/contact/${el.id}`);
-                              }}
-                              style={{ cursor: "pointer" }}
-                            >{`${el.firstname} ${el.lastname}`}</li>
-                          );
-                        }
-                      })}
-                    </ul>
+                    {company.contacts.length > 0 ? (
+                      <ul>
+                        {contacts.map((el) => {
+                          if (el.companies.includes(company.id)) {
+                            return (
+                              <li
+                                key={el.id}
+                                onClick={() => {
+                                  navigate(`/contact/${el.id}`);
+                                }}
+                                style={{ cursor: "pointer" }}
+                              >{`${el.firstname} ${el.lastname}`}</li>
+                            );
+                          }
+                        })}
+                      </ul>
+                    ) : (
+                      <span>None</span>
+                    )}
                   </div>
                 </section>
                 <section className="decoration">

@@ -36,6 +36,7 @@ function Contact({ contacts, companies, setIsLoaded, isAuth }) {
     setSelectedCompany(company);
   };
   const handleModif = async () => {
+    setIsFetching(true);
     const formData = {
       firstname: firstnameRef.current.value,
       lastname: lastnameRef.current.value,
@@ -45,7 +46,6 @@ function Contact({ contacts, companies, setIsLoaded, isAuth }) {
     };
     console.log(formData);
     /* let check = contactVerify(formData);
-    setIsFetching(true);
     if (check.ok) {
       const { status, message, dataPackage } = await handleRequests(
         "PUT",
@@ -113,7 +113,7 @@ function Contact({ contacts, companies, setIsLoaded, isAuth }) {
               <section className="contactGrid__section">
                 <h3>Contact</h3>
                 <div className="contactGrid__section--child infos">
-                  <label for="contactFirstname" className="labels">
+                  <label htmlFor="contactFirstname" className="labels">
                     Firstname :{" "}
                   </label>
                   <input
@@ -125,7 +125,7 @@ function Contact({ contacts, companies, setIsLoaded, isAuth }) {
                   />
                 </div>
                 <div className="contactGrid__section--child infos">
-                  <label for="contactLastname" className="labels">
+                  <label htmlFor="contactLastname" className="labels">
                     Lastname :{" "}
                   </label>
                   <input
@@ -137,7 +137,7 @@ function Contact({ contacts, companies, setIsLoaded, isAuth }) {
                   />
                 </div>
                 <div className="contactGrid__section--child infos">
-                  <label for="contactEmail" className="labels">
+                  <label htmlFor="contactEmail" className="labels">
                     Email :{" "}
                   </label>
                   <input
@@ -149,7 +149,7 @@ function Contact({ contacts, companies, setIsLoaded, isAuth }) {
                   />
                 </div>
                 <div className="contactGrid__section--child infos">
-                  <label for="contactPhonenumber" className="labels">
+                  <label htmlFor="contactPhonenumber" className="labels">
                     Phone number :{" "}
                   </label>
                   <input

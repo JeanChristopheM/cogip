@@ -15,7 +15,6 @@ function ContactSelector({
         );
       }}
       defaultValue={`${currentContact.firstname} ${currentContact.lastname}`}
-      required
     >
       <option value="">
         {selectedCompany == "" ? "Select a company first" : "Select a contact"}

@@ -46,7 +46,6 @@ function InvoiceAdd({ contacts, companies, categories, setIsLoaded, isAuth }) {
       due: e.target.paid.checked ? 0 : parseInt(e.target.amount.value),
       paid: e.target.paid.checked ? parseInt(e.target.amount.value) : 0,
     };
-    setIsFetching(false);
     console.log(formData);
 
     // Data verification
