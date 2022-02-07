@@ -5,7 +5,7 @@
   transform: translate(-50%, -50%);
   z-index: 40;
   &.dark {
-    box-shadow: 0 0 0 200vh hsla(211, 0%, 0%, 0.5);
+    box-shadow: 0 0 0 max(200vh, 200vw) hsla(211, 0%, 0%, 0.5);
     background: hsla(211, 0%, 0%, 0.5);
   }
 }

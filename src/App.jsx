@@ -90,16 +90,19 @@ function App() {
       showNewFetch,
     ];
     for (let x = 0; x < fn.length; x++) {
-      const { status, message, dataPackage } = await handleRequests(
-        "GET",
-        srcs[x],
-        isAuth.jwt
-      );
-      console.log(dataPackage);
-      if (status === 200) {
-        fn[x](dataPackage);
-      } else {
-        alert("There was an error getting the data");
+      try {
+        const { status, message, dataPackage } = await handleRequests(
+          "GET",
+          srcs[x],
+          isAuth.jwt
+        );
+        if (status === 200) {
+          fn[x](dataPackage);
+        } else {
+          alert("There was an error getting the data");
+        }
+      } catch (e) {
+        console.log(e);
       }
     }
   };
