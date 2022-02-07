@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import Logo from "./reusables/Logo.jsx";
 
-const Header = ({ openMenu, onLogout, isAuth }) => {
+const Header = ({ onLogout, isAuth, setIsMenuActive }) => {
   const location = useLocation();
   const [selected, setSelected] = useState();
   const navigate = useNavigate();
@@ -11,6 +11,17 @@ const Header = ({ openMenu, onLogout, isAuth }) => {
     setSelected(location.pathname);
   }, [location]);
 
+  /* Mobile Menu related functions */
+  const closeMenu = (e) => {
+    if (!e.target.classList.contains("mobileMenu__list")) {
+      setIsMenuActive("inactive");
+    }
+  };
+  const openMenu = (e) => {
+    setIsMenuActive("active");
+    e.stopPropagation();
+    document.addEventListener("click", closeMenu);
+  };
   return (
     <header className="header">
       <div className="header__container">
@@ -21,13 +32,7 @@ const Header = ({ openMenu, onLogout, isAuth }) => {
             </>
           ) : (
             <>
-              <i
-                id="burger"
-                className="fas fa-bars"
-                onClick={(e) => {
-                  openMenu(e);
-                }}
-              ></i>
+              <i id="burger" className="fas fa-bars" onClick={openMenu}></i>
             </>
           )}
           <Logo

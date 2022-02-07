@@ -1,6 +1,6 @@
 /* Functions */
-import React, { useState, useEffect, useLayoutEffect, Suspense } from "react";
-import { Routes, Route, useNavigate, useLocation } from "react-router-dom";
+import React, { useState, useEffect, useLayoutEffect } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import handleRequests from "./logic/handleRequests";
 import { switchTheme } from "./logic/theme";
 import checkAuth from "./logic/checkAuth";
@@ -9,35 +9,10 @@ import Header from "./components/Header.jsx";
 import Footer from "./components/Footer.jsx";
 import ScrollToTop from "./components/reusables/ScrollToTop.jsx";
 import MobileMenu from "./components/reusables/MobileMenu.jsx";
+import Router from "./Router.jsx";
+import SuspenseProvider from "./components/reusables/SuspenseProvider.jsx";
 /* Page Contents */
-
 const Login = React.lazy(() => import("./components/Login.jsx"));
-const Homepage = React.lazy(() =>
-  import("./components/dashboard/Homepage.jsx")
-);
-const Companies = React.lazy(() =>
-  import("./components/companies/Companies.jsx")
-);
-const Company = React.lazy(() => import("./components/companies/Company.jsx"));
-const Contacts = React.lazy(() => import("./components/contacts/Contacts.jsx"));
-const Contact = React.lazy(() => import("./components/contacts/Contact.jsx"));
-const Invoices = React.lazy(() => import("./components/invoices/Invoices.jsx"));
-const Invoice = React.lazy(() => import("./components/invoices/Invoice.jsx"));
-const FourOfour = React.lazy(() => import("./components/FourOfour.jsx"));
-const Reports = React.lazy(() => import("./components/reports/Reports.jsx"));
-const Settings = React.lazy(() => import("./components/settings/Settings.jsx"));
-const UserAdd = React.lazy(() => import("./components/settings/UserAdd.jsx"));
-
-/* Forms for adding data */
-const ContactAdd = React.lazy(() =>
-  import("./components/contacts/ContactAdd.jsx")
-);
-const CompanyAdd = React.lazy(() =>
-  import("./components/companies/CompanyAdd.jsx")
-);
-const InvoiceAdd = React.lazy(() =>
-  import("./components/invoices/InvoiceAdd.jsx")
-);
 
 /* Toast Style */
 import "react-toastify/dist/ReactToastify.css";
@@ -55,21 +30,6 @@ function App() {
 
   const location = useLocation();
 
-  const suspense = (element) => {
-    return (
-      <Suspense
-        fallback={
-          <main>
-            <div className="fetching">
-              <div className="lds-dual-ring"></div>
-            </div>
-          </main>
-        }
-      >
-        {element}
-      </Suspense>
-    );
-  };
   const showNewFetch = (data) => {
     console.log(data);
   };
@@ -124,20 +84,6 @@ function App() {
       setIsLoaded(true);
     }
   }, [companies, invoices, contacts]);
-
-  /* Mobile Menu related functions */
-  const closeMenu = (e) => {
-    if (!e.target.classList.contains("mobileMenu__list")) {
-      setIsMenuActive("inactive");
-    }
-  };
-  const openMenu = (e) => {
-    setIsMenuActive("active");
-    e.stopPropagation();
-    document.addEventListener("click", closeMenu);
-  };
-
-  /* Logout function */
   const logout = () => {
     localStorage.removeItem("cogipAuth");
     sessionStorage.removeItem("cogipAuth");
@@ -145,127 +91,27 @@ function App() {
     setIsMenuActive("inactive");
     navigate("/");
   };
-
   return (
     <>
-      <Header openMenu={openMenu} onLogout={logout} isAuth={isAuth} />
+      <Header
+        onLogout={logout}
+        isAuth={isAuth}
+        setIsMenuActive={setIsMenuActive}
+      />
       <ScrollToTop />
       {checkedAuth ? (
         <>
           {isAuth ? (
             <>
               {isLoaded ? (
-                <Routes>
-                  <Route
-                    path=""
-                    element={suspense(
-                      <Homepage
-                        isAuth={isAuth}
-                        companies={companies}
-                        contacts={contacts}
-                        invoices={invoices}
-                      />
-                    )}
-                  />
-                  <Route
-                    path="/companies"
-                    element={suspense(<Companies companies={companies} />)}
-                  />
-                  <Route
-                    path="/company/:companyId"
-                    element={suspense(
-                      <Company
-                        companies={companies}
-                        setIsLoaded={setIsLoaded}
-                        getAllData={loadData}
-                        contacts={contacts}
-                        isAuth={isAuth}
-                      />
-                    )}
-                  />
-                  <Route
-                    path="/invoices"
-                    element={suspense(
-                      <Invoices
-                        invoices={invoices}
-                        contacts={contacts}
-                        companies={companies}
-                      />
-                    )}
-                  />
-                  <Route
-                    path="/invoice/:invoiceId"
-                    element={suspense(
-                      <Invoice
-                        invoices={invoices}
-                        companies={companies}
-                        contacts={contacts}
-                        setIsLoaded={setIsLoaded}
-                        isAuth={isAuth}
-                      />
-                    )}
-                  />
-                  <Route
-                    path="/contacts"
-                    element={suspense(
-                      <Contacts contacts={contacts} companies={companies} />
-                    )}
-                  />
-                  <Route
-                    path="/contact/:contactId"
-                    element={suspense(
-                      <Contact
-                        contacts={contacts}
-                        companies={companies}
-                        setIsLoaded={setIsLoaded}
-                        isAuth={isAuth}
-                      />
-                    )}
-                  />
-                  <Route
-                    path="/contactAdd"
-                    element={suspense(
-                      <ContactAdd
-                        companies={companies}
-                        setIsLoaded={setIsLoaded}
-                        isAuth={isAuth}
-                      />
-                    )}
-                  />
-                  <Route
-                    path="/invoiceAdd"
-                    element={suspense(
-                      <InvoiceAdd
-                        companies={companies}
-                        contacts={contacts}
-                        setIsLoaded={setIsLoaded}
-                        isAuth={isAuth}
-                        categories={categories}
-                      />
-                    )}
-                  />
-                  <Route
-                    path="/companyAdd"
-                    element={suspense(
-                      <CompanyAdd setIsLoaded={setIsLoaded} isAuth={isAuth} />
-                    )}
-                  />
-                  <Route
-                    path="/reports"
-                    element={suspense(
-                      <Reports invoices={invoices} companies={companies} />
-                    )}
-                  />
-                  <Route
-                    path="/settings"
-                    element={suspense(<Settings isAuth={isAuth} />)}
-                  />
-                  <Route
-                    path="/userAdd"
-                    element={suspense(<UserAdd isAuth={isAuth} />)}
-                  />
-                  <Route path="*" element={suspense(<FourOfour />)} />
-                </Routes>
+                <Router
+                  isAuth={isAuth}
+                  invoices={invoices}
+                  companies={companies}
+                  contacts={contacts}
+                  setIsLoaded={setIsLoaded}
+                  categories={categories}
+                />
               ) : (
                 <main>
                   <div className="fetching dark">
@@ -275,7 +121,9 @@ function App() {
               )}
             </>
           ) : (
-            suspense(<Login setAuth={setAuth} location={location} />)
+            <SuspenseProvider
+              element={<Login setAuth={setAuth} location={location} />}
+            />
           )}
         </>
       ) : (
@@ -285,7 +133,11 @@ function App() {
           </div>
         </main>
       )}
-      <MobileMenu onLogout={logout} displayStatus={isMenuActive} />
+      <MobileMenu
+        onLogout={logout}
+        displayStatus={isMenuActive}
+        handleToggle={setIsMenuActive}
+      />
       <Footer />
     </>
   );
