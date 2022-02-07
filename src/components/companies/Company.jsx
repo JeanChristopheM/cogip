@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { companyVerify } from "../../logic/formValidation.js";
+import ContactSelector from "../reusables/ContactSelector.jsx";
 import handleRequests from "../../logic/handleRequests";
 import CompanyControls from "./CompanyControls.jsx";
 import CompanyIllustration from "../reusables/CompanyIllustration.jsx";
@@ -18,33 +19,82 @@ function Company({ companies, contacts, setIsLoaded, isAuth }) {
   const [isModifying, setIsModifying] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
   const [isFetching, setIsFetching] = useState(false);
+  const [selectorAmount, setSelectorAmount] = useState(company.contacts.length);
 
   useEffect(() => {
     if (!company) navigate("/companies");
   }, [companies]);
-  const nameRef = useRef();
-  const vatRef = useRef();
-  const statusRef = useRef();
-  const streetnumberRef = useRef();
-  const streetRef = useRef();
-  const townRef = useRef();
-  const countryRef = useRef();
-  const zipRef = useRef();
 
-  const handleModif = async () => {
+  const renderSelector = (amount) => {
+    let selectorArray = [];
+    for (let x = 0; x < amount; x++) {
+      const contact =
+        company.contacts.length > 0 &&
+        contacts.filter((el) => company.contacts.includes(el.id))[x]
+          ? contacts.filter((el) => company.contacts.includes(el.id))[x]
+          : "";
+      selectorArray.push(
+        <div className="contactGrid__section--child selectors" key={x}>
+          <label>Company Selector : </label>
+          <ContactSelector
+            contacts={contacts}
+            currentContact={contact}
+            selectedCompany={{
+              contacts: contacts.reduce((acc, current) => {
+                acc.push(current.id);
+                return acc;
+              }, []),
+            }}
+            handleContactChange={handleContactChange}
+            name={"contact"}
+            key={x}
+          />
+        </div>
+      );
+    }
+    return selectorArray;
+  };
+  const getContactsArray = (nodeList) => {
+    let contArr = [];
+    if (!nodeList) return contArr;
+    if (nodeList.name) {
+      if (nodeList.value === "") return contArr;
+      return [
+        contacts.find((contact) =>
+          `${contact.firstname} ${contact.lastname}` == nodeList.value
+            ? true
+            : false
+        ).id,
+      ];
+    }
+    for (let node of nodeList) {
+      if (node.value === "") continue;
+      contArr.push(
+        contacts.find((contact) =>
+          `${contact.firstname} ${contact.lastname}` == node.value
+            ? true
+            : false
+        ).id
+      );
+    }
+    return [...new Set([...contArr])];
+  };
+  const submit = async (e) => {
+    e.preventDefault();
+    setIsFetching(true);
     const formData = {
-      name: nameRef.current.value,
-      vat: vatRef.current.value,
-      status: statusRef.current.value,
-      streetnumber: streetnumberRef.current.value,
-      street: streetRef.current.value,
-      town: townRef.current.value,
-      country: countryRef.current.value,
-      zip: zipRef.current.value,
-      contacts: [],
+      name: e.target.companyName.value,
+      vat: e.target.companyVat.value,
+      status: e.target.companyStatus.value,
+      streetnumber: e.target.streetnumber.value,
+      street: e.target.street.value,
+      town: e.target.town.value,
+      country: e.target.country.value,
+      zip: e.target.zip.value,
+      contacts: getContactsArray(e.target.contact),
     };
     console.log(formData);
-    /* let check = companyVerify(formData);
+    let check = companyVerify(formData);
     setIsFetching(true);
     if (check.ok) {
       const { status, message, dataPackage } = await handleRequests(
@@ -80,7 +130,13 @@ function Company({ companies, contacts, setIsLoaded, isAuth }) {
           }
         }
       }, 250);
-    } */
+    }
+  };
+  const handleModif = async () => {
+    return;
+  };
+  const handleContactChange = () => {
+    return;
   };
   const handleDelete = async () => {
     setIsFetching(true);
@@ -99,6 +155,13 @@ function Company({ companies, contacts, setIsLoaded, isAuth }) {
     setIsDeleting(false);
     setIsLoaded(false);
   };
+  const handleAddContactSelector = () => {
+    setSelectorAmount((amount) => amount + 1);
+  };
+  const handleRemoveContactSelector = () => {
+    setSelectorAmount((amount) => (amount >= 1 ? amount - 1 : amount));
+    console.log(selectorAmount);
+  };
   return (
     <main>
       {isFetching || !loaded || !company ? (
@@ -108,9 +171,9 @@ function Company({ companies, contacts, setIsLoaded, isAuth }) {
       ) : (
         <div className="card">
           <h2>Details :</h2>
-          <div className="companyGrid">
-            {isModifying ? (
-              <>
+          {isModifying ? (
+            <>
+              <form className="companyGrid" onSubmit={submit}>
                 <section className="companyGrid__section">
                   <div className="companyGrid__section--child name">
                     <span className="labels">Name : </span>
@@ -118,7 +181,6 @@ function Company({ companies, contacts, setIsLoaded, isAuth }) {
                       type="text"
                       name="companyName"
                       defaultValue={company.name}
-                      ref={nameRef}
                       required
                     />
                   </div>
@@ -128,7 +190,6 @@ function Company({ companies, contacts, setIsLoaded, isAuth }) {
                       type="text"
                       name="companyVat"
                       defaultValue={company.vat}
-                      ref={vatRef}
                       required
                     />
                   </div>
@@ -136,7 +197,6 @@ function Company({ companies, contacts, setIsLoaded, isAuth }) {
                     <span className="labels">Status : </span>
                     <select
                       name="companyStatus"
-                      ref={statusRef}
                       defaultValue={company.status}
                       required
                     >
@@ -156,7 +216,6 @@ function Company({ companies, contacts, setIsLoaded, isAuth }) {
                       type="text"
                       id="streetnumber"
                       name="streetnumber"
-                      ref={streetnumberRef}
                       defaultValue={company.streetnumber}
                     />
                   </div>
@@ -168,7 +227,6 @@ function Company({ companies, contacts, setIsLoaded, isAuth }) {
                       type="text"
                       id="street"
                       name="street"
-                      ref={streetRef}
                       defaultValue={company.street}
                     />
                   </div>
@@ -180,7 +238,6 @@ function Company({ companies, contacts, setIsLoaded, isAuth }) {
                       type="text"
                       id="town"
                       name="town"
-                      ref={townRef}
                       defaultValue={company.town}
                     />
                   </div>
@@ -192,7 +249,6 @@ function Company({ companies, contacts, setIsLoaded, isAuth }) {
                       type="text"
                       id="zip"
                       name="zip"
-                      ref={zipRef}
                       defaultValue={company.zip}
                     />
                   </div>
@@ -204,41 +260,52 @@ function Company({ companies, contacts, setIsLoaded, isAuth }) {
                       type="text"
                       id="country"
                       name="country"
-                      ref={countryRef}
                       defaultValue={company.country}
                     />
                   </div>
                 </section>
-                <section className="companyGrid__section">
-                  <h3>Contacts</h3>
-                  <div className="companyGrid__section--child">
-                    {company.contacts.length > 0 ? (
-                      <ul>
-                        {contacts.map((el) => {
-                          if (el.companies.includes(company.id)) {
-                            return (
-                              <li
-                                key={el.id}
-                                onClick={() => {
-                                  navigate(`/contact/${el.id}`);
-                                }}
-                                style={{ cursor: "pointer" }}
-                              >{`${el.firstname} ${el.lastname}`}</li>
-                            );
-                          }
-                        })}
-                      </ul>
-                    ) : (
-                      <span>None</span>
-                    )}
-                  </div>
-                </section>
+                <fieldset className="companyGrid__section">
+                  <legend>
+                    Contacts{" "}
+                    <button
+                      type="button"
+                      id="addCompanySelector"
+                      onClick={handleAddContactSelector}
+                      style={{ padding: "0 .5rem" }}
+                    >
+                      +
+                    </button>
+                    <button
+                      type="button"
+                      id="removeCompanySelector"
+                      onClick={handleRemoveContactSelector}
+                      style={{ padding: "0 .5rem" }}
+                    >
+                      -
+                    </button>
+                  </legend>
+
+                  {selectorAmount
+                    ? renderSelector(selectorAmount)
+                    : "No contact"}
+                </fieldset>
                 <section className="decoration">
                   <CompanyIllustration />
                 </section>
-              </>
-            ) : (
-              <>
+                <CompanyControls
+                  isModifying={isModifying}
+                  isDeleting={isDeleting}
+                  setIsDeleting={setIsDeleting}
+                  setIsModifying={setIsModifying}
+                  handleModif={handleModif}
+                  handleDelete={handleDelete}
+                  company={company}
+                />
+              </form>
+            </>
+          ) : (
+            <>
+              <div className="companyGrid">
                 <section className="companyGrid__section">
                   <div className="companyGrid__section--child name">
                     <span className="labels">Name : </span>
@@ -303,21 +370,21 @@ function Company({ companies, contacts, setIsLoaded, isAuth }) {
                 <section className="decoration">
                   <CompanyIllustration />
                 </section>
-              </>
-            )}
-          </div>
-          {isAuth.role == "Admin" ? (
-            <CompanyControls
-              isModifying={isModifying}
-              isDeleting={isDeleting}
-              setIsDeleting={setIsDeleting}
-              setIsModifying={setIsModifying}
-              handleModif={handleModif}
-              handleDelete={handleDelete}
-              company={company}
-            />
-          ) : (
-            ""
+                {isAuth.role == "Admin" ? (
+                  <CompanyControls
+                    isModifying={isModifying}
+                    isDeleting={isDeleting}
+                    setIsDeleting={setIsDeleting}
+                    setIsModifying={setIsModifying}
+                    handleModif={handleModif}
+                    handleDelete={handleDelete}
+                    company={company}
+                  />
+                ) : (
+                  ""
+                )}
+              </div>
+            </>
           )}
         </div>
       )}

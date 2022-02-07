@@ -9,9 +9,7 @@ function ContactControls({
   if (isModifying) {
     return (
       <div className={"contactControls"}>
-        <button type="button" onClick={handleModif}>
-          Submit
-        </button>
+        <button onClick={handleModif}>Submit</button>
         <button
           type="button"
           onClick={() => {

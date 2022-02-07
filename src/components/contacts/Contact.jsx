@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import ContactControls from "./ContactControls.jsx";
 import CompanySelector from "../reusables/CompanySelector.jsx";
@@ -16,36 +16,40 @@ function Contact({ contacts, companies, setIsLoaded, isAuth }) {
   const params = useParams();
   const navigate = useNavigate();
   const contact = contacts.find((el) => el.id == params.contactId);
-  const company = contact
-    ? companies.find((el) => el.id == contact.companies[0])
-    : null;
-  const [selectedCompany, setSelectedCompany] = useState(company);
   const [isModifying, setIsModifying] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
   const [isFetching, setIsFetching] = useState(false);
-
+  const [selectorAmount, setSelectorAmount] = useState(
+    contact.companies.length
+  );
   useEffect(() => {
     if (!contact) navigate("/contacts");
   }, [contacts]);
 
-  const firstnameRef = useRef();
-  const lastnameRef = useRef();
-  const emailRef = useRef();
-  const phonenumberRef = useRef();
   const handleCompanyChange = (company) => {
-    setSelectedCompany(company);
+    return;
   };
-  const handleModif = async () => {
+  const getCompaniesArray = (nodeList) => {
+    let compArr = [];
+    for (let node of nodeList) {
+      compArr.push(
+        companies.find((company) => (company.name == node.value ? true : false))
+          .id
+      );
+    }
+    return [...new Set([...compArr])];
+  };
+  const submit = async (e) => {
+    e.preventDefault();
     setIsFetching(true);
     const formData = {
-      firstname: firstnameRef.current.value,
-      lastname: lastnameRef.current.value,
-      companies: selectedCompany.id.toString(),
-      email: emailRef.current.value,
-      phonenumber: phonenumberRef.current.value,
+      firstname: e.target.contactFirstname.value,
+      lastname: e.target.contactLastname.value,
+      companies: getCompaniesArray(e.target.company),
+      email: e.target.contactEmail.value,
+      phonenumber: e.target.contactPhonenumber.value,
     };
-    console.log(formData);
-    /* let check = contactVerify(formData);
+    let check = contactVerify(formData);
     if (check.ok) {
       const { status, message, dataPackage } = await handleRequests(
         "PUT",
@@ -80,7 +84,10 @@ function Contact({ contacts, companies, setIsLoaded, isAuth }) {
           }
         }
       }, 250);
-    } */
+    }
+  };
+  const handleModif = async (e) => {
+    return;
   };
   const handleDelete = async () => {
     setIsFetching(true);
@@ -99,6 +106,33 @@ function Contact({ contacts, companies, setIsLoaded, isAuth }) {
     setIsDeleting(false);
     setIsLoaded(false);
   };
+  const handleAddCompSelector = () => {
+    setSelectorAmount((amount) => amount + 1);
+  };
+  const handleRemoveCompSelector = () => {
+    setSelectorAmount((amount) => (amount > 1 ? amount - 1 : amount));
+  };
+  const renderSelector = (amount) => {
+    let selectorArray = [];
+    for (let x = 0; x < amount; x++) {
+      selectorArray.push(
+        <div className="contactGrid__section--child selectors">
+          <label>Company Selector : </label>
+          <CompanySelector
+            companies={companies}
+            currentCompany={
+              companies.filter((el) => contact.companies.includes(el.id))[x] ||
+              ""
+            }
+            handleCompanyChange={handleCompanyChange}
+            name={"company"}
+            key={x}
+          />
+        </div>
+      );
+    }
+    return selectorArray;
+  };
   return (
     <main>
       {isFetching || !loaded || !contact ? (
@@ -109,9 +143,9 @@ function Contact({ contacts, companies, setIsLoaded, isAuth }) {
         <div className="card">
           <h2>Details :</h2>
           {isModifying ? (
-            <form className="contactGrid">
-              <section className="contactGrid__section">
-                <h3>Contact</h3>
+            <form className="contactGrid" onSubmit={submit}>
+              <fieldset className="contactGrid__section">
+                <legend>Contact</legend>
                 <div className="contactGrid__section--child infos">
                   <label htmlFor="contactFirstname" className="labels">
                     Firstname :{" "}
@@ -121,7 +155,6 @@ function Contact({ contacts, companies, setIsLoaded, isAuth }) {
                     id="contactFirstname"
                     name="contactFirstname"
                     defaultValue={contact.firstname}
-                    ref={firstnameRef}
                   />
                 </div>
                 <div className="contactGrid__section--child infos">
@@ -133,7 +166,6 @@ function Contact({ contacts, companies, setIsLoaded, isAuth }) {
                     id="contactLastname"
                     name="contactLastname"
                     defaultValue={contact.lastname}
-                    ref={lastnameRef}
                   />
                 </div>
                 <div className="contactGrid__section--child infos">
@@ -145,7 +177,6 @@ function Contact({ contacts, companies, setIsLoaded, isAuth }) {
                     id="contactEmail"
                     name="contactEmail"
                     defaultValue={contact.email}
-                    ref={emailRef}
                   />
                 </div>
                 <div className="contactGrid__section--child infos">
@@ -157,23 +188,43 @@ function Contact({ contacts, companies, setIsLoaded, isAuth }) {
                     id="contactPhonenumber"
                     name="contactPhonenumber"
                     defaultValue={contact.phonenumber}
-                    ref={phonenumberRef}
                   />
                 </div>
-              </section>
+              </fieldset>
 
-              <section className="contactGrid__section">
-                <h3>From</h3>
-                <CompanySelector
-                  currentCompany={company}
-                  companies={companies}
-                  name={"contactCompany"}
-                  handleCompanyChange={handleCompanyChange}
-                />
-              </section>
-              <section className="decoration">
+              <fieldset className="contactGrid__section from">
+                <legend>
+                  From
+                  <button
+                    type="button"
+                    id="addCompanySelector"
+                    onClick={handleAddCompSelector}
+                    style={{ padding: "0 .5rem" }}
+                  >
+                    +
+                  </button>
+                  <button
+                    type="button"
+                    id="removeCompanySelector"
+                    onClick={handleRemoveCompSelector}
+                    style={{ padding: "0 .5rem" }}
+                  >
+                    -
+                  </button>
+                </legend>
+                {renderSelector(selectorAmount)}
+              </fieldset>
+              <fieldset className="decoration">
                 <ContactIllustration />
-              </section>
+              </fieldset>
+              <ContactControls
+                isModifying={isModifying}
+                setIsModifying={setIsModifying}
+                isDeleting={isDeleting}
+                setIsDeleting={setIsDeleting}
+                handleModif={handleModif}
+                handleDelete={handleDelete}
+              />
             </form>
           ) : (
             <div className="contactGrid">
@@ -218,6 +269,7 @@ function Contact({ contacts, companies, setIsLoaded, isAuth }) {
                             >
                               {el.name}
                             </p>
+                            <p>{el.status}</p>
                           </div>
                         );
                     })}
@@ -227,20 +279,19 @@ function Contact({ contacts, companies, setIsLoaded, isAuth }) {
               <section className="decoration">
                 <ContactIllustration />
               </section>
+              {isAuth.role == "Admin" ? (
+                <ContactControls
+                  isModifying={isModifying}
+                  setIsModifying={setIsModifying}
+                  isDeleting={isDeleting}
+                  setIsDeleting={setIsDeleting}
+                  handleModif={handleModif}
+                  handleDelete={handleDelete}
+                />
+              ) : (
+                ""
+              )}
             </div>
-          )}
-
-          {isAuth.role == "Admin" ? (
-            <ContactControls
-              isModifying={isModifying}
-              setIsModifying={setIsModifying}
-              isDeleting={isDeleting}
-              setIsDeleting={setIsDeleting}
-              handleModif={handleModif}
-              handleDelete={handleDelete}
-            />
-          ) : (
-            ""
           )}
         </div>
       )}

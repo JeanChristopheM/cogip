@@ -1,7 +1,7 @@
 /* Functions */
 import React, { useState, useEffect, useLayoutEffect, Suspense } from "react";
-import handleRequests from "./logic/handleRequests";
 import { Routes, Route, useNavigate, useLocation } from "react-router-dom";
+import handleRequests from "./logic/handleRequests";
 import { switchTheme } from "./logic/theme";
 import checkAuth from "./logic/checkAuth";
 /* Components */
@@ -70,6 +70,9 @@ function App() {
       </Suspense>
     );
   };
+  const showNewFetch = (data) => {
+    console.log(data);
+  };
   /* Loading data function */
   const loadData = async () => {
     const srcs = [
@@ -77,8 +80,15 @@ function App() {
       "https://csharpproject.somee.com/api/Invoice",
       "https://csharpproject.somee.com/api/Contact",
       "https://csharpproject.somee.com/api/InvoiceCategory",
+      "https://csharpproject.somee.com/api/Invoice?last=5",
     ];
-    const fn = [setCompanies, setInvoices, setContacts, setCategories];
+    const fn = [
+      setCompanies,
+      setInvoices,
+      setContacts,
+      setCategories,
+      showNewFetch,
+    ];
     for (let x = 0; x < fn.length; x++) {
       const { status, message, dataPackage } = await handleRequests(
         "GET",

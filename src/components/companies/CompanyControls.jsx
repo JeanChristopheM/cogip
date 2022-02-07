@@ -9,9 +9,7 @@ function CompanyControls({
   if (isModifying) {
     return (
       <div className={"companyControls"}>
-        <button type="button" onClick={handleModif}>
-          Submit
-        </button>
+        <button onClick={handleModif}>Submit</button>
         <button
           type="button"
           onClick={() => {

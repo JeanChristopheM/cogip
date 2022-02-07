@@ -32,12 +32,26 @@
     @media screen and (min-width: 750px) {
       max-width: 60%;
     }
-    h3 {
+    h3,
+    legend {
       font-size: 1.5rem;
-      text-align: center;
       grid-column: span 2;
+      text-align: center;
       text-decoration: underline;
       padding-block: 1rem;
+      position: relative;
+      margin: 0 auto;
+      font-weight: 600;
+      #addCompanySelector {
+        position: absolute;
+        bottom: 25%;
+        right: -3rem;
+      }
+      #removeCompanySelector {
+        position: absolute;
+        bottom: 25%;
+        right: -5.5rem;
+      }
     }
     .labels {
       color: var(--clr-text-low);
@@ -100,8 +114,16 @@
           flex: 1 1 100%;
         }
       }
+      &.selectors {
+        display: flex;
+        flex-wrap: wrap;
+        & > * {
+          flex: 1 1 100%;
+        }
+      }
     }
-    h3 {
+    h3,
+    legend {
       color: var(--clr-text);
       font-size: 1.5rem;
       text-decoration: underline;
@@ -109,10 +131,25 @@
       padding-top: 2rem;
       flex: 1 0 100%;
       text-align: center;
+      position: relative;
+      font-weight: 600;
+      #addCompanySelector {
+        position: absolute;
+        bottom: 33%;
+        right: -3rem;
+      }
+      #removeCompanySelector {
+        position: absolute;
+        bottom: 33%;
+        right: -5.5rem;
+      }
       @media screen and (min-width: 550px) {
         padding-left: 33%;
         text-align: unset;
       }
+    }
+    legend {
+      padding-bottom: 1rem;
     }
     .bigger {
       font-weight: 600;
@@ -158,6 +195,9 @@
         fill: var(--clr-text-low);
       }
     }
+  }
+  button {
+    margin-top: 1rem;
   }
 }
 .invoiceGrid {
@@ -284,4 +324,15 @@
   margin-top: 1.5rem;
   display: flex;
   justify-content: space-between;
+}
+
+.companyContainer {
+  display: flex;
+  .companyCard {
+    flex: 1 1 50%;
+    p:first-child {
+      font-size: 1.5rem;
+      font-weight: 600;
+    }
+  }
 }
