@@ -14,7 +14,11 @@ function ContactSelector({
           )
         );
       }}
-      defaultValue={`${currentContact.firstname} ${currentContact.lastname}`}
+      defaultValue={
+        currentContact
+          ? `${currentContact.firstname} ${currentContact.lastname}`
+          : ""
+      }
       name="contact"
     >
       <option value="">

@@ -22,8 +22,10 @@ function Invoice({ invoices, companies, contacts, setIsLoaded, isAuth }) {
     ? companies.find((el) => el.id == invoice.company)
     : null;
   const contact = invoice
-    ? contacts.find((el) => el.id == invoice.contact)
-    : null;
+    ? invoice.contact !== ""
+      ? contacts.find((el) => el.id == invoice.contact)
+      : ""
+    : "";
   let year = invoice ? invoice.received.slice(0, 4) : null;
   let month = invoice ? invoice.received.slice(5, 7) : null;
   let day = invoice ? invoice.received.slice(8, 10) : null;
@@ -44,18 +46,24 @@ function Invoice({ invoices, companies, contacts, setIsLoaded, isAuth }) {
   const handleCompanyChange = (value) => {
     setSelectedCompany(value);
   };
-  const referenceRef = useRef();
+
   const amountRef = useRef();
   const receivedRef = useRef();
   const paidRef = useRef();
   const dueRef = useRef();
   const dueDateRef = useRef();
-  const handleModif = async () => {
+  //. Submitting modification function.
+  const submit = async (e) => {
     const formData = {
-      reference: referenceRef.current.value,
-      amount: amountRef.current.value,
+      reference: e.target.reference.value,
+      amount: e.target.amount.value,
       company: selectedCompany.id.toString(),
-      contact: selectedContact.id.toString(),
+      contact:
+        e.target.contact.value === ""
+          ? 0
+          : contacts.find(
+              (el) => `${el.firstname} ${el.lastname}` == e.target.contact.value
+            ),
       received: receivedRef.current.value,
       paidStatus:
         amountRef.current.value - paidRef.current.value === 0 ? true : false,
@@ -102,6 +110,9 @@ function Invoice({ invoices, companies, contacts, setIsLoaded, isAuth }) {
       }, 250);
     }
   };
+  const handleModif = async () => {
+    return;
+  };
   const handleDelete = async () => {
     setIsFetching(true);
     const { status, message } = await handleRequests(
@@ -147,197 +158,221 @@ function Invoice({ invoices, companies, contacts, setIsLoaded, isAuth }) {
               : "Outgoing bill "}
             details
           </h2>
-          <div className="invoiceGrid">
-            {isModifying ? (
-              <>
-                <section className="invoiceGrid__section--ref">
+
+          {isModifying ? (
+            <form className="invoiceGrid" onSubmit={submit}>
+              <fieldset className="invoiceGrid__section--ref">
+                <div>
+                  <label htmlFor="reference" className="labels">
+                    Reference :{" "}
+                  </label>
+                  <input
+                    type="text"
+                    name="reference"
+                    id="reference"
+                    defaultValue={invoice.reference}
+                    required
+                  />
+                </div>
+                <div>
+                  <label htmlFor="date" className="labels">
+                    Date :{" "}
+                  </label>
+                  <input
+                    type="date"
+                    name="date"
+                    id="date"
+                    ref={receivedRef}
+                    defaultValue={`${year}-${month}-${day}`}
+                    required
+                  />
+                </div>
+                <div>
+                  <label htmlFor="dueDate" className="labels">
+                    Due date :{" "}
+                  </label>
+                  <input
+                    type="date"
+                    name="dueDate"
+                    id="dueDate"
+                    ref={dueDateRef}
+                    defaultValue={`${invoice.dueDate.slice(
+                      0,
+                      4
+                    )}-${invoice.dueDate.slice(5, 7)}-${invoice.dueDate.slice(
+                      8,
+                      10
+                    )}`}
+                    required
+                  />
+                </div>
+              </fieldset>
+              <div className="lowerBlock">
+                <fieldset className="invoiceGrid__section--relations">
+                  <legend>Company : </legend>
+                  <div className="company">
+                    <CompanySelector
+                      companies={companies}
+                      handleCompanyChange={handleCompanyChange}
+                      currentCompany={company}
+                      className="company__value"
+                    />
+                  </div>
                   <div>
-                    <label className="labels">Reference : </label>
+                    <span className="labels">Contact : </span>
+                    <ContactSelector
+                      contacts={contacts}
+                      currentContact={contact}
+                      currentCompany={company}
+                      selectedCompany={selectedCompany}
+                      handleContactChange={handleContactChange}
+                    />
+                  </div>
+                </fieldset>
+                <fieldset className="invoiceGrid__section--payment">
+                  <legend>Total : </legend>
+                  <div className="total">
+                    <input
+                      type="number"
+                      name="amount"
+                      ref={amountRef}
+                      id="amount"
+                      defaultValue={invoice.amount}
+                      className="total__value"
+                      onChange={handleAmountChange}
+                      required
+                    />
+                  </div>
+                  <div>
+                    <label htmlFor="paid" className="labels">
+                      Paid :{" "}
+                    </label>
                     <input
                       type="text"
-                      name="reference"
-                      ref={referenceRef}
-                      defaultValue={invoice.reference}
-                      required
+                      name="paid"
+                      id="paid"
+                      defaultValue={invoice.paid}
+                      ref={paidRef}
+                      onChange={handlePaidChange}
                     />
                   </div>
                   <div>
-                    <label className="labels">Date : </label>
-                    <input
-                      type="date"
-                      name="date"
-                      ref={receivedRef}
-                      defaultValue={`${year}-${month}-${day}`}
-                      required
-                    />
+                    <span className="labels">Due : </span>
+                    <span ref={dueRef}>
+                      {newDue !== null ? newDue : invoice.due}€
+                    </span>
                   </div>
                   <div>
-                    <label className="labels">Due date : </label>
-                    <input
-                      type="date"
-                      name="dueDate"
-                      ref={dueDateRef}
-                      defaultValue={`${invoice.dueDate.slice(
-                        0,
-                        4
-                      )}-${invoice.dueDate.slice(5, 7)}-${invoice.dueDate.slice(
-                        8,
-                        10
-                      )}`}
-                      required
-                    />
+                    <span className="labels">Paid status : </span>
+                    <span>{invoice.paidStatus ? "Paid" : "To be paid"}</span>
                   </div>
+                </fieldset>
+                <section className="decoration">
+                  <InvoiceIllustration />
                 </section>
-                <div className="lowerBlock">
-                  <section className="invoiceGrid__section--relations">
-                    <h3>Company : </h3>
-                    <div className="company">
-                      <CompanySelector
-                        companies={companies}
-                        handleCompanyChange={handleCompanyChange}
-                        currentCompany={company}
-                        className="company__value"
-                      />
-                    </div>
-                    <div>
-                      <span className="labels">Contact : </span>
-                      <ContactSelector
-                        contacts={contacts}
-                        currentContact={contact}
-                        currentCompany={company}
-                        selectedCompany={selectedCompany}
-                        handleContactChange={handleContactChange}
-                      />
-                    </div>
-                  </section>
-                  <section className="invoiceGrid__section--payment">
-                    <h3>Total : </h3>
-                    <div className="total">
-                      <input
-                        type="number"
-                        name="amount"
-                        ref={amountRef}
-                        defaultValue={invoice.amount}
-                        className="total__value"
-                        onChange={handleAmountChange}
-                        required
-                      />
-                    </div>
-                    <div>
-                      <label className="labels">Paid : </label>
-                      <input
-                        type="text"
-                        name="paid"
-                        defaultValue={invoice.paid}
-                        ref={paidRef}
-                        onChange={handlePaidChange}
-                      />
-                    </div>
-                    <div>
-                      <span className="labels">Due : </span>
-                      <span ref={dueRef}>
-                        {newDue !== null ? newDue : invoice.due}€
-                      </span>
-                    </div>
-                    <div>
-                      <span className="labels">Paid status : </span>
-                      <span>{invoice.paidStatus ? "Paid" : "To be paid"}</span>
-                    </div>
-                  </section>
-                  <section className="decoration">
-                    <InvoiceIllustration />
-                  </section>
+              </div>
+              <InvoiceControls
+                invoice={invoice.id}
+                isModifying={isModifying}
+                setIsModifying={setIsModifying}
+                isDeleting={isDeleting}
+                setIsDeleting={setIsDeleting}
+                originalCompany={company}
+                setSelectedCompany={setSelectedCompany}
+                originalContact={contact}
+                setSelectedContact={setSelectedContact}
+                handleModif={handleModif}
+                handleDelete={handleDelete}
+              />
+            </form>
+          ) : (
+            <div className="invoiceGrid">
+              <section className="invoiceGrid__section--ref">
+                <div>
+                  <span className="labels">Reference : </span>
+                  <span id="invoiceReference">{invoice.reference}</span>
                 </div>
-              </>
-            ) : (
-              <>
-                <section className="invoiceGrid__section--ref">
-                  <div>
-                    <span className="labels">Reference : </span>
-                    <span id="invoiceReference">{invoice.reference}</span>
+                <div>
+                  <span className="labels">Date : </span>
+                  <span id="invoiceReceived">{`${day}-${month}-${year}`}</span>
+                </div>
+                <div>
+                  <span className="labels">Due date : </span>
+                  <span>{dateFormatter(invoice.dueDate)}</span>
+                </div>
+              </section>
+              <div className="lowerBlock">
+                <section className="invoiceGrid__section--relations">
+                  <h3>Company : </h3>
+                  <div className="company">
+                    <span
+                      id="invoiceCompany"
+                      onClick={() => {
+                        navigate(`/company/${company.id}`);
+                      }}
+                      style={{ cursor: "pointer" }}
+                      className="company__value"
+                    >
+                      {company.name}
+                    </span>
                   </div>
                   <div>
-                    <span className="labels">Date : </span>
-                    <span id="invoiceReceived">{`${day}-${month}-${year}`}</span>
-                  </div>
-                  <div>
-                    <span className="labels">Due date : </span>
-                    <span>{dateFormatter(invoice.dueDate)}</span>
-                  </div>
-                </section>
-                <div className="lowerBlock">
-                  <section className="invoiceGrid__section--relations">
-                    <h3>Company : </h3>
-                    <div className="company">
+                    <span className="labels">Contact : </span>
+                    {contact ? (
                       <span
-                        id="invoiceCompany"
+                        id="invoiceContact"
                         onClick={() => {
-                          navigate(`/company/${company.id}`);
+                          navigate(`/contact/${contact.id}`);
                         }}
                         style={{ cursor: "pointer" }}
-                        className="company__value"
-                      >
-                        {company.name}
-                      </span>
-                    </div>
-                    <div>
-                      <span className="labels">Contact : </span>
-                      {contact ? (
-                        <span
-                          id="invoiceContact"
-                          onClick={() => {
-                            navigate(`/contact/${contact.id}`);
-                          }}
-                          style={{ cursor: "pointer" }}
-                        >{`${contact.firstname} ${contact.lastname}`}</span>
-                      ) : (
-                        <span>None</span>
-                      )}
-                    </div>
-                  </section>
-                  <section className="invoiceGrid__section--payment">
-                    <h3>Total : </h3>
-                    <div className="total">
-                      <span id="invoiceAmout" className="total__value">
-                        {invoice.amount} €
-                      </span>
-                    </div>
-                    <div>
-                      <span className="labels">Paid : </span>
-                      <span>{invoice.paid}€</span>
-                    </div>
-                    <div>
-                      <span className="labels">Due : </span>
-                      <span>{invoice.due}€</span>
-                    </div>
-                    <div>
-                      <span className="labels">Paid status : </span>
-                      <span>{invoice.paidStatus ? "Paid" : "To be paid"}</span>
-                    </div>
-                  </section>
-                  <section className="decoration">
-                    <InvoiceIllustration />
-                  </section>
-                </div>
-              </>
-            )}
-          </div>
-          {isAuth.role == "Admin" ? (
-            <InvoiceControls
-              invoice={invoice.id}
-              isModifying={isModifying}
-              setIsModifying={setIsModifying}
-              isDeleting={isDeleting}
-              setIsDeleting={setIsDeleting}
-              originalCompany={company}
-              setSelectedCompany={setSelectedCompany}
-              originalContact={contact}
-              setSelectedContact={setSelectedContact}
-              handleModif={handleModif}
-              handleDelete={handleDelete}
-            />
-          ) : (
-            ""
+                      >{`${contact.firstname} ${contact.lastname}`}</span>
+                    ) : (
+                      <span>None</span>
+                    )}
+                  </div>
+                </section>
+                <section className="invoiceGrid__section--payment">
+                  <h3>Total : </h3>
+                  <div className="total">
+                    <span id="invoiceAmout" className="total__value">
+                      {invoice.amount} €
+                    </span>
+                  </div>
+                  <div>
+                    <span className="labels">Paid : </span>
+                    <span>{invoice.paid}€</span>
+                  </div>
+                  <div>
+                    <span className="labels">Due : </span>
+                    <span>{invoice.due}€</span>
+                  </div>
+                  <div>
+                    <span className="labels">Paid status : </span>
+                    <span>{invoice.paidStatus ? "Paid" : "To be paid"}</span>
+                  </div>
+                </section>
+                <section className="decoration">
+                  <InvoiceIllustration />
+                </section>
+              </div>
+              {isAuth.role == "Admin" ? (
+                <InvoiceControls
+                  invoice={invoice.id}
+                  isModifying={isModifying}
+                  setIsModifying={setIsModifying}
+                  isDeleting={isDeleting}
+                  setIsDeleting={setIsDeleting}
+                  originalCompany={company}
+                  setSelectedCompany={setSelectedCompany}
+                  originalContact={contact}
+                  setSelectedContact={setSelectedContact}
+                  handleModif={handleModif}
+                  handleDelete={handleDelete}
+                />
+              ) : (
+                ""
+              )}
+            </div>
           )}
         </div>
       )}

@@ -114,7 +114,8 @@ input[type="number"] {
     border: 4px solid var(--clr-text);
   }
 }
-#canvasContainer {
+.canvasContainer {
+  position: relative;
   @media screen and (min-width: 600px) {
     width: 50%;
     margin: 0 auto;

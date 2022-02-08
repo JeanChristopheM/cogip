@@ -1,6 +1,55 @@
-.companyGrid {
+.companyGrid,
+.contactGrid,
+.invoiceGrid {
   position: relative;
   isolation: isolate;
+  .labels {
+    color: var(--clr-text-low);
+  }
+  h3,
+  legend {
+    color: var(--clr-text);
+    font-size: 1.5rem;
+    text-decoration: underline;
+    text-decoration-color: var(--clr-text-low);
+    padding-top: 2rem;
+    flex: 1 0 100%;
+    text-align: center;
+    position: relative;
+    font-weight: 600;
+    grid-column: span 2;
+  }
+  .decoration {
+    display: none;
+    width: 30%;
+    position: absolute;
+    right: 0;
+    top: 0;
+    height: 100%;
+    z-index: -1;
+    opacity: 10%;
+    svg {
+      height: 100%;
+      width: 100%;
+      object-fit: contain;
+      #plant,
+      #shirtMain,
+      #shirtSleeve,
+      .paperContent {
+        fill: var(--clr-text);
+      }
+      .paperBack {
+        fill: var(--clr-text-low);
+      }
+
+      #circle,
+      #line {
+        fill: var(--clr-text-low);
+      }
+    }
+  }
+}
+.companyGrid {
   &__section {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -34,14 +83,6 @@
     }
     h3,
     legend {
-      font-size: 1.5rem;
-      grid-column: span 2;
-      text-align: center;
-      text-decoration: underline;
-      padding-block: 1rem;
-      position: relative;
-      margin: 0 auto;
-      font-weight: 600;
       #addCompanySelector {
         position: absolute;
         bottom: 25%;
@@ -53,19 +94,8 @@
         right: -5.5rem;
       }
     }
-    .labels {
-      color: var(--clr-text-low);
-    }
   }
   .decoration {
-    display: none;
-    width: 30%;
-    position: absolute;
-    right: 0;
-    top: 0;
-    height: 100%;
-    z-index: -1;
-    opacity: 10%;
     @media (min-width: 550px) {
       display: block;
     }
@@ -73,34 +103,9 @@
       opacity: 1;
       width: 40%;
     }
-
-    svg {
-      height: 100%;
-      width: 100%;
-      object-fit: contain;
-      #plant,
-      #shirtMain,
-      #shirtSleeve,
-      .paperContent {
-        fill: var(--clr-text);
-      }
-      .paperBack {
-        fill: var(--clr-text-low);
-      }
-
-      #circle,
-      #line {
-        fill: var(--clr-text-low);
-      }
-    }
   }
 }
 .contactGrid {
-  position: relative;
-  isolation: isolate;
-  .labels {
-    color: var(--clr-text-low);
-  }
   &__section {
     display: flex;
     flex-wrap: wrap;
@@ -124,32 +129,20 @@
     }
     h3,
     legend {
-      color: var(--clr-text);
-      font-size: 1.5rem;
-      text-decoration: underline;
-      text-decoration-color: var(--clr-text-low);
-      padding-top: 2rem;
-      flex: 1 0 100%;
-      text-align: center;
-      position: relative;
-      font-weight: 600;
       #addCompanySelector {
         position: absolute;
-        bottom: 33%;
+        bottom: 0;
         right: -3rem;
       }
       #removeCompanySelector {
         position: absolute;
-        bottom: 33%;
+        bottom: 0;
         right: -5.5rem;
       }
       @media screen and (min-width: 550px) {
         padding-left: 33%;
         text-align: unset;
       }
-    }
-    legend {
-      padding-bottom: 1rem;
     }
     .bigger {
       font-weight: 600;
@@ -160,40 +153,12 @@
     }
   }
   .decoration {
-    display: none;
-    width: 30%;
-    position: absolute;
-    right: 0;
-    top: 0;
-    height: 100%;
-    z-index: -1;
-    opacity: 10%;
     @media (min-width: 550px) {
       display: block;
     }
     @media (min-width: 750px) {
       opacity: 1;
       width: 50%;
-    }
-
-    svg {
-      height: 100%;
-      width: 100%;
-      object-fit: contain;
-      #plant,
-      #shirtMain,
-      #shirtSleeve,
-      .paperContent {
-        fill: var(--clr-text);
-      }
-      .paperBack {
-        fill: var(--clr-text-low);
-      }
-
-      #circle,
-      #line {
-        fill: var(--clr-text-low);
-      }
     }
   }
   button {
@@ -202,15 +167,8 @@
 }
 .invoiceGrid {
   margin-top: 2rem;
-  position: relative;
-  h2 {
-    margin-bottom: 2rem;
-  }
   #invoiceReference {
     font-weight: 600;
-  }
-  .labels {
-    color: var(--clr-text-low);
   }
   &__section {
     padding-block: 0.5rem;
@@ -233,13 +191,6 @@
       }
     }
     &--payment {
-      h3 {
-        font-size: 1.5rem;
-        text-decoration: underline;
-        text-decoration-color: var(--clr-text-low);
-        text-align: center;
-        padding-block: 1rem;
-      }
       .total {
         padding-bottom: 1rem;
         &__value {
@@ -249,13 +200,6 @@
       }
     }
     &--relations {
-      h3 {
-        font-size: 1.5rem;
-        text-decoration: underline;
-        text-decoration-color: var(--clr-text-low);
-        text-align: center;
-        padding-block: 1rem;
-      }
       .company {
         padding-bottom: 1rem;
         &__value {
@@ -269,29 +213,9 @@
     max-width: 100%;
   }
   .decoration {
-    display: none;
-    width: 40%;
-    position: absolute;
-    right: 0;
-    top: 0;
-    height: 100%;
     @media (min-width: 750px) {
+      opacity: 1;
       display: block;
-    }
-    svg {
-      height: 100%;
-      width: 100%;
-      object-fit: contain;
-      #plant,
-      #shirtMain,
-      #shirtSleeve {
-        fill: var(--clr-text);
-      }
-
-      #circle,
-      #line {
-        fill: var(--clr-text-low);
-      }
     }
   }
   .lowerBlock {
@@ -328,11 +252,16 @@
 
 .companyContainer {
   display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
   .companyCard {
-    flex: 1 1 50%;
+    flex: 1 1 calc(50% - 2rem);
     p:first-child {
       font-size: 1.5rem;
       font-weight: 600;
+    }
+    p:last-child {
+      color: var(--clr-text-low);
     }
   }
 }

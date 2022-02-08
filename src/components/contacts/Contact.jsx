@@ -116,7 +116,7 @@ function Contact({ contacts, companies, setIsLoaded, isAuth }) {
     let selectorArray = [];
     for (let x = 0; x < amount; x++) {
       selectorArray.push(
-        <div className="contactGrid__section--child selectors">
+        <div className="contactGrid__section--child selectors" key={x}>
           <label>Company Selector : </label>
           <CompanySelector
             companies={companies}
@@ -126,7 +126,6 @@ function Contact({ contacts, companies, setIsLoaded, isAuth }) {
             }
             handleCompanyChange={handleCompanyChange}
             name={"company"}
-            key={x}
           />
         </div>
       );

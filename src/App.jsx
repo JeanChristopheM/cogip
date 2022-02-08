@@ -1,4 +1,4 @@
-/* Functions */
+//. Functions.
 import React, { useState, useEffect, useLayoutEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import {
@@ -9,35 +9,37 @@ import {
 } from "./logic/getData";
 import { switchTheme } from "./logic/theme";
 import checkAuth from "./logic/checkAuth";
-/* Components */
+//* Components.
 import Header from "./components/Header.jsx";
 import Footer from "./components/Footer.jsx";
 import ScrollToTop from "./components/reusables/ScrollToTop.jsx";
 import MobileMenu from "./components/reusables/MobileMenu.jsx";
 import Router from "./Router.jsx";
 import SuspenseProvider from "./components/reusables/SuspenseProvider.jsx";
-/* Page Contents */
+//* Page Contents.
 const Login = React.lazy(() => import("./components/Login.jsx"));
 
-/* Toast Style */
+//* Toast Style.
 import "react-toastify/dist/ReactToastify.css";
 
 function App() {
+  //. Declarations.
   const navigate = useNavigate();
-  // Effects variables
+  //* Effects variables.
   const [checkedAuth, setCheckedAuth] = useState(false);
   const [isAuth, setAuth] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
   const [isMenuActive, setIsMenuActive] = useState("inactive");
-  // DATA STATE HOLDERS
+  //* DATA STATE HOLDERS.
   const [companies, setCompanies] = useState([]);
   const [invoices, setInvoices] = useState([]);
   const [contacts, setContacts] = useState([]);
   const [categories, setCategories] = useState([]);
-  // LOCATION
+  //* LOCATION.
   const location = useLocation();
 
-  /* Loading data function */
+  //. Functions and effects.
+  //* Loading data function.
   const loadData = async () => {
     const getters = [getInvoices, getCompanies, getContacts, getCategories];
     const setters = [setInvoices, setCompanies, setContacts, setCategories];
@@ -55,26 +57,26 @@ function App() {
     }
   };
 
-  /* Initial Effects */
+  //* Initial Effects.
   useLayoutEffect(() => {
     checkAuth(setAuth, switchTheme, setCheckedAuth);
   }, []);
 
-  /* Observer that fetches data if we're authenticated and we have updated something */
+  //* Observer that fetches data if we're authenticated and we have updated something.
   useLayoutEffect(() => {
     if (isAuth && !isLoaded) {
       loadData();
     }
   }, [isAuth, isLoaded]);
 
-  /* Check if all data is loaded */
+  //* Check if all data is loaded.
   useEffect(() => {
     if (companies.length > 0 && invoices.length > 0 && contacts.length > 0) {
       setIsLoaded(true);
     }
   }, [companies, invoices, contacts]);
 
-  /* Logging out function */
+  //* Logging out function.
   const logout = () => {
     localStorage.removeItem("cogipAuth");
     sessionStorage.removeItem("cogipAuth");
@@ -82,6 +84,7 @@ function App() {
     setIsMenuActive("inactive");
     navigate("/");
   };
+  //. JSX.
   return (
     <>
       <Header

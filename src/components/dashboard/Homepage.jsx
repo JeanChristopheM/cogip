@@ -47,7 +47,7 @@ function Homepage({ companies, invoices, contacts, setPage, setInvoiceId }) {
 
       <section className="chart card">
         <h2>Payement Status</h2>
-        <div style={{ position: "relative" }} id="canvasContainer">
+        <div className="canvasContainer">
           {invoices.length > 0 ? (
             <Chart invoices={invoices} />
           ) : (

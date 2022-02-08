@@ -26,7 +26,7 @@ function Invoices({ invoices, contacts, companies }) {
       const contact = contacts.find((el) => el.id == entry.contact)
         ? contacts.find((el) => el.id == entry.contact)
         : null;
-      let arrow = company.status === "Client" ? "down" : "up";
+      let arrow = company.status === "Customer" ? "down" : "up";
       let obj = {
         icon: <i className={`fas fa-arrow-${arrow}`}></i>,
         col1: entry.reference,
