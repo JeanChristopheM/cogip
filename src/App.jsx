@@ -1,7 +1,12 @@
 /* Functions */
 import React, { useState, useEffect, useLayoutEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import handleRequests from "./logic/handleRequests";
+import {
+  getInvoices,
+  getContacts,
+  getCompanies,
+  getCategories,
+} from "./logic/getData";
 import { switchTheme } from "./logic/theme";
 import checkAuth from "./logic/checkAuth";
 /* Components */
@@ -19,59 +24,43 @@ import "react-toastify/dist/ReactToastify.css";
 
 function App() {
   const navigate = useNavigate();
+  // Effects variables
   const [checkedAuth, setCheckedAuth] = useState(false);
   const [isAuth, setAuth] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
   const [isMenuActive, setIsMenuActive] = useState("inactive");
+  // DATA STATE HOLDERS
   const [companies, setCompanies] = useState([]);
   const [invoices, setInvoices] = useState([]);
   const [contacts, setContacts] = useState([]);
   const [categories, setCategories] = useState([]);
-
+  // LOCATION
   const location = useLocation();
 
-  const showNewFetch = (data) => {
-    console.log(data);
-  };
   /* Loading data function */
   const loadData = async () => {
-    const srcs = [
-      "https://csharpproject.somee.com/api/Company",
-      "https://csharpproject.somee.com/api/Invoice",
-      "https://csharpproject.somee.com/api/Contact",
-      "https://csharpproject.somee.com/api/InvoiceCategory",
-      "https://csharpproject.somee.com/api/Invoice?last=5",
-    ];
-    const fn = [
-      setCompanies,
-      setInvoices,
-      setContacts,
-      setCategories,
-      showNewFetch,
-    ];
-    for (let x = 0; x < fn.length; x++) {
+    const getters = [getInvoices, getCompanies, getContacts, getCategories];
+    const setters = [setInvoices, setCompanies, setContacts, setCategories];
+    for (let x = 0; x < getters.length; x++) {
       try {
-        const { status, message, dataPackage } = await handleRequests(
-          "GET",
-          srcs[x],
-          isAuth.jwt
-        );
+        const { status, message, dataPackage } = await getters[x](isAuth.jwt);
         if (status === 200) {
-          fn[x](dataPackage);
+          setters[x](dataPackage);
         } else {
-          alert("There was an error getting the data");
+          console.log(message);
         }
       } catch (e) {
-        console.log(e);
+        console.log(error);
       }
     }
   };
+
   /* Initial Effects */
   useLayoutEffect(() => {
-    /* If cookie, set the authentification to cache and redirect to homepage */
     checkAuth(setAuth, switchTheme, setCheckedAuth);
   }, []);
-  /* If we logged in -> Load the data */
+
+  /* Observer that fetches data if we're authenticated and we have updated something */
   useLayoutEffect(() => {
     if (isAuth && !isLoaded) {
       loadData();
@@ -84,6 +73,8 @@ function App() {
       setIsLoaded(true);
     }
   }, [companies, invoices, contacts]);
+
+  /* Logging out function */
   const logout = () => {
     localStorage.removeItem("cogipAuth");
     sessionStorage.removeItem("cogipAuth");
