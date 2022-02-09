@@ -4,13 +4,6 @@ import YearChart from "../reusables/YearChart.jsx";
 const Reports = ({ invoices, companies }) => {
   const [chartType, setChartType] = useState("year");
 
-  const allTransactionsEqual = invoices.reduce((acc, currentValue) => {
-    const companyStatus = companies.find(
-      (el) => el.id === currentValue.company
-    ).status;
-    if (companyStatus === "Customer") return acc + currentValue.amount;
-    else return acc - currentValue.amount;
-  }, 0);
   const findBalance = (invoicesArray) => {
     const balance = invoicesArray.reduce((acc, current) => {
       const companyStatus = companies.find(
@@ -30,11 +23,8 @@ const Reports = ({ invoices, companies }) => {
     }, {});
     return answer;
   };
-  const switchChartToYear = () => {
-    setChartType("year");
-  };
-  const switchChartToMonth = () => {
-    setChartType("month");
+  const switchChart = (chartType) => {
+    setChartType(chartType);
   };
   //. JSX.
   return (
@@ -64,8 +54,8 @@ const Reports = ({ invoices, companies }) => {
         <section>
           <br />
           <h3>Year chart</h3>
-          <button onClick={switchChartToYear}>Year</button>
-          <button onClick={switchChartToMonth}>Month</button>
+          <button onClick={() => switchChart("year")}>Year</button>
+          <button onClick={() => switchChart("month")}>Month</button>
           <div className="canvasContainer">
             <YearChart
               invoices={invoices}

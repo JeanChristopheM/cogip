@@ -12,12 +12,13 @@
     font-size: 1.5rem;
     text-decoration: underline;
     text-decoration-color: var(--clr-text-low);
-    padding-top: 2rem;
+    padding-block: 2rem;
     flex: 1 0 100%;
     text-align: center;
     position: relative;
     font-weight: 600;
     grid-column: span 2;
+    margin: 0 auto;
   }
   .decoration {
     display: none;
@@ -85,12 +86,12 @@
     legend {
       #addCompanySelector {
         position: absolute;
-        bottom: 25%;
+        bottom: 33%;
         right: -3rem;
       }
       #removeCompanySelector {
         position: absolute;
-        bottom: 25%;
+        bottom: 33%;
         right: -5.5rem;
       }
     }
@@ -131,17 +132,13 @@
     legend {
       #addCompanySelector {
         position: absolute;
-        bottom: 0;
+        bottom: 33%;
         right: -3rem;
       }
       #removeCompanySelector {
         position: absolute;
-        bottom: 0;
+        bottom: 33%;
         right: -5.5rem;
-      }
-      @media screen and (min-width: 550px) {
-        padding-left: 33%;
-        text-align: unset;
       }
     }
     .bigger {
