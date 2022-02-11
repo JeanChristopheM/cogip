@@ -142,7 +142,7 @@ function Contact({ contacts, companies, setIsLoaded, isAuth }) {
         <div className="card">
           <h2>Details :</h2>
           {isModifying ? (
-            <form className="contactGrid" onSubmit={submit}>
+            <form className="contactGrid" onSubmit={submit} method="post">
               <fieldset className="contactGrid__section">
                 <legend>Contact</legend>
                 <div className="contactGrid__section--child infos">

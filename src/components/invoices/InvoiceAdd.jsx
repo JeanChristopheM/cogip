@@ -83,7 +83,7 @@ function InvoiceAdd({ contacts, companies, categories, setIsLoaded, isAuth }) {
     <main>
       <div className="invoiceAdd card">
         <h2>Fill up the form</h2>
-        <form className="invoiceForm" onSubmit={handleSubmit}>
+        <form className="invoiceForm" onSubmit={handleSubmit} method="post">
           <div className="formContent">
             <fieldset>
               <legend>Invoice details</legend>

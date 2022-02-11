@@ -98,13 +98,18 @@
   display: flex;
   flex-wrap: wrap;
   gap: 1rem;
+  position: relative;
   & > * {
     flex: 1 0 100%;
     @media screen and (min-width: 625px) {
-      flex: 0 1 calc(50% - 0.5rem);
+      &:not(.fetcherHolder) {
+        flex: 0 1 calc(50% - 0.5rem);
+      }
     }
     @media screen and (min-width: 900px) {
-      flex: 0 1 calc(33% - 0.5rem);
+      &:not(.fetcherHolder) {
+        flex: 0 1 calc(33% - 0.5rem);
+      }
     }
   }
   .userCard {
@@ -112,19 +117,21 @@
     grid-template-areas:
       "picture name options"
       "picture username options"
-      "picture email options"
-      "picture userType options";
+      "picture email empty"
+      "picture userType empty";
     grid-template-columns: 1fr 2fr min-content;
-
     border: 1px solid var(--clr-text);
     border-radius: 0.5rem;
     padding: 0.5rem;
+    transition: transform 0.2s ease-in-out;
+    position: relative;
+    transform: rotate3d(0, 1, 0, 0deg);
     .imageContainer {
       grid-area: picture;
       padding-right: 1rem;
       .img {
         opacity: 0.8;
-        height: 100%;
+        width: min(100%, 150px);
         aspect-ratio: 1;
         border-radius: 50%;
         position: relative;
@@ -158,44 +165,61 @@
       grid-area: options;
       padding: 0.3rem;
       font-size: 1.5rem;
+      position: relative;
+      cursor: pointer;
     }
-    &.placeholder {
-      font-size: 2px;
-      padding: 0;
-      & > span:not(.options, .imageContainer) {
-        background: grey;
-        color: transparent;
-        animation: 0.5s infinite alternate shine;
+    & > *:not(.userCardBack) {
+      opacity: 1;
+      pointer-events: all;
+      transition: opacity 0s 0.1s;
+    }
+    &.active {
+      transform: rotate3d(0, 1, 0, 180deg);
+      & > *:not(.userCardBack) {
+        opacity: 0;
+        pointer-events: none;
       }
-      .imageContainer {
-        padding: 0.5rem;
+      .userCardBack {
+        opacity: 1;
+        pointer-events: all;
       }
-      .img {
-        display: block;
-        background: gray;
-        opacity: 0.8;
-        height: 100%;
-        aspect-ratio: 1;
-        border-radius: 50%;
-        position: relative;
-        animation: 0.5s infinite alternate shine;
+    }
+    //. Back of the card .
+    .userCardBack {
+      //* Positioning .
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 0.5rem;
+      pointer-events: none;
+      transform: rotate3d(0, 1, 0, 180deg);
+      opacity: 0;
+      transition: opacity 0s 0.1s;
+      //* Layout .
+      display: grid;
+      grid-template-columns: 1fr max-content;
+      grid-template-rows: 1fr 1fr;
+      button {
+        max-width: max-content;
+        text-align: center;
+        justify-self: center;
+        font-size: 1rem;
+        padding-block: 0;
+        max-height: 2rem;
       }
-      .name {
-        width: 50%;
-        height: 90%;
+      #deleteBtn {
+        grid-row-start: 2;
       }
-      .username {
-        width: 35%;
-        height: 90%;
-      }
-      .email {
-        width: 60%;
-        height: 90%;
-      }
-      .userType {
-        width: 30%;
-        height: 90%;
+      & > *:last-child {
+        grid-row-start: 1;
+        grid-row: span 1;
       }
     }
   }
+}
+.fetcherHolder {
+  display: flex;
+  justify-content: center;
 }

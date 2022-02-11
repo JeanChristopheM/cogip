@@ -160,7 +160,7 @@ function Invoice({ invoices, companies, contacts, setIsLoaded, isAuth }) {
           </h2>
 
           {isModifying ? (
-            <form className="invoiceGrid" onSubmit={submit}>
+            <form className="invoiceGrid" onSubmit={submit} method="post">
               <fieldset className="invoiceGrid__section--ref">
                 <div>
                   <label htmlFor="reference" className="labels">

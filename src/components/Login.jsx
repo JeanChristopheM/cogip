@@ -18,9 +18,12 @@ function Login({ setAuth, isAuth, location }) {
   useEffect(() => {
     setIsShowing("appear");
   }, []);
+
+  //. Login Button Handler.
   const onAuthClick = async (e) => {
     e.preventDefault();
     setIsFetching(true);
+    //* Safe guard if a field is empty
     const exitIfEmpty = (input) => {
       if (!input.value) {
         setIsFetching(false);
@@ -36,7 +39,7 @@ function Login({ setAuth, isAuth, location }) {
     const username = usernameInput.current.value;
     const pwd = pwdInput.current.value;
     const data = { userName: username, password: pwd };
-
+    //* Making the request .
     const { status, message, dataPackage } = await handleRequests(
       "POST",
       "https://csharpproject.somee.com/api/Auth/login",
@@ -44,6 +47,7 @@ function Login({ setAuth, isAuth, location }) {
       data
     );
     setIsFetching(false);
+    //* Handling the response .
     if (status !== 200) {
       setTimeout(() => {
         toast.error(message, {
@@ -62,10 +66,12 @@ function Login({ setAuth, isAuth, location }) {
       }, 1000);
     }
   };
+
+  //. JSX .
   return (
     <main className={`login ${isShowing}`}>
       <Logo handleClick={null} handleStyle={{ height: "10rem" }} />
-      <form className="loginForm card">
+      <form className="loginForm card" method="post">
         <h2>Login</h2>
         <input
           ref={usernameInput}

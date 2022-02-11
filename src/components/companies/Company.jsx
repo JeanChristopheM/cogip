@@ -24,7 +24,8 @@ function Company({ companies, contacts, setIsLoaded, isAuth }) {
   useEffect(() => {
     if (!company) navigate("/companies");
   }, [companies]);
-  // ! added a contact in a company and it removed the previous one
+  //! added a contact in a company and it removed the previous one
+  //! tried updating an invoice and got error 400 (bad request)
   const renderSelector = (amount) => {
     let selectorArray = [];
     for (let x = 0; x < amount; x++) {
@@ -173,7 +174,7 @@ function Company({ companies, contacts, setIsLoaded, isAuth }) {
           <h2>Details :</h2>
           {isModifying ? (
             <>
-              <form className="companyGrid" onSubmit={submit}>
+              <form className="companyGrid" onSubmit={submit} method="post">
                 <section className="companyGrid__section">
                   <div className="companyGrid__section--child name">
                     <span className="labels">Name : </span>

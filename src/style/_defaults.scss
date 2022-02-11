@@ -64,7 +64,8 @@ select {
 }
 input[type="text"]:not(.loginInput),
 input[type="date"],
-input[type="number"] {
+input[type="number"],
+input[type="password"]:not(.loginInput) {
   border: 1px dashed var(--clr-text-low);
   border-radius: 5px;
   padding: 0.5rem;

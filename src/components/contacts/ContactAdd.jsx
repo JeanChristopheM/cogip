@@ -102,7 +102,7 @@ function ContactAdd({ companies, setIsLoaded, isAuth }) {
     <main>
       <div className="contactAdd card">
         <h2>Fill up the form</h2>
-        <form className="contactForm" onSubmit={handleSubmit}>
+        <form className="contactForm" onSubmit={handleSubmit} method="post">
           <div className="formContent">
             <fieldset>
               <legend>Contact</legend>

@@ -66,7 +66,7 @@ function CompanyAdd({ setIsLoaded, isAuth }) {
     <main>
       <div className="companyAdd card">
         <h2>Fill up the form</h2>
-        <form className="companyForm" onSubmit={handleSubmit}>
+        <form className="companyForm" onSubmit={handleSubmit} method="post">
           <div className="formContent">
             <fieldset>
               <legend>Company details</legend>
