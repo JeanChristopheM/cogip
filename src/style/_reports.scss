@@ -1,0 +1,11 @@
+.reports {
+  @media screen and (min-width: 900px) {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-auto-rows: max-content;
+    gap: 2rem;
+  }
+  .canvasContainer {
+    position: relative;
+  }
+}

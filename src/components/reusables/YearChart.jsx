@@ -21,12 +21,11 @@ ChartJS.register(
   Legend
 );
 
-const YearChart = ({ invoices, findBalance, chartType }) => {
+const YearChart = ({ invoices, findBalance, chartType, year }) => {
   const [actualData, setActualData] = useState(null);
-  const [period, setPeriod] = useState(null);
   useEffect(() => {
     const invoicesCurrentYear = invoices.filter(
-      (el) => el.received.slice(0, 4) == new Date().getFullYear()
+      (el) => el.received.slice(0, 4) == year
     );
     const sortedPerMonth = invoicesCurrentYear.reduce((acc, current) => {
       if (!acc[current.received.slice(5, 7)])
@@ -57,33 +56,17 @@ const YearChart = ({ invoices, findBalance, chartType }) => {
         if (!sortedPerMonth[key]) return sortedPerMonth[key];
         else return findBalance(sortedPerMonth[key]);
       });
-    if (chartType === "year") {
-      for (let i = 0; i < summedUp.length; i++) {
-        let storage = 0;
+    for (let i = 0; i < summedUp.length; i++) {
+      let storage = 0;
 
-        for (let j = i; j >= 0; j--) {
-          storage += summedUp[j];
-        }
-        tempData.push(storage);
+      for (let j = i; j >= 0; j--) {
+        storage += summedUp[j];
       }
-      setPeriod(new Date().getFullYear());
+      tempData.push(storage);
     }
-    if (chartType === "month") {
-      console.log(
-        sortedPerMonth[
-          (new Date().getMonth() + 1).toLocaleString("en-US", {
-            minimumIntegerDigits: 2,
-            useGrouping: false,
-          })
-        ]
-      );
-      for (let y = 0; y < 12; y++) {
-        tempData.push(y);
-      }
-      setPeriod(new Date().toLocaleString("default", { month: "long" }));
-    }
+
     setActualData(tempData);
-  }, [chartType]);
+  }, [chartType, year]);
   let tempData = [];
   const data = {
     labels: [
@@ -101,7 +84,7 @@ const YearChart = ({ invoices, findBalance, chartType }) => {
     ],
     datasets: [
       {
-        label: "Revenue flow for " + period,
+        label: "Revenue flow for " + year,
         data: actualData,
         fill: false,
         borderColor: "rgb(75, 192, 192)",
@@ -112,6 +95,10 @@ const YearChart = ({ invoices, findBalance, chartType }) => {
   const options = {
     responsive: true,
     maintainAspectRatio: true,
+    interaction: {
+      intersect: false,
+      mode: "index",
+    },
   };
   //. JSX.
   return <Line options={options} data={data} />;

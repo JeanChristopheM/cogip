@@ -24,7 +24,7 @@ function Company({ companies, contacts, setIsLoaded, isAuth }) {
   useEffect(() => {
     if (!company) navigate("/companies");
   }, [companies]);
-
+  // ! added a contact in a company and it removed the previous one
   const renderSelector = (amount) => {
     let selectorArray = [];
     for (let x = 0; x < amount; x++) {

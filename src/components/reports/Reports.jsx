@@ -1,14 +1,14 @@
 import { useState } from "react";
 import YearChart from "../reusables/YearChart.jsx";
+import { mockData } from "../../mock_data.js";
 
 const Reports = ({ invoices, companies }) => {
   const [chartType, setChartType] = useState("year");
-
+  const [year, setYear] = useState(new Date().getFullYear());
   const findBalance = (invoicesArray) => {
     const balance = invoicesArray.reduce((acc, current) => {
-      const companyStatus = companies.find(
-        (el) => el.id === current.company
-      ).status;
+      const companyStatus =
+        companies.find((el) => el.id === current.company)?.status ?? "Customer";
       if (companyStatus === "Customer") return acc + current.amount;
       else return acc - current.amount;
     }, 0);
@@ -28,12 +28,38 @@ const Reports = ({ invoices, companies }) => {
   };
   //. JSX.
   return (
-    <main>
+    <main className="reports">
       <div className="card">
-        <h2>Financial report</h2>
-        <br />
+        <h2>
+          Revenue flow for{" "}
+          <select
+            name="year"
+            id="year"
+            onChange={(e) => setYear(e.target.value)}
+            defaultValue={year}
+          >
+            {Object.keys(sortInvoicesPerYear(mockData)).map((year) => (
+              <option value={year} key={year}>
+                {year}
+              </option>
+            ))}
+          </select>{" "}
+        </h2>
         <section>
-          <br />
+          <div className="canvasContainer">
+            <YearChart
+              invoices={mockData}
+              companies={companies}
+              findBalance={findBalance}
+              chartType={chartType}
+              year={year}
+            />
+          </div>
+        </section>
+      </div>
+      <div className="card">
+        <h2>Quick data</h2>
+        <section>
           <h3>Balance :</h3>
           <p>Current balance : {findBalance(invoices)}€</p>
           {Object.keys(sortInvoicesPerYear(invoices))
@@ -51,20 +77,10 @@ const Reports = ({ invoices, companies }) => {
           <h3>Invoices that need to be paid : </h3>
           {invoices.filter((el) => !el.paid).length}
         </section>
-        <section>
-          <br />
-          <h3>Year chart</h3>
-          <button onClick={() => switchChart("year")}>Year</button>
-          <button onClick={() => switchChart("month")}>Month</button>
-          <div className="canvasContainer">
-            <YearChart
-              invoices={invoices}
-              companies={companies}
-              findBalance={findBalance}
-              chartType={chartType}
-            />
-          </div>
-        </section>
+      </div>
+      <div className="card">
+        <h2>Other card</h2>
+        with some data
       </div>
     </main>
   );
