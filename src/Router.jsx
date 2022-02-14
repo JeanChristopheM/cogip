@@ -22,6 +22,7 @@ const Invoice = React.lazy(() => import("./components/invoices/Invoice.jsx"));
 
 /* Forms for adding data */
 const UserAdd = React.lazy(() => import("./components/settings/UserAdd.jsx"));
+const UserEdit = React.lazy(() => import("./components/settings/UserEdit.jsx"));
 
 const ContactAdd = React.lazy(() =>
   import("./components/contacts/ContactAdd.jsx")
@@ -185,6 +186,10 @@ const Router = ({
       <Route
         path="/userAdd"
         element={<SuspenseProvider element={<UserAdd isAuth={isAuth} />} />}
+      />
+      <Route
+        path="/userEdit/:userId"
+        element={<SuspenseProvider element={<UserEdit isAuth={isAuth} />} />}
       />
       <Route path="*" element={<SuspenseProvider element={<FourOfour />} />} />
     </Routes>

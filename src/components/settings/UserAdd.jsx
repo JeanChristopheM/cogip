@@ -15,114 +15,115 @@ const UserAdd = ({ isAuth }) => {
       firstname: e.target.firstname.value,
       lastname: e.target.lastname.value,
       email: e.target.email.value,
-      phonenumber: e.target.phonenumber.value,
       userName: e.target.username.value,
       password: e.target.password.value,
       userType: e.target.userStatus.value,
     };
-    console.log(formData);
-    const { status, message, dataPackage } = await handleRequests(
-      "POST",
-      "https://csharpproject.somee.com/api/Auth/register",
-      isAuth.jwt,
-      formData
-    );
-    if (status === 200) toast.success(message);
-    else toast.error(message);
+    try {
+      const { status, message, dataPackage } = await handleRequests(
+        "POST",
+        "https://csharpproject.somee.com/api/Auth/register",
+        isAuth.jwt,
+        formData
+      );
+      if (status === 200) toast.success(message);
+      else toast.error(message);
+    } catch (e) {
+      console.log(e);
+    }
     setIsFetching(false);
   };
   return (
     <main>
-      <section className="card">
+      <div style={{ position: "relative" }} className="card">
         <h2>{isFetching ? "Sending the form" : "Please fill the form up"}</h2>
         {isFetching ? (
           <div className="fetcherHolder">
             <div className="lds-dual-ring"></div>
           </div>
         ) : (
-          <form className="userForm" onSubmit={handleSubmit} method="post">
-            <div className="formContent">
-              <div>
-                <label htmlFor="firstname">Firstname : </label>
-                <input
-                  type="text"
-                  name="firstname"
-                  id="firstname"
-                  placeholder="Firstname"
-                  required
-                />
+          <>
+            <form className="userForm" onSubmit={handleSubmit} method="post">
+              <div className="formContent">
+                <fieldset>
+                  <legend>User informations</legend>
+                  <div>
+                    <label htmlFor="firstname">Firstname : </label>
+                    <input
+                      type="text"
+                      name="firstname"
+                      id="firstname"
+                      placeholder="Firstname"
+                      autoFocus
+                      required
+                    />
+                  </div>
+                  <div>
+                    <span htmlFor="lastname">Lastname : </span>
+                    <input
+                      type="text"
+                      name="lastname"
+                      id="lastname"
+                      placeholder="Lastname"
+                      required
+                    />
+                  </div>
+                  <div>
+                    <span htmlFor="email">Email : </span>
+                    <input
+                      type="text"
+                      name="email"
+                      id="email"
+                      placeholder="Email"
+                      required
+                    />
+                  </div>
+                </fieldset>
+                <fieldset>
+                  <legend>User credentials</legend>
+                  <div>
+                    <span htmlFor="username">Username : </span>
+                    <input
+                      type="text"
+                      name="username"
+                      id="username"
+                      placeholder="Username"
+                      required
+                    />
+                  </div>
+                  <div>
+                    <span htmlFor="Password">Password : </span>
+                    <input
+                      type="password"
+                      name="password"
+                      id="password"
+                      placeholder="Password"
+                      required
+                    />
+                  </div>
+                  <div>
+                    <span>Status : </span>
+                    <select name="userStatus" id="userStatus" required>
+                      <option value="">-Select a user status-</option>
+                      <option value="Admin">Admin</option>
+                      <option value="User">User</option>
+                    </select>
+                  </div>
+                </fieldset>
               </div>
-              <div>
-                <span htmlFor="lastname">Lastname : </span>
-                <input
-                  type="text"
-                  name="lastname"
-                  id="lastname"
-                  placeholder="Lastname"
-                  required
-                />
+              <div className="controls">
+                <button>Submit</button>
+                <button type="button" onClick={() => navigate("/settings")}>
+                  Cancel
+                </button>
               </div>
-              <div>
-                <span htmlFor="email">Email : </span>
-                <input
-                  type="text"
-                  name="email"
-                  id="email"
-                  placeholder="Email"
-                  required
-                />
-              </div>
-              <div>
-                <span htmlFor="phonenumber">Phonenumber : </span>
-                <input
-                  type="text"
-                  name="phonenumber"
-                  id="phonenumber"
-                  placeholder="Phonenumber"
-                  required
-                />
-              </div>
-              <div>
-                <span htmlFor="username">Username : </span>
-                <input
-                  type="text"
-                  name="username"
-                  id="username"
-                  placeholder="Username"
-                  required
-                />
-              </div>
-              <div>
-                <span htmlFor="Password">Password : </span>
-                <input
-                  type="password"
-                  name="password"
-                  id="password"
-                  placeholder="Password"
-                  required
-                />
-              </div>
-              <div>
-                <span>Status : </span>
-                <select name="userStatus" id="userStatus" required>
-                  <option value="">-Select a user status-</option>
-                  <option value="Admin">Admin</option>
-                  <option value="User">User</option>
-                </select>
-              </div>
-            </div>
-            <div className="controls">
-              <button>Submit</button>
-              <button type="button" onClick={() => navigate("/settings")}>
-                Cancel
-              </button>
-            </div>
-          </form>
+            </form>
+            <section className="formIllu">
+              <ContactIllustration />
+            </section>
+          </>
         )}
-      </section>
-      <section className="formIllu">
-        <ContactIllustration />
-      </section>
+      </div>
       <ToastContainer />
     </main>
   );

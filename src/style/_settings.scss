@@ -209,12 +209,19 @@
         padding-block: 0;
         max-height: 2rem;
       }
-      #deleteBtn {
+      #deleteBtn,
+      #confirmDelete,
+      #cancelDelete {
         grid-row-start: 2;
       }
       & > *:last-child {
         grid-row-start: 1;
         grid-row: span 1;
+      }
+      .confirmationDelete {
+        grid-row-start: 2;
+        display: flex;
+        justify-content: space-around;
       }
     }
   }

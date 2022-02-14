@@ -2,10 +2,13 @@ import handleRequests from "../../logic/handleRequests";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
+import { ToastContainer, toast } from "react-toastify";
+
 //. COMPONENT .
 const UsersSettings = ({ isAuth }) => {
   const navigate = useNavigate();
   const [users, setUsers] = useState([]);
+  const [isDeleting, setIsDeleting] = useState(false);
   //. INIT effect .
   useEffect(() => {
     getUsers();
@@ -31,10 +34,25 @@ const UsersSettings = ({ isAuth }) => {
   };
   //* Handle click on edit & delete btns
   const handleUserEdit = (e) => {
-    console.log(`Editing user ID : ${e.target.parentNode.parentNode.id}`);
+    const userId = e.target.parentNode.parentNode.id;
+    navigate(`/userEdit/${userId}`);
   };
-  const handleUserDelete = (e) => {
-    console.log(`Deleting user ID : ${e.target.parentNode.parentNode.id}`);
+  const handleUserDelete = async (e) => {
+    const userId = e.target.parentNode.parentNode.parentNode.id;
+    console.log(`User ${userId}`);
+    try {
+      const { status, message, dataPackage } = await handleRequests(
+        "DELETE",
+        `https://csharpproject.somee.com/api/Auth/user/${userId}`,
+        isAuth.jwt
+      );
+      if (status === 200) toast.success(message);
+      else toast.error(message);
+    } catch (e) {
+      console.log(e);
+    }
+    setIsDeleting(false);
+    getUsers();
   };
   //* Handle click on add user .
   const handleAdd = () => {
@@ -94,13 +112,33 @@ const UsersSettings = ({ isAuth }) => {
                     <button type="button" id="editBtn" onClick={handleUserEdit}>
                       Edit user
                     </button>
-                    <button
-                      type="button"
-                      id="deleteBtn"
-                      onClick={handleUserDelete}
-                    >
-                      Delete user
-                    </button>
+                    {isDeleting ? (
+                      <div className="confirmationDelete">
+                        <button
+                          type="button"
+                          id="confirmDelete"
+                          onClick={handleUserDelete}
+                        >
+                          Confirm
+                        </button>
+                        <button
+                          type="button"
+                          id="cancelDelete"
+                          onClick={() => setIsDeleting(false)}
+                        >
+                          Cancel
+                        </button>
+                      </div>
+                    ) : (
+                      <button
+                        type="button"
+                        id="deleteBtn"
+                        onClick={() => setIsDeleting(true)}
+                      >
+                        Delete user
+                      </button>
+                    )}
+
                     <i
                       className="fas fa-ellipsis-v options"
                       onClick={handleOptionsCancel}
@@ -112,6 +150,7 @@ const UsersSettings = ({ isAuth }) => {
           )}
         </div>
       </div>
+      <ToastContainer />
     </div>
   );
 };
