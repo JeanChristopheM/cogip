@@ -68,6 +68,8 @@ const YearChart = ({ invoices, findBalance, chartType, year }) => {
     setActualData(tempData);
   }, [chartType, year]);
   let tempData = [];
+  const primaryColor =
+    document.documentElement.style.getPropertyValue("--clr-text") || "#274c77";
   const data = {
     labels: [
       "Jan",
@@ -87,7 +89,7 @@ const YearChart = ({ invoices, findBalance, chartType, year }) => {
         label: "Revenue flow for " + year,
         data: actualData,
         fill: false,
-        borderColor: "rgb(75, 192, 192)",
+        borderColor: primaryColor,
         tension: 0.1,
       },
     ],
@@ -98,6 +100,25 @@ const YearChart = ({ invoices, findBalance, chartType, year }) => {
     interaction: {
       intersect: false,
       mode: "index",
+    },
+    plugins: {
+      legend: {
+        labels: {
+          color: primaryColor,
+        },
+      },
+    },
+    scales: {
+      x: {
+        ticks: {
+          color: primaryColor,
+        },
+      },
+      y: {
+        ticks: {
+          color: primaryColor,
+        },
+      },
     },
   };
   //. JSX.

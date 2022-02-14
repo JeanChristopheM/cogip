@@ -34,6 +34,13 @@ const Chart = ({ invoices }) => {
   const options = {
     responsive: true,
     maintainAspectRatio: true,
+    plugins: {
+      legend: {
+        labels: {
+          color: primaryColor,
+        },
+      },
+    },
   };
   return <Pie options={options} data={data} />;
 };
