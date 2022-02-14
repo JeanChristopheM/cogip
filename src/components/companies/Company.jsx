@@ -26,6 +26,7 @@ function Company({ companies, contacts, setIsLoaded, isAuth }) {
   }, [companies]);
   //! added a contact in a company and it removed the previous one
   //! tried updating an invoice and got error 400 (bad request)
+  //! Fix illustration on user add page
   const renderSelector = (amount) => {
     let selectorArray = [];
     for (let x = 0; x < amount; x++) {
