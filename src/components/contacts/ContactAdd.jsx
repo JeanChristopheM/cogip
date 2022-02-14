@@ -84,7 +84,7 @@ function ContactAdd({ companies, setIsLoaded, isAuth }) {
     let selectorArray = [];
     for (let x = 0; x < amount; x++) {
       selectorArray.push(
-        <div>
+        <div key={x}>
           <label>Company Selector : </label>
           <CompanySelector
             companies={companies}

@@ -58,7 +58,9 @@ const Reports = ({ invoices, companies }) => {
     for (let company of companies) {
       const coords = [company.latitude, company.longitude];
       markers.addLayer(
-        L.marker(coords, { icon: myMarker }).bindPopup(company.name)
+        L.marker(coords, { icon: myMarker }).bindPopup(
+          `<a href="#/company/${company.id}" style="cursor: pointer">${company.name}</a>`
+        )
       );
     }
     map.addLayer(markers);
